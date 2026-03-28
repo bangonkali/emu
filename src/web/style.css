@@ -87,6 +87,14 @@ button:hover {
     transform: translateY(-1px);
 }
 
+[data-btn],
+[data-speed],
+[data-layout-mode] {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
@@ -187,7 +195,8 @@ h1 {
 .speed-button,
 .tab-button,
 .menu-button,
-.dpad-button {
+.dpad-button,
+.layout-button {
     background: var(--button);
     border-color: var(--border);
 }
@@ -195,9 +204,16 @@ h1 {
 .theme-button,
 .speed-button,
 .tab-button,
-.menu-button {
+.menu-button,
+.layout-button {
     border-radius: 999px;
     padding: 10px 16px;
+}
+
+.layout-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .speed-controls {
@@ -207,10 +223,18 @@ h1 {
 }
 
 .speed-button.active,
-.tab-button.active {
+.tab-button.active,
+.layout-button.active {
     background: var(--button-active);
     border-color: rgba(242, 200, 95, 0.48);
     color: var(--accent-strong);
+}
+
+.layout-indicator {
+    background: var(--bg-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 12px;
 }
 
 .tabbar {
@@ -536,6 +560,120 @@ h1 {
     font-family: var(--mono);
 }
 
+:root[data-layout="mobile"] .shell {
+    width: min(100vw - 14px, 760px);
+    margin: 8px auto calc(22px + env(safe-area-inset-bottom));
+    gap: 12px;
+}
+
+:root[data-layout="mobile"] .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px;
+}
+
+:root[data-layout="mobile"] h1 {
+    font-size: clamp(1.4rem, 6vw, 2.1rem);
+}
+
+:root[data-layout="mobile"] .topbar-meta,
+:root[data-layout="mobile"] .status-row,
+:root[data-layout="mobile"] .topbar-actions {
+    width: 100%;
+    justify-items: start;
+    justify-content: flex-start;
+}
+
+:root[data-layout="mobile"] .tabbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+}
+
+:root[data-layout="mobile"] .tabbar::-webkit-scrollbar {
+    display: none;
+}
+
+:root[data-layout="mobile"] .tab-button {
+    flex: 0 0 auto;
+}
+
+:root[data-layout="mobile"] .overview-grid,
+:root[data-layout="mobile"] .pokedex-toolbar,
+:root[data-layout="mobile"] .party-grid,
+:root[data-layout="mobile"] .pokedex-grid {
+    grid-template-columns: 1fr;
+}
+
+:root[data-layout="mobile"] .screen-panel,
+:root[data-layout="mobile"] .map-panel,
+:root[data-layout="mobile"] .data-panel-shell {
+    padding: 16px;
+}
+
+:root[data-layout="mobile"] .screen-frame {
+    padding: 12px;
+}
+
+:root[data-layout="mobile"] .screen-viewport {
+    width: min(100%, 360px);
+}
+
+:root[data-layout="mobile"] .controls-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 12px;
+    align-items: end;
+}
+
+:root[data-layout="mobile"] .dpad {
+    grid-template-rows: repeat(3, 58px);
+    gap: 6px;
+}
+
+:root[data-layout="mobile"] .face-button {
+    width: 78px;
+    height: 78px;
+    font-size: 1rem;
+}
+
+:root[data-layout="mobile"] .face-controls {
+    gap: 10px;
+}
+
+:root[data-layout="mobile"] .menu-buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:root[data-layout="mobile"] .menu-button,
+:root[data-layout="mobile"] .layout-button,
+:root[data-layout="mobile"] .theme-button,
+:root[data-layout="mobile"] .speed-button {
+    padding: 10px 12px;
+}
+
+:root[data-layout="mobile"] .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:root[data-layout="mobile"] .stat-card,
+:root[data-layout="mobile"] .stat-row {
+    padding: 12px;
+}
+
+:root[data-layout="mobile"] .party-stats,
+:root[data-layout="mobile"] .dex-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:root[data-layout="mobile"] .log-output {
+    min-height: 220px;
+    max-height: 360px;
+}
+
 @media (max-width: 1080px) {
     .topbar {
         flex-direction: column;
@@ -567,5 +705,21 @@ h1 {
     .party-stats,
     .dex-stats {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 460px) {
+    :root[data-layout="mobile"] .controls-grid {
+        grid-template-columns: 1fr;
+    }
+
+    :root[data-layout="mobile"] .summary-grid,
+    :root[data-layout="mobile"] .party-stats,
+    :root[data-layout="mobile"] .dex-stats {
+        grid-template-columns: 1fr;
+    }
+
+    :root[data-layout="mobile"] .face-controls {
+        width: 100%;
     }
 }

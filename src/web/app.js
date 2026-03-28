@@ -5,6 +5,11 @@ const PAD = 20;
 const GLOBAL_WIDTH = 436 + PAD * 2;
 const GLOBAL_HEIGHT = 444 + PAD * 2;
 const THEME_STORAGE_KEY = "poke-dashboard-theme";
+const LAYOUT_MODE_STORAGE_KEY = "poke-dashboard-layout-mode";
+const MOBILE_LAYOUT_BREAKPOINT = 900;
+const MOBILE_USER_AGENT_PATTERN = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i;
+const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+const mobileWidthQuery = window.matchMedia(`(max-width: ${MOBILE_LAYOUT_BREAKPOINT}px)`);
 
 const screenEl = document.getElementById("screen");
 const mapNameEl = document.getElementById("map-name");
@@ -33,6 +38,8 @@ const pokedexSeenCountEl = document.getElementById("pokedex-seen-count");
 const pokedexOwnedCountEl = document.getElementById("pokedex-owned-count");
 const pokedexFilteredCountEl = document.getElementById("pokedex-filtered-count");
 const themeToggleEl = document.getElementById("theme-toggle");
+const layoutIndicatorEl = document.getElementById("layout-indicator");
+const layoutButtons = [...document.querySelectorAll("[data-layout-mode]")];
 
 const appState = {
     socket: null,
@@ -43,6 +50,8 @@ const appState = {
     catalogByInternalId: new Map(),
     latestState: null,
     remoteActiveInputs: [],
+    layoutPreference: "auto",
+    resolvedLayout: "desktop",
 };
 
 class InputController {
@@ -498,6 +507,68 @@ function bindTabs() {
     });
 }
 
+function capitalize(value) {
+    return value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : "";
+}
+
+function isLikelyMobileDevice() {
+    const userAgent = navigator.userAgent || "";
+    const hasTouch = navigator.maxTouchPoints > 0 || "ontouchstart" in window;
+    const narrowViewport = mobileWidthQuery.matches || window.innerWidth <= MOBILE_LAYOUT_BREAKPOINT;
+    return MOBILE_USER_AGENT_PATTERN.test(userAgent) || (hasTouch && coarsePointerQuery.matches && narrowViewport);
+}
+
+function resolveLayout(preference) {
+    if (preference === "desktop" || preference === "mobile") {
+        return preference;
+    }
+    return isLikelyMobileDevice() ? "mobile" : "desktop";
+}
+
+function updateLayoutControls(preference, resolved) {
+    layoutButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.layoutMode === preference);
+    });
+    layoutIndicatorEl.textContent = preference === "auto"
+        ? `Layout: Auto (${capitalize(resolved)})`
+        : `Layout: ${capitalize(resolved)}`;
+}
+
+function applyLayoutPreference(preference) {
+    const resolved = resolveLayout(preference);
+    appState.layoutPreference = preference;
+    appState.resolvedLayout = resolved;
+    document.documentElement.dataset.layout = resolved;
+    window.localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, preference);
+    updateLayoutControls(preference, resolved);
+}
+
+function initializeLayoutMode() {
+    const savedPreference = window.localStorage.getItem(LAYOUT_MODE_STORAGE_KEY);
+    const initialPreference = ["auto", "desktop", "mobile"].includes(savedPreference) ? savedPreference : "auto";
+
+    layoutButtons.forEach((button) => {
+        button.addEventListener("click", () => applyLayoutPreference(button.dataset.layoutMode));
+    });
+
+    const refreshAutoLayout = () => {
+        if (appState.layoutPreference === "auto") {
+            applyLayoutPreference("auto");
+        }
+    };
+
+    if (typeof coarsePointerQuery.addEventListener === "function") {
+        coarsePointerQuery.addEventListener("change", refreshAutoLayout);
+        mobileWidthQuery.addEventListener("change", refreshAutoLayout);
+    } else {
+        coarsePointerQuery.addListener(refreshAutoLayout);
+        mobileWidthQuery.addListener(refreshAutoLayout);
+    }
+
+    window.addEventListener("resize", refreshAutoLayout);
+    applyLayoutPreference(initialPreference);
+}
+
 function updateThemeButton(theme) {
     themeToggleEl.textContent = theme === "dark" ? "Switch to light" : "Switch to dark";
 }
@@ -571,6 +642,7 @@ bindTabs();
 bindKeyboardControls();
 bindPokedexFilters();
 initializeTheme();
+initializeLayoutMode();
 renderInputHighlights([]);
 renderParty([]);
 renderPokedex(null);

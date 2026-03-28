@@ -18,9 +18,15 @@
                 <div class="status-row">
                     <span id="connection-indicator" class="status offline">Disconnected</span>
                     <span id="frame-count" class="mono">Frame: 0</span>
+                    <span id="layout-indicator" class="layout-indicator mono">Layout: Auto</span>
                 </div>
                 <div class="topbar-actions">
                     <button type="button" id="theme-toggle" class="theme-button">Switch to light</button>
+                    <div class="layout-controls" aria-label="Dashboard Layout">
+                        <button type="button" data-layout-mode="auto" class="layout-button active">Auto</button>
+                        <button type="button" data-layout-mode="desktop" class="layout-button">Desktop</button>
+                        <button type="button" data-layout-mode="mobile" class="layout-button">Mobile</button>
+                    </div>
                     <div class="speed-controls" aria-label="Emulation Speed">
                         <button type="button" data-speed="1x" class="speed-button active">1x</button>
                         <button type="button" data-speed="2x" class="speed-button">2x</button>

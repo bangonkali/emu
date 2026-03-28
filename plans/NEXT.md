@@ -4,6 +4,20 @@
 
 ## Follow-Up: Continuous Input, Themes, Party Details, Pokédex
 
+## Maintenance: Responsive Mobile Dashboard
+
+### Goal
+
+1. Detect likely mobile devices automatically and switch the dashboard into a compressed mobile layout.
+2. Keep touch controls usable on phones while preserving a manual Auto/Desktop/Mobile override.
+
+### Progress
+
+- Complete: added header controls to switch between Auto, Desktop, and Mobile layout modes.
+- Complete: added client-side mobile detection using viewport width, coarse pointer, touch support, and user agent hints.
+- Complete: added mobile-specific responsive behavior for overview panels, controls, stats, logs, and tabs.
+- Complete: updated README and Docker usage docs for the new mobile behavior.
+
 ## Maintenance: Screen Aspect Ratio Fix
 
 ### Goal
