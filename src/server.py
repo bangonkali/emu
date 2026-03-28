@@ -6,6 +6,8 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 import websockets
+from websockets.datastructures import Headers
+from websockets.http11 import Response
 
 
 SAMPLE_FPS = 12
@@ -47,16 +49,25 @@ def _resolve_web_path(raw_path):
     return target
 
 
-async def process_request(path, _request_headers):
-    if path == "/ws":
+def _make_response(status_code, reason_phrase, content_type, body):
+    return Response(
+        status_code,
+        reason_phrase,
+        Headers([("Content-Type", content_type)]),
+        body,
+    )
+
+
+async def process_request(_connection, request):
+    if request.path == "/ws":
         return None
 
-    target = _resolve_web_path(path)
+    target = _resolve_web_path(request.path)
     if target is None or not target.is_file():
-        return (404, [("Content-Type", "text/plain; charset=utf-8")], b"Not Found")
+        return _make_response(404, "Not Found", "text/plain; charset=utf-8", b"Not Found")
 
     content_type = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
-    return (200, [("Content-Type", content_type)], target.read_bytes())
+    return _make_response(200, "OK", content_type, target.read_bytes())
 
 
 async def broadcast_json(clients, payload):

@@ -134,6 +134,22 @@ Each state transition logs a descriptive message and captures a synchronized scr
 
 The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`.
 
+## Validation
+
+Run the in-container test suite:
+
+```bash
+docker compose run --rm pokemon-headless python -m pytest
+```
+
+The implementation has been validated against Docker on this branch with:
+
+- `docker compose build`
+- `docker compose run --rm pokemon-headless python -m pytest`
+- `docker compose up -d --build`
+- HTTP smoke test against `http://localhost:8765`
+- WebSocket smoke test confirming `state`, `speed`, and `screen` payload fields
+
 ## Reference Submodules
 
 The `ref/` directory contains git submodules pinned to third-party repositories used as research references for WRAM addresses and RL patterns:

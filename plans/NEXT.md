@@ -2,6 +2,14 @@
 
 ## Implementation Status
 
+### Final status
+
+- Complete. The web debug tool is implemented and validated in Docker.
+- The runtime serves the dashboard over HTTP and streams logs/state/screen over WebSocket.
+- Browser inputs and runtime speed changes are accepted after the scripted boot flow reaches `OVERWORLD`.
+- Container-run pytest coverage exists for memory helpers, bot scheduling, and server helpers.
+- Docker verification completed with a successful build, `11` passing tests, an HTTP `200` dashboard response, and a live WebSocket `state` payload containing `state`, `speed`, and `screen` data.
+
 ### Completed in current branch
 
 - `state/memory_map.json` contains the expanded badge, party, HP, and money addresses.
@@ -13,8 +21,7 @@
 
 ### Remaining on this branch
 
-- Add container-run tests for the bot, memory helpers, and server helpers.
-- Run end-to-end verification inside Docker and document the final workflow.
+- None.
 
 ### Completed in current branch after backend commit
 

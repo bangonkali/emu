@@ -89,3 +89,12 @@ docker logs poke-pokemon-headless-1
 2. Open `http://localhost:8765` in a browser.
 3. Wait for the bot to reach `OVERWORLD`.
 4. Use the dashboard controls to inspect state, change emulation speed, and send Game Boy inputs.
+
+## Test Workflow
+
+```bash
+docker compose build
+docker compose run --rm pokemon-headless python -m pytest
+```
+
+This branch was validated with the Docker-only test flow above, followed by a runtime smoke test of the HTTP dashboard and WebSocket state stream.
