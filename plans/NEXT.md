@@ -13,6 +13,8 @@
 ### Progress
 
 - Complete: wrapped the live screen image in a dedicated viewport and switched the image to fill that viewport without vertical compression.
+- Complete: replaced percentage-height image sizing with intrinsic `height: auto` scaling after confirming the server still streams a full `160x144` PNG.
+- Complete: disabled browser caching for the dashboard static assets in `src/server.py` so layout fixes are visible immediately after redeploy.
 - Complete: updated user-facing docs to record the dashboard sizing fix.
 
 ### Previous milestone

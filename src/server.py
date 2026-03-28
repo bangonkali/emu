@@ -127,7 +127,14 @@ def _make_response(status_code, reason_phrase, content_type, body):
     return Response(
         status_code,
         reason_phrase,
-        Headers([("Content-Type", content_type)]),
+        Headers(
+            [
+                ("Content-Type", content_type),
+                ("Cache-Control", "no-store, no-cache, must-revalidate"),
+                ("Pragma", "no-cache"),
+                ("Expires", "0"),
+            ]
+        ),
         body,
     )
 

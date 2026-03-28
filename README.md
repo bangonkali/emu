@@ -66,7 +66,7 @@ Regardless of how you run it, outputs appear in:
 The browser dashboard provides:
 
 - A live Game Boy screen updated from the WebSocket state stream
-- A native-aspect-ratio Game Boy viewport that stays at 160:144 while scaling up responsively
+- A native-aspect-ratio Game Boy viewport that scales from the image's real 160:144 frame without CSS height clipping
 - Continuous on-screen and keyboard controls for Game Boy inputs
 - Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
 - A Kanto map with the current player position highlighted
@@ -158,7 +158,8 @@ The implementation has been validated against Docker on this branch with:
 
 The current dashboard now includes the original live debug view plus:
 
-- A dedicated screen viewport that preserves the Game Boy image ratio instead of stretching to panel height
+- A dedicated screen viewport that now sizes from the image width with `height: auto`, avoiding half-height clipping in the live render
+- Dashboard static assets are served with no-cache headers so CSS and JS fixes take effect immediately after a restart
 - An authoritative held-input pipeline for smoother movement controls
 - Theme switching between light and dark modes
 - Party inspection with current stats and battle-state details
