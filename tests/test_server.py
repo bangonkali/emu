@@ -3,7 +3,7 @@ import asyncio
 from websockets.datastructures import Headers
 from websockets.http11 import Request
 
-from server import _resolve_web_path, load_map_names, process_request, resolve_map_name
+from server import InputAuthority, _resolve_web_path, load_map_names, process_request, resolve_map_name
 
 
 def test_map_names_load_from_web_asset():
@@ -32,3 +32,25 @@ def test_process_request_returns_404_for_missing_file():
     response = asyncio.run(process_request(None, Request(path="/missing-file.txt", headers=Headers())))
     assert response.status_code == 404
     assert response.body == b"Not Found"
+
+
+def test_input_authority_tracks_latest_direction_and_buttons():
+    authority = InputAuthority()
+    authority.apply_event("client-a", "left", True, 1)
+    authority.apply_event("client-b", "up", True, 1)
+    authority.apply_event("client-a", "a", True, 2)
+
+    assert authority.resolve_buttons() == {"up", "a"}
+
+    authority.apply_event("client-b", "up", False, 2)
+    assert authority.resolve_buttons() == {"left", "a"}
+
+
+def test_input_authority_ignores_stale_sequences_and_clears_disconnected_clients():
+    authority = InputAuthority()
+    authority.apply_snapshot("client-a", ["left"], 3)
+    authority.apply_snapshot("client-a", ["right"], 2)
+    assert authority.resolve_buttons() == {"left"}
+
+    authority.remove_client("client-a")
+    assert authority.resolve_buttons() == set()

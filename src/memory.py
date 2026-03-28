@@ -1,30 +1,65 @@
 import json
 import os
 
+
+PARTY_MON_STRUCT_LENGTH = 0x2C
+POKEDEX_FLAG_BYTES = 19
+POKEDEX_TOTAL = 151
+
+PARTY_OFFSETS = {
+    "species": 0x00,
+    "hp": 0x01,
+    "level": 0x21,
+    "max_hp": 0x22,
+    "attack": 0x24,
+    "defense": 0x26,
+    "speed": 0x28,
+    "special": 0x2A,
+    "status": 0x04,
+    "exp": 0x0E,
+}
+
+STATUS_FLAGS = {
+    3: "Poisoned",
+    4: "Burned",
+    5: "Frozen",
+    6: "Paralyzed",
+}
+
 class MemoryMap:
     def __init__(self, pyboy, map_path="/app/state/memory_map.json"):
         self.pyboy = pyboy
         with open(map_path, 'r', encoding='utf-8') as f:
             self.map_data = json.load(f)
+
+    def get_address(self, label):
+        if label not in self.map_data["addresses"]:
+            raise ValueError(f"Label {label} not defined in memory map.")
+        return int(self.map_data["addresses"][label]["hex"], 16)
+
+    def read_address(self, address):
+        return self.pyboy.memory[address]
+
+    def read_word_at(self, address):
+        return 256 * self.pyboy.memory[address] + self.pyboy.memory[address + 1]
+
+    def read_triple_at(self, address):
+        return (
+            self.pyboy.memory[address] * 65536
+            + self.pyboy.memory[address + 1] * 256
+            + self.pyboy.memory[address + 2]
+        )
+
+    def read_bytes_at(self, address, count):
+        return [self.pyboy.memory[address + offset] for offset in range(count)]
             
     def read(self, label):
         """Reads a byte from the PyBoy memory given a label defined in the map."""
-        if label not in self.map_data["addresses"]:
-            raise ValueError(f"Label {label} not defined in memory map.")
-            
-        hex_addr = self.map_data["addresses"][label]["hex"]
-        addr = int(hex_addr, 16)
-        
-        # We read a single byte (size_bytes: 1) as defined in our map.
-        return self.pyboy.memory[addr]
+        return self.read_address(self.get_address(label))
 
     def read_word(self, label):
         """Reads a 2-byte big-endian value from PyBoy memory."""
-        if label not in self.map_data["addresses"]:
-            raise ValueError(f"Label {label} not defined in memory map.")
-        hex_addr = self.map_data["addresses"][label]["hex"]
-        addr = int(hex_addr, 16)
-        return 256 * self.pyboy.memory[addr] + self.pyboy.memory[addr + 1]
+        return self.read_word_at(self.get_address(label))
 
     def read_bit(self, label, bit):
         """Helper to read a specific bit from a byte."""
@@ -54,19 +89,70 @@ class MemoryMap:
         b3 = self.read("wMoney3")
         return self.read_bcd(b1) * 10000 + self.read_bcd(b2) * 100 + self.read_bcd(b3)
 
+    def decode_status(self, status_byte):
+        if status_byte & 0b111:
+            return "Sleeping"
+        for bit, label in STATUS_FLAGS.items():
+            if status_byte & (1 << bit):
+                return label
+        return "Healthy"
+
+    def get_party_member(self, slot):
+        if slot < 1 or slot > 6:
+            raise ValueError("Party slot must be between 1 and 6.")
+
+        party_base = self.get_address("wPartyMons")
+        base = party_base + (slot - 1) * PARTY_MON_STRUCT_LENGTH
+        species_id = self.read_address(base + PARTY_OFFSETS["species"])
+        if species_id == 0:
+            return None
+
+        return {
+            "slot": slot,
+            "species_id": species_id,
+            "level": self.read_address(base + PARTY_OFFSETS["level"]),
+            "hp": self.read_word_at(base + PARTY_OFFSETS["hp"]),
+            "max_hp": self.read_word_at(base + PARTY_OFFSETS["max_hp"]),
+            "attack": self.read_word_at(base + PARTY_OFFSETS["attack"]),
+            "defense": self.read_word_at(base + PARTY_OFFSETS["defense"]),
+            "speed": self.read_word_at(base + PARTY_OFFSETS["speed"]),
+            "special": self.read_word_at(base + PARTY_OFFSETS["special"]),
+            "status": self.decode_status(self.read_address(base + PARTY_OFFSETS["status"])),
+            "status_code": self.read_address(base + PARTY_OFFSETS["status"]),
+            "experience": self.read_triple_at(base + PARTY_OFFSETS["exp"]),
+        }
+
+    def _decode_flag_array(self, label):
+        base_address = self.get_address(label)
+        raw = self.read_bytes_at(base_address, POKEDEX_FLAG_BYTES)
+        dex_numbers = []
+        for dex_no in range(1, POKEDEX_TOTAL + 1):
+            byte_index = (dex_no - 1) // 8
+            bit_index = (dex_no - 1) % 8
+            if raw[byte_index] & (1 << bit_index):
+                dex_numbers.append(dex_no)
+        return dex_numbers
+
+    def get_pokedex_progress(self):
+        owned = self._decode_flag_array("wPokedexOwned")
+        seen = self._decode_flag_array("wPokedexSeen")
+        return {
+            "total": POKEDEX_TOTAL,
+            "owned": owned,
+            "seen": seen,
+            "owned_count": len(owned),
+            "seen_count": len(seen),
+        }
+
     def get_party_info(self):
-        """Returns a list of dicts with species and level for each party member."""
+        """Returns a list of detailed dicts for each party member."""
         count = self.read("wPartyCount")
         count = min(count, 6)
         party = []
-        species_labels = [f"wPartyMon{i}Species" for i in range(1, 7)]
-        level_labels = [f"wPartyMon{i}Level" for i in range(1, 7)]
-        for i in range(count):
-            party.append({
-                "slot": i + 1,
-                "species_id": self.read(species_labels[i]),
-                "level": self.read(level_labels[i]),
-            })
+        for slot in range(1, count + 1):
+            member = self.get_party_member(slot)
+            if member:
+                party.append(member)
         return party
 
     def get_full_state(self):
@@ -80,13 +166,12 @@ class MemoryMap:
             badges = self.get_badges_count()
             money = self.get_money()
             party = self.get_party_info()
+            pokedex = self.get_pokedex_progress()
             hp = 0
             max_hp = 0
-            try:
-                hp = self.read_word("wPartyMon1HP")
-                max_hp = self.read_word("wPartyMon1MaxHP")
-            except Exception:
-                pass
+            if party:
+                hp = party[0]["hp"]
+                max_hp = party[0]["max_hp"]
 
             return {
                 "map_id": map_id,
@@ -99,6 +184,9 @@ class MemoryMap:
                 "party": party,
                 "lead_hp": hp,
                 "lead_max_hp": max_hp,
+                "pokedex": pokedex,
+                "pokedex_owned_count": pokedex["owned_count"],
+                "pokedex_seen_count": pokedex["seen_count"],
                 "menu_item": self.read("wCurrentMenuItem"),
                 "joy_ignore": self.read("wJoyIgnore"),
             }

@@ -63,6 +63,16 @@ BOOTING ──(240 frames)──► TITLE_SCREEN ──(press START)──► MA
 **Action:** The scripted boot flow stops. Browser-originated inputs are accepted only in this state, and they use the same 8-frame press / 1-frame cooldown scheduler as the scripted inputs.  
 **Termination:** The emulator no longer stops on entry to `OVERWORLD`. It continues ticking under the async server runtime until the process exits.
 
+## Interactive Input Layer
+
+The follow-up runtime adds a second control path on top of the scripted boot scheduler:
+
+1. Scripted inputs still use the single active press slot during boot.
+2. Once the bot reaches `OVERWORLD`, the server drives a held-button state set instead of one-shot directional taps.
+3. Each frame, the bot compares the desired held buttons from the server with the buttons currently pressed in the emulator and sends only the needed press/release events.
+
+This split keeps boot deterministic while making walking controls behave like a continuous hold rather than a tap queue.
+
 ## Input Scheduling
 
 The old blocking `press_button()` helper advanced multiple frames internally. That made it awkward to coordinate WebSocket polling, speed throttling, and interactive controls. The runtime now keeps a queue of pending inputs and an active press slot:

@@ -2,6 +2,27 @@
 
 ## Implementation Status
 
+## Follow-Up: Continuous Input, Themes, Party Details, Pokédex
+
+### Previous milestone
+
+- The original web debug tool milestone is complete and remains the baseline.
+
+### Current milestone goals
+
+1. Replace tap-based directional input with an authoritative held-input model across client, API, and emulator runtime.
+2. Add theme support to the dashboard.
+3. Add richer party details using the in-memory party structs.
+4. Add a searchable, filterable Pokédex tab sourced from the bundled reference data.
+
+### Current milestone progress
+
+- Complete: backend input-state authority in `src/server.py`.
+- Complete: held manual input sync in `src/bot.py`.
+- Complete: richer party and Pokédex progress payloads in `src/memory.py`.
+- Complete: generated static Pokémon catalog in `src/web/pokemon_catalog.json` from `ref/pokered`.
+- Remaining: frontend tabs, theme toggle, continuous on-screen controls, and final Docker verification.
+
 ### Final status
 
 - Complete. The web debug tool is implemented and validated in Docker.

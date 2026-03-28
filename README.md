@@ -150,6 +150,14 @@ The implementation has been validated against Docker on this branch with:
 - HTTP smoke test against `http://localhost:8765`
 - WebSocket smoke test confirming `state`, `speed`, and `screen` payload fields
 
+## Current Follow-Up Work
+
+The next iteration extends the dashboard beyond the original debug console:
+
+- Held directional input now has an authoritative client/server input-state pipeline rather than one-shot button taps.
+- The backend state stream now exposes richer party data and Pokédex progress for UI tabs.
+- The next UI pass adds theme controls, continuous on-screen holds, party detail cards, and a searchable Pokédex view.
+
 ## Reference Submodules
 
 The `ref/` directory contains git submodules pinned to third-party repositories used as research references for WRAM addresses and RL patterns:

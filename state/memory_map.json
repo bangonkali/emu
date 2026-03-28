@@ -26,6 +26,11 @@
       "size_bytes": 1,
       "purpose": "Number of Pokémon in the player's party. Accurate reading implies the save file has successfully populated WRAM."
     },
+    "wPartyMons": {
+      "hex": "0xD16B",
+      "size_bytes": 44,
+      "purpose": "Base address of the first in-party Pokémon struct. Additional slots are 0x2C bytes apart."
+    },
     "wYCoord": {
       "hex": "0xD361",
       "size_bytes": 1,
@@ -125,6 +130,16 @@
       "hex": "0xD349",
       "size_bytes": 1,
       "purpose": "Money byte 3 (BCD, least significant)."
+    },
+    "wPokedexOwned": {
+      "hex": "0xD2F7",
+      "size_bytes": 19,
+      "purpose": "Bit array of owned Pokédex entries. Bit 0 of the first byte is Bulbasaur."
+    },
+    "wPokedexSeen": {
+      "hex": "0xD30A",
+      "size_bytes": 19,
+      "purpose": "Bit array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur."
     }
   }
 }

@@ -8,6 +8,7 @@ from pyboy.utils import WindowEvent
 
 INPUT_HOLD_FRAMES = 8
 POST_RELEASE_COOLDOWN_FRAMES = 1
+DIRECTIONAL_BUTTONS = {"up", "down", "left", "right"}
 
 BUTTON_MAP = {
     "a": (WindowEvent.PRESS_BUTTON_A, WindowEvent.RELEASE_BUTTON_A),
@@ -40,6 +41,8 @@ class PokemonBot:
         self._started = False
         self._scripted_inputs = deque()
         self._manual_inputs = deque()
+        self._manual_desired_buttons = set()
+        self._manual_active_buttons = set()
         self._active_input = None
         self._input_cooldown_frames = 0
         self._transition_timeout_logged = False
@@ -84,6 +87,28 @@ class PokemonBot:
             self._active_input["held_frames"] += 1
         elif self._input_cooldown_frames > 0:
             self._input_cooldown_frames -= 1
+
+    def _sync_manual_inputs(self):
+        if self.state != GameState.OVERWORLD:
+            self.release_manual_inputs()
+            return
+
+        to_release = self._manual_active_buttons - self._manual_desired_buttons
+        to_press = self._manual_desired_buttons - self._manual_active_buttons
+
+        for button_name in sorted(to_release):
+            self.pyboy.send_input(BUTTON_MAP[button_name][1])
+        for button_name in sorted(to_press):
+            self.pyboy.send_input(BUTTON_MAP[button_name][0])
+
+        self._manual_active_buttons -= to_release
+        self._manual_active_buttons |= to_press
+
+    def release_manual_inputs(self):
+        for button_name in sorted(self._manual_active_buttons):
+            self.pyboy.send_input(BUTTON_MAP[button_name][1])
+        self._manual_active_buttons.clear()
+        self._manual_desired_buttons.clear()
 
     def transition_to(self, target_state, log_msg):
         self.logger.log_state(log_msg)
@@ -155,6 +180,7 @@ class PokemonBot:
             self._started = True
 
         self._process_input_for_frame()
+        self._sync_manual_inputs()
         self.pyboy.tick()
         self._update_input_timers()
         self.frames_in_state += 1
@@ -176,10 +202,23 @@ class PokemonBot:
         self._enqueue_input(button_name, manual=True)
         return True
 
+    def set_manual_buttons(self, buttons):
+        if self.state != GameState.OVERWORLD:
+            self._manual_desired_buttons.clear()
+            return False
+
+        normalized = {button for button in buttons if button in BUTTON_MAP}
+        if len(normalized & DIRECTIONAL_BUTTONS) > 1:
+            directional = sorted(normalized & DIRECTIONAL_BUTTONS)
+            normalized -= set(directional[:-1])
+        self._manual_desired_buttons = normalized
+        return True
+
     def get_state_snapshot(self):
         snapshot = {
             "state": self.state.name,
             "frames_in_state": self.frames_in_state,
+            "active_inputs": sorted(self._manual_active_buttons),
         }
         snapshot.update(self.memory.get_full_state())
         return snapshot

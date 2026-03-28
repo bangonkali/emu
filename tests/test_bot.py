@@ -80,28 +80,36 @@ def test_bot_reaches_title_screen_after_boot_frames():
 
 def test_manual_input_is_ignored_before_overworld():
     bot = PokemonBot(FakePyBoy(), FakeMemory(), FakeLogger())
-    assert bot.inject_input("left") is False
+    assert bot.set_manual_buttons({"left"}) is False
 
 
-def test_manual_input_uses_eight_frame_hold_and_cooldown():
+def test_manual_input_presses_and_releases_with_state_sync():
     pyboy = FakePyBoy()
     memory = FakeMemory()
     logger = FakeLogger()
     bot = PokemonBot(pyboy, memory, logger)
     bot.state = GameState.OVERWORLD
 
-    assert bot.inject_input("left") is True
-    assert bot.inject_input("right") is True
+    assert bot.set_manual_buttons({"left"}) is True
+    bot.step()
+    assert pyboy.inputs[0] == BUTTON_MAP["left"][0]
+    assert bot.get_state_snapshot()["active_inputs"] == ["left"]
 
-    for _ in range(10):
-        bot.step()
+    bot.set_manual_buttons(set())
+    bot.step()
+    assert pyboy.inputs[1] == BUTTON_MAP["left"][1]
+    assert bot.get_state_snapshot()["active_inputs"] == []
 
-    assert pyboy.inputs[:2] == [BUTTON_MAP["left"][0], BUTTON_MAP["left"][1]]
-    assert BUTTON_MAP["right"][0] not in pyboy.inputs[:2]
 
+def test_manual_input_keeps_latest_direction_when_multiple_are_requested():
+    pyboy = FakePyBoy()
+    bot = PokemonBot(pyboy, FakeMemory(), FakeLogger())
+    bot.state = GameState.OVERWORLD
+
+    bot.set_manual_buttons({"left", "right"})
     bot.step()
 
-    assert pyboy.inputs[2] == BUTTON_MAP["right"][0]
+    assert pyboy.inputs == [BUTTON_MAP["right"][0]]
 
 
 def test_screen_snapshot_is_png_data_uri():

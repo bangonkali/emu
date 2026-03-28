@@ -1,0 +1,3032 @@
+{
+  "meta": {
+    "total_pokemon": 151,
+    "generated_from": [
+      "ref/pokered/constants/pokedex_constants.asm",
+      "ref/pokered/data/pokemon/dex_order.asm",
+      "ref/pokered/data/pokemon/base_stats/*.asm"
+    ]
+  },
+  "pokemon": [
+    {
+      "dex_no": 151,
+      "internal_id": 21,
+      "slug": "mew",
+      "name": "Mew",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 100,
+        "attack": 100,
+        "defense": 100,
+        "speed": 100,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 64,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 55,
+      "internal_id": 128,
+      "slug": "golduck",
+      "name": "Golduck",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 82,
+        "defense": 78,
+        "speed": 85,
+        "special": 80
+      },
+      "catch_rate": 75,
+      "base_exp": 174,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 54,
+      "internal_id": 47,
+      "slug": "psyduck",
+      "name": "Psyduck",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 52,
+        "defense": 48,
+        "speed": 55,
+        "special": 50
+      },
+      "catch_rate": 190,
+      "base_exp": 80,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 53,
+      "internal_id": 144,
+      "slug": "persian",
+      "name": "Persian",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 70,
+        "defense": 60,
+        "speed": 115,
+        "special": 65
+      },
+      "catch_rate": 90,
+      "base_exp": 148,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 52,
+      "internal_id": 77,
+      "slug": "meowth",
+      "name": "Meowth",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 45,
+        "defense": 35,
+        "speed": 90,
+        "special": 40
+      },
+      "catch_rate": 255,
+      "base_exp": 69,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 51,
+      "internal_id": 118,
+      "slug": "dugtrio",
+      "name": "Dugtrio",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 80,
+        "defense": 50,
+        "speed": 120,
+        "special": 70
+      },
+      "catch_rate": 50,
+      "base_exp": 153,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 50,
+      "internal_id": 59,
+      "slug": "diglett",
+      "name": "Diglett",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 10,
+        "attack": 55,
+        "defense": 25,
+        "speed": 95,
+        "special": 45
+      },
+      "catch_rate": 255,
+      "base_exp": 81,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 49,
+      "internal_id": 119,
+      "slug": "venomoth",
+      "name": "Venomoth",
+      "types": [
+        "Bug",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 65,
+        "defense": 60,
+        "speed": 90,
+        "special": 90
+      },
+      "catch_rate": 75,
+      "base_exp": 138,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 48,
+      "internal_id": 65,
+      "slug": "venonat",
+      "name": "Venonat",
+      "types": [
+        "Bug",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 55,
+        "defense": 50,
+        "speed": 45,
+        "special": 40
+      },
+      "catch_rate": 190,
+      "base_exp": 75,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 47,
+      "internal_id": 46,
+      "slug": "parasect",
+      "name": "Parasect",
+      "types": [
+        "Bug",
+        "Grass"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 95,
+        "defense": 80,
+        "speed": 30,
+        "special": 80
+      },
+      "catch_rate": 75,
+      "base_exp": 128,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 46,
+      "internal_id": 109,
+      "slug": "paras",
+      "name": "Paras",
+      "types": [
+        "Bug",
+        "Grass"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 70,
+        "defense": 55,
+        "speed": 25,
+        "special": 55
+      },
+      "catch_rate": 190,
+      "base_exp": 70,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 45,
+      "internal_id": 187,
+      "slug": "vileplume",
+      "name": "Vileplume",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 75,
+        "attack": 80,
+        "defense": 85,
+        "speed": 50,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 184,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 44,
+      "internal_id": 186,
+      "slug": "gloom",
+      "name": "Gloom",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 65,
+        "defense": 70,
+        "speed": 40,
+        "special": 85
+      },
+      "catch_rate": 120,
+      "base_exp": 132,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 43,
+      "internal_id": 185,
+      "slug": "oddish",
+      "name": "Oddish",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 50,
+        "defense": 55,
+        "speed": 30,
+        "special": 75
+      },
+      "catch_rate": 255,
+      "base_exp": 78,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 42,
+      "internal_id": 130,
+      "slug": "golbat",
+      "name": "Golbat",
+      "types": [
+        "Poison",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 75,
+        "attack": 80,
+        "defense": 70,
+        "speed": 90,
+        "special": 75
+      },
+      "catch_rate": 90,
+      "base_exp": 171,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 41,
+      "internal_id": 107,
+      "slug": "zubat",
+      "name": "Zubat",
+      "types": [
+        "Poison",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 45,
+        "defense": 35,
+        "speed": 55,
+        "special": 40
+      },
+      "catch_rate": 255,
+      "base_exp": 54,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 56,
+      "internal_id": 57,
+      "slug": "mankey",
+      "name": "Mankey",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 80,
+        "defense": 35,
+        "speed": 70,
+        "special": 35
+      },
+      "catch_rate": 190,
+      "base_exp": 74,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 40,
+      "internal_id": 101,
+      "slug": "wigglytuff",
+      "name": "Wigglytuff",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 140,
+        "attack": 70,
+        "defense": 45,
+        "speed": 45,
+        "special": 50
+      },
+      "catch_rate": 50,
+      "base_exp": 109,
+      "growth_rate": "Fast"
+    },
+    {
+      "dex_no": 57,
+      "internal_id": 117,
+      "slug": "primeape",
+      "name": "Primeape",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 105,
+        "defense": 60,
+        "speed": 95,
+        "special": 60
+      },
+      "catch_rate": 75,
+      "base_exp": 149,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 59,
+      "internal_id": 20,
+      "slug": "arcanine",
+      "name": "Arcanine",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 110,
+        "defense": 80,
+        "speed": 95,
+        "special": 80
+      },
+      "catch_rate": 75,
+      "base_exp": 213,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 74,
+      "internal_id": 169,
+      "slug": "geodude",
+      "name": "Geodude",
+      "types": [
+        "Rock",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 80,
+        "defense": 100,
+        "speed": 20,
+        "special": 30
+      },
+      "catch_rate": 255,
+      "base_exp": 86,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 73,
+      "internal_id": 155,
+      "slug": "tentacruel",
+      "name": "Tentacruel",
+      "types": [
+        "Water",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 70,
+        "defense": 65,
+        "speed": 100,
+        "special": 120
+      },
+      "catch_rate": 60,
+      "base_exp": 205,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 72,
+      "internal_id": 24,
+      "slug": "tentacool",
+      "name": "Tentacool",
+      "types": [
+        "Water",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 40,
+        "defense": 35,
+        "speed": 70,
+        "special": 100
+      },
+      "catch_rate": 190,
+      "base_exp": 105,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 71,
+      "internal_id": 190,
+      "slug": "victreebel",
+      "name": "Victreebel",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 105,
+        "defense": 65,
+        "speed": 70,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 191,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 70,
+      "internal_id": 189,
+      "slug": "weepinbell",
+      "name": "Weepinbell",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 50,
+        "speed": 55,
+        "special": 85
+      },
+      "catch_rate": 120,
+      "base_exp": 151,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 69,
+      "internal_id": 188,
+      "slug": "bellsprout",
+      "name": "Bellsprout",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 75,
+        "defense": 35,
+        "speed": 40,
+        "special": 70
+      },
+      "catch_rate": 255,
+      "base_exp": 84,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 68,
+      "internal_id": 126,
+      "slug": "machamp",
+      "name": "Machamp",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 130,
+        "defense": 80,
+        "speed": 55,
+        "special": 65
+      },
+      "catch_rate": 45,
+      "base_exp": 193,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 67,
+      "internal_id": 41,
+      "slug": "machoke",
+      "name": "Machoke",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 100,
+        "defense": 70,
+        "speed": 45,
+        "special": 50
+      },
+      "catch_rate": 90,
+      "base_exp": 146,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 66,
+      "internal_id": 106,
+      "slug": "machop",
+      "name": "Machop",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 80,
+        "defense": 50,
+        "speed": 35,
+        "special": 35
+      },
+      "catch_rate": 180,
+      "base_exp": 88,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 65,
+      "internal_id": 149,
+      "slug": "alakazam",
+      "name": "Alakazam",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 50,
+        "defense": 45,
+        "speed": 120,
+        "special": 135
+      },
+      "catch_rate": 50,
+      "base_exp": 186,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 64,
+      "internal_id": 38,
+      "slug": "kadabra",
+      "name": "Kadabra",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 35,
+        "defense": 30,
+        "speed": 105,
+        "special": 120
+      },
+      "catch_rate": 100,
+      "base_exp": 145,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 63,
+      "internal_id": 148,
+      "slug": "abra",
+      "name": "Abra",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 25,
+        "attack": 20,
+        "defense": 15,
+        "speed": 90,
+        "special": 105
+      },
+      "catch_rate": 200,
+      "base_exp": 73,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 62,
+      "internal_id": 111,
+      "slug": "poliwrath",
+      "name": "Poliwrath",
+      "types": [
+        "Water",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 85,
+        "defense": 95,
+        "speed": 70,
+        "special": 70
+      },
+      "catch_rate": 45,
+      "base_exp": 185,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 61,
+      "internal_id": 110,
+      "slug": "poliwhirl",
+      "name": "Poliwhirl",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 65,
+        "defense": 65,
+        "speed": 90,
+        "special": 50
+      },
+      "catch_rate": 120,
+      "base_exp": 131,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 60,
+      "internal_id": 71,
+      "slug": "poliwag",
+      "name": "Poliwag",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 50,
+        "defense": 40,
+        "speed": 90,
+        "special": 40
+      },
+      "catch_rate": 255,
+      "base_exp": 77,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 58,
+      "internal_id": 33,
+      "slug": "growlithe",
+      "name": "Growlithe",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 70,
+        "defense": 45,
+        "speed": 60,
+        "special": 50
+      },
+      "catch_rate": 190,
+      "base_exp": 91,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 75,
+      "internal_id": 39,
+      "slug": "graveler",
+      "name": "Graveler",
+      "types": [
+        "Rock",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 95,
+        "defense": 115,
+        "speed": 35,
+        "special": 45
+      },
+      "catch_rate": 120,
+      "base_exp": 134,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 39,
+      "internal_id": 100,
+      "slug": "jigglypuff",
+      "name": "Jigglypuff",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 115,
+        "attack": 45,
+        "defense": 20,
+        "speed": 20,
+        "special": 25
+      },
+      "catch_rate": 170,
+      "base_exp": 76,
+      "growth_rate": "Fast"
+    },
+    {
+      "dex_no": 37,
+      "internal_id": 82,
+      "slug": "vulpix",
+      "name": "Vulpix",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 38,
+        "attack": 41,
+        "defense": 40,
+        "speed": 65,
+        "special": 65
+      },
+      "catch_rate": 190,
+      "base_exp": 63,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 17,
+      "internal_id": 150,
+      "slug": "pidgeotto",
+      "name": "Pidgeotto",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 63,
+        "attack": 60,
+        "defense": 55,
+        "speed": 71,
+        "special": 50
+      },
+      "catch_rate": 120,
+      "base_exp": 113,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 16,
+      "internal_id": 36,
+      "slug": "pidgey",
+      "name": "Pidgey",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 45,
+        "defense": 40,
+        "speed": 56,
+        "special": 35
+      },
+      "catch_rate": 255,
+      "base_exp": 55,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 15,
+      "internal_id": 114,
+      "slug": "beedrill",
+      "name": "Beedrill",
+      "types": [
+        "Bug",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 80,
+        "defense": 40,
+        "speed": 75,
+        "special": 45
+      },
+      "catch_rate": 45,
+      "base_exp": 159,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 14,
+      "internal_id": 113,
+      "slug": "kakuna",
+      "name": "Kakuna",
+      "types": [
+        "Bug",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 25,
+        "defense": 50,
+        "speed": 35,
+        "special": 25
+      },
+      "catch_rate": 120,
+      "base_exp": 71,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 13,
+      "internal_id": 112,
+      "slug": "weedle",
+      "name": "Weedle",
+      "types": [
+        "Bug",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 35,
+        "defense": 30,
+        "speed": 50,
+        "special": 20
+      },
+      "catch_rate": 255,
+      "base_exp": 52,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 12,
+      "internal_id": 125,
+      "slug": "butterfree",
+      "name": "Butterfree",
+      "types": [
+        "Bug",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 45,
+        "defense": 50,
+        "speed": 70,
+        "special": 80
+      },
+      "catch_rate": 45,
+      "base_exp": 160,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 11,
+      "internal_id": 124,
+      "slug": "metapod",
+      "name": "Metapod",
+      "types": [
+        "Bug",
+        "Bug"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 20,
+        "defense": 55,
+        "speed": 30,
+        "special": 25
+      },
+      "catch_rate": 120,
+      "base_exp": 72,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 10,
+      "internal_id": 123,
+      "slug": "caterpie",
+      "name": "Caterpie",
+      "types": [
+        "Bug",
+        "Bug"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 30,
+        "defense": 35,
+        "speed": 45,
+        "special": 20
+      },
+      "catch_rate": 255,
+      "base_exp": 53,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 9,
+      "internal_id": 28,
+      "slug": "blastoise",
+      "name": "Blastoise",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 79,
+        "attack": 83,
+        "defense": 100,
+        "speed": 78,
+        "special": 85
+      },
+      "catch_rate": 45,
+      "base_exp": 210,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 8,
+      "internal_id": 179,
+      "slug": "wartortle",
+      "name": "Wartortle",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 59,
+        "attack": 63,
+        "defense": 80,
+        "speed": 58,
+        "special": 65
+      },
+      "catch_rate": 45,
+      "base_exp": 143,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 7,
+      "internal_id": 177,
+      "slug": "squirtle",
+      "name": "Squirtle",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 44,
+        "attack": 48,
+        "defense": 65,
+        "speed": 43,
+        "special": 50
+      },
+      "catch_rate": 45,
+      "base_exp": 66,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 6,
+      "internal_id": 180,
+      "slug": "charizard",
+      "name": "Charizard",
+      "types": [
+        "Fire",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 78,
+        "attack": 84,
+        "defense": 78,
+        "speed": 100,
+        "special": 85
+      },
+      "catch_rate": 45,
+      "base_exp": 209,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 5,
+      "internal_id": 178,
+      "slug": "charmeleon",
+      "name": "Charmeleon",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 58,
+        "attack": 64,
+        "defense": 58,
+        "speed": 80,
+        "special": 65
+      },
+      "catch_rate": 45,
+      "base_exp": 142,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 4,
+      "internal_id": 176,
+      "slug": "charmander",
+      "name": "Charmander",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 39,
+        "attack": 52,
+        "defense": 43,
+        "speed": 65,
+        "special": 50
+      },
+      "catch_rate": 45,
+      "base_exp": 65,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 3,
+      "internal_id": 154,
+      "slug": "venusaur",
+      "name": "Venusaur",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 82,
+        "defense": 83,
+        "speed": 80,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 208,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 18,
+      "internal_id": 151,
+      "slug": "pidgeot",
+      "name": "Pidgeot",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 83,
+        "attack": 80,
+        "defense": 75,
+        "speed": 91,
+        "special": 70
+      },
+      "catch_rate": 45,
+      "base_exp": 172,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 38,
+      "internal_id": 83,
+      "slug": "ninetales",
+      "name": "Ninetales",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 73,
+        "attack": 76,
+        "defense": 75,
+        "speed": 100,
+        "special": 100
+      },
+      "catch_rate": 75,
+      "base_exp": 178,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 19,
+      "internal_id": 165,
+      "slug": "rattata",
+      "name": "Rattata",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 56,
+        "defense": 35,
+        "speed": 72,
+        "special": 25
+      },
+      "catch_rate": 255,
+      "base_exp": 57,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 21,
+      "internal_id": 5,
+      "slug": "spearow",
+      "name": "Spearow",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 60,
+        "defense": 30,
+        "speed": 70,
+        "special": 31
+      },
+      "catch_rate": 255,
+      "base_exp": 58,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 36,
+      "internal_id": 142,
+      "slug": "clefable",
+      "name": "Clefable",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 95,
+        "attack": 70,
+        "defense": 73,
+        "speed": 60,
+        "special": 85
+      },
+      "catch_rate": 25,
+      "base_exp": 129,
+      "growth_rate": "Fast"
+    },
+    {
+      "dex_no": 35,
+      "internal_id": 4,
+      "slug": "clefairy",
+      "name": "Clefairy",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 45,
+        "defense": 48,
+        "speed": 35,
+        "special": 60
+      },
+      "catch_rate": 150,
+      "base_exp": 68,
+      "growth_rate": "Fast"
+    },
+    {
+      "dex_no": 34,
+      "internal_id": 7,
+      "slug": "nidoking",
+      "name": "Nidoking",
+      "types": [
+        "Poison",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 81,
+        "attack": 92,
+        "defense": 77,
+        "speed": 85,
+        "special": 75
+      },
+      "catch_rate": 45,
+      "base_exp": 195,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 33,
+      "internal_id": 167,
+      "slug": "nidorino",
+      "name": "Nidorino",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 61,
+        "attack": 72,
+        "defense": 57,
+        "speed": 65,
+        "special": 55
+      },
+      "catch_rate": 120,
+      "base_exp": 118,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 32,
+      "internal_id": 3,
+      "slug": "nidoranm",
+      "name": "Nidoran M",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 46,
+        "attack": 57,
+        "defense": 40,
+        "speed": 50,
+        "special": 40
+      },
+      "catch_rate": 235,
+      "base_exp": 60,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 31,
+      "internal_id": 16,
+      "slug": "nidoqueen",
+      "name": "Nidoqueen",
+      "types": [
+        "Poison",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 82,
+        "defense": 87,
+        "speed": 76,
+        "special": 75
+      },
+      "catch_rate": 45,
+      "base_exp": 194,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 30,
+      "internal_id": 168,
+      "slug": "nidorina",
+      "name": "Nidorina",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 62,
+        "defense": 67,
+        "speed": 56,
+        "special": 55
+      },
+      "catch_rate": 120,
+      "base_exp": 117,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 29,
+      "internal_id": 15,
+      "slug": "nidoranf",
+      "name": "Nidoran F",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 47,
+        "defense": 52,
+        "speed": 41,
+        "special": 40
+      },
+      "catch_rate": 235,
+      "base_exp": 59,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 28,
+      "internal_id": 97,
+      "slug": "sandslash",
+      "name": "Sandslash",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 75,
+        "attack": 100,
+        "defense": 110,
+        "speed": 65,
+        "special": 55
+      },
+      "catch_rate": 90,
+      "base_exp": 163,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 27,
+      "internal_id": 96,
+      "slug": "sandshrew",
+      "name": "Sandshrew",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 75,
+        "defense": 85,
+        "speed": 40,
+        "special": 30
+      },
+      "catch_rate": 255,
+      "base_exp": 93,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 26,
+      "internal_id": 85,
+      "slug": "raichu",
+      "name": "Raichu",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 90,
+        "defense": 55,
+        "speed": 100,
+        "special": 90
+      },
+      "catch_rate": 75,
+      "base_exp": 122,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 25,
+      "internal_id": 84,
+      "slug": "pikachu",
+      "name": "Pikachu",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 55,
+        "defense": 30,
+        "speed": 90,
+        "special": 50
+      },
+      "catch_rate": 190,
+      "base_exp": 82,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 24,
+      "internal_id": 45,
+      "slug": "arbok",
+      "name": "Arbok",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 85,
+        "defense": 69,
+        "speed": 80,
+        "special": 65
+      },
+      "catch_rate": 90,
+      "base_exp": 147,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 23,
+      "internal_id": 108,
+      "slug": "ekans",
+      "name": "Ekans",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 60,
+        "defense": 44,
+        "speed": 55,
+        "special": 40
+      },
+      "catch_rate": 255,
+      "base_exp": 62,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 22,
+      "internal_id": 35,
+      "slug": "fearow",
+      "name": "Fearow",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 65,
+        "speed": 100,
+        "special": 61
+      },
+      "catch_rate": 90,
+      "base_exp": 162,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 20,
+      "internal_id": 166,
+      "slug": "raticate",
+      "name": "Raticate",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 81,
+        "defense": 60,
+        "speed": 97,
+        "special": 50
+      },
+      "catch_rate": 90,
+      "base_exp": 116,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 2,
+      "internal_id": 9,
+      "slug": "ivysaur",
+      "name": "Ivysaur",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 62,
+        "defense": 63,
+        "speed": 60,
+        "special": 80
+      },
+      "catch_rate": 45,
+      "base_exp": 141,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 76,
+      "internal_id": 49,
+      "slug": "golem",
+      "name": "Golem",
+      "types": [
+        "Rock",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 110,
+        "defense": 130,
+        "speed": 45,
+        "special": 55
+      },
+      "catch_rate": 45,
+      "base_exp": 177,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 78,
+      "internal_id": 164,
+      "slug": "rapidash",
+      "name": "Rapidash",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 100,
+        "defense": 70,
+        "speed": 105,
+        "special": 80
+      },
+      "catch_rate": 60,
+      "base_exp": 192,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 131,
+      "internal_id": 19,
+      "slug": "lapras",
+      "name": "Lapras",
+      "types": [
+        "Water",
+        "Ice"
+      ],
+      "base_stats": {
+        "hp": 130,
+        "attack": 85,
+        "defense": 80,
+        "speed": 60,
+        "special": 95
+      },
+      "catch_rate": 45,
+      "base_exp": 219,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 130,
+      "internal_id": 22,
+      "slug": "gyarados",
+      "name": "Gyarados",
+      "types": [
+        "Water",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 95,
+        "attack": 125,
+        "defense": 79,
+        "speed": 81,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 214,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 129,
+      "internal_id": 133,
+      "slug": "magikarp",
+      "name": "Magikarp",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 20,
+        "attack": 10,
+        "defense": 55,
+        "speed": 80,
+        "special": 20
+      },
+      "catch_rate": 255,
+      "base_exp": 20,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 128,
+      "internal_id": 60,
+      "slug": "tauros",
+      "name": "Tauros",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 75,
+        "attack": 100,
+        "defense": 95,
+        "speed": 110,
+        "special": 70
+      },
+      "catch_rate": 45,
+      "base_exp": 211,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 127,
+      "internal_id": 29,
+      "slug": "pinsir",
+      "name": "Pinsir",
+      "types": [
+        "Bug",
+        "Bug"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 125,
+        "defense": 100,
+        "speed": 85,
+        "special": 55
+      },
+      "catch_rate": 45,
+      "base_exp": 200,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 126,
+      "internal_id": 51,
+      "slug": "magmar",
+      "name": "Magmar",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 95,
+        "defense": 57,
+        "speed": 93,
+        "special": 85
+      },
+      "catch_rate": 45,
+      "base_exp": 167,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 125,
+      "internal_id": 53,
+      "slug": "electabuzz",
+      "name": "Electabuzz",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 83,
+        "defense": 57,
+        "speed": 105,
+        "special": 85
+      },
+      "catch_rate": 45,
+      "base_exp": 156,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 124,
+      "internal_id": 72,
+      "slug": "jynx",
+      "name": "Jynx",
+      "types": [
+        "Ice",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 50,
+        "defense": 35,
+        "speed": 95,
+        "special": 95
+      },
+      "catch_rate": 45,
+      "base_exp": 137,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 123,
+      "internal_id": 26,
+      "slug": "scyther",
+      "name": "Scyther",
+      "types": [
+        "Bug",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 80,
+        "speed": 105,
+        "special": 55
+      },
+      "catch_rate": 45,
+      "base_exp": 187,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 122,
+      "internal_id": 42,
+      "slug": "mrmime",
+      "name": "Mr. Mime",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 45,
+        "defense": 65,
+        "speed": 90,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 136,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 121,
+      "internal_id": 152,
+      "slug": "starmie",
+      "name": "Starmie",
+      "types": [
+        "Water",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 75,
+        "defense": 85,
+        "speed": 115,
+        "special": 100
+      },
+      "catch_rate": 60,
+      "base_exp": 207,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 120,
+      "internal_id": 27,
+      "slug": "staryu",
+      "name": "Staryu",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 45,
+        "defense": 55,
+        "speed": 85,
+        "special": 70
+      },
+      "catch_rate": 225,
+      "base_exp": 106,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 119,
+      "internal_id": 158,
+      "slug": "seaking",
+      "name": "Seaking",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 92,
+        "defense": 65,
+        "speed": 68,
+        "special": 80
+      },
+      "catch_rate": 60,
+      "base_exp": 170,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 118,
+      "internal_id": 157,
+      "slug": "goldeen",
+      "name": "Goldeen",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 67,
+        "defense": 60,
+        "speed": 63,
+        "special": 50
+      },
+      "catch_rate": 225,
+      "base_exp": 111,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 117,
+      "internal_id": 93,
+      "slug": "seadra",
+      "name": "Seadra",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 65,
+        "defense": 95,
+        "speed": 85,
+        "special": 95
+      },
+      "catch_rate": 75,
+      "base_exp": 155,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 132,
+      "internal_id": 76,
+      "slug": "ditto",
+      "name": "Ditto",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 48,
+        "attack": 48,
+        "defense": 48,
+        "speed": 48,
+        "special": 48
+      },
+      "catch_rate": 35,
+      "base_exp": 61,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 116,
+      "internal_id": 92,
+      "slug": "horsea",
+      "name": "Horsea",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 40,
+        "defense": 70,
+        "speed": 60,
+        "special": 70
+      },
+      "catch_rate": 225,
+      "base_exp": 83,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 133,
+      "internal_id": 102,
+      "slug": "eevee",
+      "name": "Eevee",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 55,
+        "defense": 50,
+        "speed": 55,
+        "special": 65
+      },
+      "catch_rate": 45,
+      "base_exp": 92,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 135,
+      "internal_id": 104,
+      "slug": "jolteon",
+      "name": "Jolteon",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 65,
+        "defense": 60,
+        "speed": 130,
+        "special": 110
+      },
+      "catch_rate": 45,
+      "base_exp": 197,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 150,
+      "internal_id": 131,
+      "slug": "mewtwo",
+      "name": "Mewtwo",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 106,
+        "attack": 110,
+        "defense": 90,
+        "speed": 130,
+        "special": 154
+      },
+      "catch_rate": 3,
+      "base_exp": 220,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 149,
+      "internal_id": 66,
+      "slug": "dragonite",
+      "name": "Dragonite",
+      "types": [
+        "Dragon",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 91,
+        "attack": 134,
+        "defense": 95,
+        "speed": 80,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 218,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 148,
+      "internal_id": 89,
+      "slug": "dragonair",
+      "name": "Dragonair",
+      "types": [
+        "Dragon",
+        "Dragon"
+      ],
+      "base_stats": {
+        "hp": 61,
+        "attack": 84,
+        "defense": 65,
+        "speed": 70,
+        "special": 70
+      },
+      "catch_rate": 45,
+      "base_exp": 144,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 147,
+      "internal_id": 88,
+      "slug": "dratini",
+      "name": "Dratini",
+      "types": [
+        "Dragon",
+        "Dragon"
+      ],
+      "base_stats": {
+        "hp": 41,
+        "attack": 64,
+        "defense": 45,
+        "speed": 50,
+        "special": 50
+      },
+      "catch_rate": 45,
+      "base_exp": 67,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 146,
+      "internal_id": 73,
+      "slug": "moltres",
+      "name": "Moltres",
+      "types": [
+        "Fire",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 100,
+        "defense": 90,
+        "speed": 90,
+        "special": 125
+      },
+      "catch_rate": 3,
+      "base_exp": 217,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 145,
+      "internal_id": 75,
+      "slug": "zapdos",
+      "name": "Zapdos",
+      "types": [
+        "Electric",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 90,
+        "defense": 85,
+        "speed": 100,
+        "special": 125
+      },
+      "catch_rate": 3,
+      "base_exp": 216,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 144,
+      "internal_id": 74,
+      "slug": "articuno",
+      "name": "Articuno",
+      "types": [
+        "Ice",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 85,
+        "defense": 100,
+        "speed": 85,
+        "special": 125
+      },
+      "catch_rate": 3,
+      "base_exp": 215,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 143,
+      "internal_id": 132,
+      "slug": "snorlax",
+      "name": "Snorlax",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 160,
+        "attack": 110,
+        "defense": 65,
+        "speed": 30,
+        "special": 65
+      },
+      "catch_rate": 25,
+      "base_exp": 154,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 142,
+      "internal_id": 171,
+      "slug": "aerodactyl",
+      "name": "Aerodactyl",
+      "types": [
+        "Rock",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 105,
+        "defense": 65,
+        "speed": 130,
+        "special": 60
+      },
+      "catch_rate": 45,
+      "base_exp": 202,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 141,
+      "internal_id": 91,
+      "slug": "kabutops",
+      "name": "Kabutops",
+      "types": [
+        "Rock",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 115,
+        "defense": 105,
+        "speed": 80,
+        "special": 70
+      },
+      "catch_rate": 45,
+      "base_exp": 201,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 140,
+      "internal_id": 90,
+      "slug": "kabuto",
+      "name": "Kabuto",
+      "types": [
+        "Rock",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 80,
+        "defense": 90,
+        "speed": 55,
+        "special": 45
+      },
+      "catch_rate": 45,
+      "base_exp": 119,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 139,
+      "internal_id": 99,
+      "slug": "omastar",
+      "name": "Omastar",
+      "types": [
+        "Rock",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 70,
+        "attack": 60,
+        "defense": 125,
+        "speed": 55,
+        "special": 115
+      },
+      "catch_rate": 45,
+      "base_exp": 199,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 138,
+      "internal_id": 98,
+      "slug": "omanyte",
+      "name": "Omanyte",
+      "types": [
+        "Rock",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 40,
+        "defense": 100,
+        "speed": 35,
+        "special": 90
+      },
+      "catch_rate": 45,
+      "base_exp": 120,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 137,
+      "internal_id": 170,
+      "slug": "porygon",
+      "name": "Porygon",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 60,
+        "defense": 70,
+        "speed": 40,
+        "special": 75
+      },
+      "catch_rate": 45,
+      "base_exp": 130,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 136,
+      "internal_id": 103,
+      "slug": "flareon",
+      "name": "Flareon",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 130,
+        "defense": 60,
+        "speed": 65,
+        "special": 110
+      },
+      "catch_rate": 45,
+      "base_exp": 198,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 134,
+      "internal_id": 105,
+      "slug": "vaporeon",
+      "name": "Vaporeon",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 130,
+        "attack": 65,
+        "defense": 60,
+        "speed": 65,
+        "special": 110
+      },
+      "catch_rate": 45,
+      "base_exp": 196,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 77,
+      "internal_id": 163,
+      "slug": "ponyta",
+      "name": "Ponyta",
+      "types": [
+        "Fire",
+        "Fire"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 85,
+        "defense": 55,
+        "speed": 90,
+        "special": 65
+      },
+      "catch_rate": 190,
+      "base_exp": 152,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 115,
+      "internal_id": 2,
+      "slug": "kangaskhan",
+      "name": "Kangaskhan",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 105,
+        "attack": 95,
+        "defense": 80,
+        "speed": 90,
+        "special": 40
+      },
+      "catch_rate": 45,
+      "base_exp": 175,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 113,
+      "internal_id": 40,
+      "slug": "chansey",
+      "name": "Chansey",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 250,
+        "attack": 5,
+        "defense": 5,
+        "speed": 50,
+        "special": 105
+      },
+      "catch_rate": 30,
+      "base_exp": 255,
+      "growth_rate": "Fast"
+    },
+    {
+      "dex_no": 93,
+      "internal_id": 147,
+      "slug": "haunter",
+      "name": "Haunter",
+      "types": [
+        "Ghost",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 50,
+        "defense": 45,
+        "speed": 95,
+        "special": 115
+      },
+      "catch_rate": 90,
+      "base_exp": 126,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 92,
+      "internal_id": 25,
+      "slug": "gastly",
+      "name": "Gastly",
+      "types": [
+        "Ghost",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 35,
+        "defense": 30,
+        "speed": 80,
+        "special": 100
+      },
+      "catch_rate": 190,
+      "base_exp": 95,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 91,
+      "internal_id": 139,
+      "slug": "cloyster",
+      "name": "Cloyster",
+      "types": [
+        "Water",
+        "Ice"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 95,
+        "defense": 180,
+        "speed": 70,
+        "special": 85
+      },
+      "catch_rate": 60,
+      "base_exp": 203,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 90,
+      "internal_id": 23,
+      "slug": "shellder",
+      "name": "Shellder",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 65,
+        "defense": 100,
+        "speed": 40,
+        "special": 45
+      },
+      "catch_rate": 190,
+      "base_exp": 97,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 89,
+      "internal_id": 136,
+      "slug": "muk",
+      "name": "Muk",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 105,
+        "attack": 105,
+        "defense": 75,
+        "speed": 50,
+        "special": 65
+      },
+      "catch_rate": 75,
+      "base_exp": 157,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 88,
+      "internal_id": 13,
+      "slug": "grimer",
+      "name": "Grimer",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 80,
+        "defense": 50,
+        "speed": 25,
+        "special": 40
+      },
+      "catch_rate": 190,
+      "base_exp": 90,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 87,
+      "internal_id": 120,
+      "slug": "dewgong",
+      "name": "Dewgong",
+      "types": [
+        "Water",
+        "Ice"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 70,
+        "defense": 80,
+        "speed": 70,
+        "special": 95
+      },
+      "catch_rate": 75,
+      "base_exp": 176,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 86,
+      "internal_id": 58,
+      "slug": "seel",
+      "name": "Seel",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 45,
+        "defense": 55,
+        "speed": 45,
+        "special": 70
+      },
+      "catch_rate": 190,
+      "base_exp": 100,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 85,
+      "internal_id": 116,
+      "slug": "dodrio",
+      "name": "Dodrio",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 110,
+        "defense": 70,
+        "speed": 100,
+        "special": 60
+      },
+      "catch_rate": 45,
+      "base_exp": 158,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 84,
+      "internal_id": 70,
+      "slug": "doduo",
+      "name": "Doduo",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 85,
+        "defense": 45,
+        "speed": 75,
+        "special": 35
+      },
+      "catch_rate": 190,
+      "base_exp": 96,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 83,
+      "internal_id": 64,
+      "slug": "farfetchd",
+      "name": "Farfetch'd",
+      "types": [
+        "Normal",
+        "Flying"
+      ],
+      "base_stats": {
+        "hp": 52,
+        "attack": 65,
+        "defense": 55,
+        "speed": 60,
+        "special": 58
+      },
+      "catch_rate": 45,
+      "base_exp": 94,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 82,
+      "internal_id": 54,
+      "slug": "magneton",
+      "name": "Magneton",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 60,
+        "defense": 95,
+        "speed": 70,
+        "special": 120
+      },
+      "catch_rate": 60,
+      "base_exp": 161,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 81,
+      "internal_id": 173,
+      "slug": "magnemite",
+      "name": "Magnemite",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 25,
+        "attack": 35,
+        "defense": 70,
+        "speed": 45,
+        "special": 95
+      },
+      "catch_rate": 190,
+      "base_exp": 89,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 80,
+      "internal_id": 8,
+      "slug": "slowbro",
+      "name": "Slowbro",
+      "types": [
+        "Water",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 95,
+        "attack": 75,
+        "defense": 110,
+        "speed": 30,
+        "special": 80
+      },
+      "catch_rate": 75,
+      "base_exp": 164,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 79,
+      "internal_id": 37,
+      "slug": "slowpoke",
+      "name": "Slowpoke",
+      "types": [
+        "Water",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 65,
+        "defense": 65,
+        "speed": 15,
+        "special": 40
+      },
+      "catch_rate": 190,
+      "base_exp": 99,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 94,
+      "internal_id": 14,
+      "slug": "gengar",
+      "name": "Gengar",
+      "types": [
+        "Ghost",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 65,
+        "defense": 60,
+        "speed": 110,
+        "special": 130
+      },
+      "catch_rate": 45,
+      "base_exp": 190,
+      "growth_rate": "Medium Slow"
+    },
+    {
+      "dex_no": 114,
+      "internal_id": 30,
+      "slug": "tangela",
+      "name": "Tangela",
+      "types": [
+        "Grass",
+        "Grass"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 55,
+        "defense": 115,
+        "speed": 60,
+        "special": 100
+      },
+      "catch_rate": 45,
+      "base_exp": 166,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 95,
+      "internal_id": 34,
+      "slug": "onix",
+      "name": "Onix",
+      "types": [
+        "Rock",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 35,
+        "attack": 45,
+        "defense": 160,
+        "speed": 70,
+        "special": 30
+      },
+      "catch_rate": 45,
+      "base_exp": 108,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 97,
+      "internal_id": 129,
+      "slug": "hypno",
+      "name": "Hypno",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 85,
+        "attack": 73,
+        "defense": 70,
+        "speed": 67,
+        "special": 115
+      },
+      "catch_rate": 75,
+      "base_exp": 165,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 112,
+      "internal_id": 1,
+      "slug": "rhydon",
+      "name": "Rhydon",
+      "types": [
+        "Ground",
+        "Rock"
+      ],
+      "base_stats": {
+        "hp": 105,
+        "attack": 130,
+        "defense": 120,
+        "speed": 40,
+        "special": 45
+      },
+      "catch_rate": 60,
+      "base_exp": 204,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 111,
+      "internal_id": 18,
+      "slug": "rhyhorn",
+      "name": "Rhyhorn",
+      "types": [
+        "Ground",
+        "Rock"
+      ],
+      "base_stats": {
+        "hp": 80,
+        "attack": 85,
+        "defense": 95,
+        "speed": 25,
+        "special": 30
+      },
+      "catch_rate": 120,
+      "base_exp": 135,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 110,
+      "internal_id": 143,
+      "slug": "weezing",
+      "name": "Weezing",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 120,
+        "speed": 60,
+        "special": 85
+      },
+      "catch_rate": 60,
+      "base_exp": 173,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 109,
+      "internal_id": 55,
+      "slug": "koffing",
+      "name": "Koffing",
+      "types": [
+        "Poison",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 65,
+        "defense": 95,
+        "speed": 35,
+        "special": 60
+      },
+      "catch_rate": 190,
+      "base_exp": 114,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 108,
+      "internal_id": 11,
+      "slug": "lickitung",
+      "name": "Lickitung",
+      "types": [
+        "Normal",
+        "Normal"
+      ],
+      "base_stats": {
+        "hp": 90,
+        "attack": 55,
+        "defense": 75,
+        "speed": 30,
+        "special": 60
+      },
+      "catch_rate": 45,
+      "base_exp": 127,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 107,
+      "internal_id": 44,
+      "slug": "hitmonchan",
+      "name": "Hitmonchan",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 105,
+        "defense": 79,
+        "speed": 76,
+        "special": 35
+      },
+      "catch_rate": 45,
+      "base_exp": 140,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 106,
+      "internal_id": 43,
+      "slug": "hitmonlee",
+      "name": "Hitmonlee",
+      "types": [
+        "Fighting",
+        "Fighting"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 120,
+        "defense": 53,
+        "speed": 87,
+        "special": 35
+      },
+      "catch_rate": 45,
+      "base_exp": 139,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 105,
+      "internal_id": 145,
+      "slug": "marowak",
+      "name": "Marowak",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 80,
+        "defense": 110,
+        "speed": 45,
+        "special": 50
+      },
+      "catch_rate": 75,
+      "base_exp": 124,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 104,
+      "internal_id": 17,
+      "slug": "cubone",
+      "name": "Cubone",
+      "types": [
+        "Ground",
+        "Ground"
+      ],
+      "base_stats": {
+        "hp": 50,
+        "attack": 50,
+        "defense": 95,
+        "speed": 35,
+        "special": 40
+      },
+      "catch_rate": 190,
+      "base_exp": 87,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 103,
+      "internal_id": 10,
+      "slug": "exeggutor",
+      "name": "Exeggutor",
+      "types": [
+        "Grass",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 95,
+        "attack": 95,
+        "defense": 85,
+        "speed": 55,
+        "special": 125
+      },
+      "catch_rate": 45,
+      "base_exp": 212,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 102,
+      "internal_id": 12,
+      "slug": "exeggcute",
+      "name": "Exeggcute",
+      "types": [
+        "Grass",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 40,
+        "defense": 80,
+        "speed": 40,
+        "special": 60
+      },
+      "catch_rate": 90,
+      "base_exp": 98,
+      "growth_rate": "Slow"
+    },
+    {
+      "dex_no": 101,
+      "internal_id": 141,
+      "slug": "electrode",
+      "name": "Electrode",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 50,
+        "defense": 70,
+        "speed": 140,
+        "special": 80
+      },
+      "catch_rate": 60,
+      "base_exp": 150,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 100,
+      "internal_id": 6,
+      "slug": "voltorb",
+      "name": "Voltorb",
+      "types": [
+        "Electric",
+        "Electric"
+      ],
+      "base_stats": {
+        "hp": 40,
+        "attack": 30,
+        "defense": 50,
+        "speed": 100,
+        "special": 55
+      },
+      "catch_rate": 190,
+      "base_exp": 103,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 99,
+      "internal_id": 138,
+      "slug": "kingler",
+      "name": "Kingler",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 55,
+        "attack": 130,
+        "defense": 115,
+        "speed": 75,
+        "special": 50
+      },
+      "catch_rate": 60,
+      "base_exp": 206,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 98,
+      "internal_id": 78,
+      "slug": "krabby",
+      "name": "Krabby",
+      "types": [
+        "Water",
+        "Water"
+      ],
+      "base_stats": {
+        "hp": 30,
+        "attack": 105,
+        "defense": 90,
+        "speed": 50,
+        "special": 25
+      },
+      "catch_rate": 225,
+      "base_exp": 115,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 96,
+      "internal_id": 48,
+      "slug": "drowzee",
+      "name": "Drowzee",
+      "types": [
+        "Psychic",
+        "Psychic"
+      ],
+      "base_stats": {
+        "hp": 60,
+        "attack": 48,
+        "defense": 45,
+        "speed": 42,
+        "special": 90
+      },
+      "catch_rate": 190,
+      "base_exp": 102,
+      "growth_rate": "Medium Fast"
+    },
+    {
+      "dex_no": 1,
+      "internal_id": 153,
+      "slug": "bulbasaur",
+      "name": "Bulbasaur",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "base_stats": {
+        "hp": 45,
+        "attack": 49,
+        "defense": 49,
+        "speed": 45,
+        "special": 65
+      },
+      "catch_rate": 45,
+      "base_exp": 64,
+      "growth_rate": "Medium Slow"
+    }
+  ]
+}

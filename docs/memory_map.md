@@ -25,6 +25,9 @@ All addresses below are single-byte reads from WRAM.
 | `wJoyIgnore` | `0xCC29` | Bitmask disabling joypad input during cutscenes/movies. `0x00` = all input accepted. |
 | `wBattleState` | `0xD057` | Battle type. `0` = Overworld, `1` = Wild, `2` = Trainer, `3` = Safari Zone. |
 | `wPartyCount` | `0xD163` | Number of Pokémon in the party (1–6). Non-zero confirms save data has been loaded into WRAM. |
+| `wPartyMons` | `0xD16B` | Base address of the first full in-party Pokémon struct. Additional slots are spaced by `0x2C` bytes. |
+| `wPokedexOwned` | `0xD2F7` | 19-byte flag array of owned Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
+| `wPokedexSeen` | `0xD30A` | 19-byte flag array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
 | `wYCoord` | `0xD361` | Player's Y coordinate on the current map. |
 | `wXCoord` | `0xD362` | Player's X coordinate on the current map. |
 
@@ -35,6 +38,27 @@ The `is_in_overworld()` helper combines two checks:
 ```python
 return battle_state == 0 and party_count > 0 and party_count <= 6
 ```
+
+## Party Struct Reads
+
+The richer dashboard state now reads party data directly from the `wPartyMons` structs rather than only using isolated slot labels. Each slot is `0x2C` bytes long and includes:
+
+- Current HP
+- Level
+- Status byte
+- Current experience
+- Calculated battle stats (`Max HP`, `Attack`, `Defense`, `Speed`, `Special`)
+
+This lets the frontend show per-party detail cards without depending on brittle UI scraping.
+
+## Pokédex Flags
+
+The runtime now derives Pokédex progress from the two 19-byte flag arrays in WRAM:
+
+- `wPokedexOwned`
+- `wPokedexSeen`
+
+Counts are derived from the bit arrays directly, and the state stream exposes both the totals and the exact owned/seen Dex numbers for the dashboard.
 
 > [!WARNING]
 > **WRAM Population Hazard**
