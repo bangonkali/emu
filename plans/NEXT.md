@@ -21,15 +21,18 @@
 - Complete: held manual input sync in `src/bot.py`.
 - Complete: richer party and Pokédex progress payloads in `src/memory.py`.
 - Complete: generated static Pokémon catalog in `src/web/pokemon_catalog.json` from `ref/pokered`.
-- Remaining: frontend tabs, theme toggle, continuous on-screen controls, and final Docker verification.
+- Complete: frontend tabs, theme toggle, continuous on-screen controls, and Pokédex/party views in `src/web/`.
+- Complete: final Docker verification with updated dashboard assets.
 
 ### Final status
 
 - Complete. The web debug tool is implemented and validated in Docker.
 - The runtime serves the dashboard over HTTP and streams logs/state/screen over WebSocket.
 - Browser inputs and runtime speed changes are accepted after the scripted boot flow reaches `OVERWORLD`.
+- Held movement now uses an authoritative client/server input-state model rather than tap injection.
+- The dashboard now includes theme switching, party details, and a searchable/filterable Pokédex tab.
 - Container-run pytest coverage exists for memory helpers, bot scheduling, and server helpers.
-- Docker verification completed with a successful build, `11` passing tests, an HTTP `200` dashboard response, and a live WebSocket `state` payload containing `state`, `speed`, and `screen` data.
+- Docker verification completed with a successful build, `14` passing tests, an HTTP `200` dashboard response, and a live WebSocket `state` payload.
 
 ### Completed in current branch
 

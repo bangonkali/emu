@@ -66,9 +66,12 @@ Regardless of how you run it, outputs appear in:
 The browser dashboard provides:
 
 - A live Game Boy screen updated from the WebSocket state stream
-- On-screen and keyboard controls for Game Boy inputs
+- Continuous on-screen and keyboard controls for Game Boy inputs
 - Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
 - A Kanto map with the current player position highlighted
+- Light and dark dashboard themes
+- Party detail cards with HP, status, types, and stats
+- A searchable, filterable Pokédex view with seen and owned progress
 - A capped live log stream sourced from the bot logger ring buffer
 
 ## Project Structure
@@ -126,13 +129,13 @@ Each state transition logs a descriptive message and captures a synchronized scr
 
 ## Browser Controls
 
-- Arrow keys or on-screen d-pad: movement
+- Arrow keys or on-screen d-pad: hold for continuous movement
 - `Z`: `A`
 - `X`: `B`
 - `Enter`: `Start`
 - `Shift`: `Select`
 
-The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`.
+The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`. Use the theme toggle in the header to switch between light and dark mode.
 
 ## Validation
 
@@ -148,15 +151,16 @@ The implementation has been validated against Docker on this branch with:
 - `docker compose run --rm pokemon-headless python -m pytest`
 - `docker compose up -d --build`
 - HTTP smoke test against `http://localhost:8765`
-- WebSocket smoke test confirming `state`, `speed`, and `screen` payload fields
+- WebSocket smoke test confirming live `state` messages after startup
 
-## Current Follow-Up Work
+## Current Dashboard Scope
 
-The next iteration extends the dashboard beyond the original debug console:
+The current dashboard now includes the original live debug view plus:
 
-- Held directional input now has an authoritative client/server input-state pipeline rather than one-shot button taps.
-- The backend state stream now exposes richer party data and Pokédex progress for UI tabs.
-- The next UI pass adds theme controls, continuous on-screen holds, party detail cards, and a searchable Pokédex view.
+- An authoritative held-input pipeline for smoother movement controls
+- Theme switching between light and dark modes
+- Party inspection with current stats and battle-state details
+- A searchable Pokédex tab with type and ownership filters
 
 ## Reference Submodules
 
