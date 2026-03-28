@@ -28,6 +28,11 @@ All addresses below are single-byte reads from WRAM.
 | `wPartyMons` | `0xD16B` | Base address of the first full in-party Pokémon struct. Additional slots are spaced by `0x2C` bytes. |
 | `wPokedexOwned` | `0xD2F7` | 19-byte flag array of owned Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
 | `wPokedexSeen` | `0xD30A` | 19-byte flag array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
+| `wSentOutPartyIndex` | `0xCC2F` | 0-based index of the player's currently sent-out Pokémon during battle. |
+| `wEnemyMon` | `0xCFE5` | Current enemy battle struct used for the active opposing Pokémon. |
+| `wBattleMon` | `0xD014` | Current player battle struct used for the active sent-out Pokémon. |
+| `wEnemyPartyCount` | `0xD89C` | Total Pokémon on the opposing trainer's team. |
+| `wEnemyMons` | `0xD8A4` | Base address of the first enemy party struct. Additional slots are spaced by `0x2C` bytes. |
 | `wYCoord` | `0xD361` | Player's Y coordinate on the current map. |
 | `wXCoord` | `0xD362` | Player's X coordinate on the current map. |
 
@@ -59,6 +64,16 @@ The runtime now derives Pokédex progress from the two 19-byte flag arrays in WR
 - `wPokedexSeen`
 
 Counts are derived from the bit arrays directly, and the state stream exposes both the totals and the exact owned/seen Dex numbers for the dashboard.
+
+## Battle Telemetry Reads
+
+The dashboard combat module now combines three battle data sources:
+
+- `wBattleMon`: the active sent-out player Pokémon with live in-battle HP and stats.
+- `wEnemyMon`: the current enemy battler with live HP and stats.
+- `wEnemyMons`: the opposing trainer roster, used to render the full enemy party during trainer battles.
+
+`wSentOutPartyIndex` is used to highlight the currently active member of the player's party. For trainer battles, the runtime also attempts to match `wEnemyMon` against `wEnemyMons` so the active enemy slot can be highlighted in the enemy roster.
 
 > [!WARNING]
 > **WRAM Population Hazard**

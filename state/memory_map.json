@@ -21,6 +21,11 @@
       "size_bytes": 1,
       "purpose": "Type of battle. 0 = Overworld, 1 = Wild Pokémon, 2 = Trainer, 3 = Safari Zone."
     },
+    "wSentOutPartyIndex": {
+      "hex": "0xCC2F",
+      "size_bytes": 1,
+      "purpose": "0-based index of the player's currently sent-out Pokémon during battle."
+    },
     "wPartyCount": {
       "hex": "0xD163",
       "size_bytes": 1,
@@ -140,6 +145,26 @@
       "hex": "0xD30A",
       "size_bytes": 19,
       "purpose": "Bit array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur."
+    },
+    "wEnemyMon": {
+      "hex": "0xCFE5",
+      "size_bytes": 29,
+      "purpose": "Current enemy battle struct for the active opposing Pokémon."
+    },
+    "wBattleMon": {
+      "hex": "0xD014",
+      "size_bytes": 29,
+      "purpose": "Current player battle struct for the active sent-out Pokémon."
+    },
+    "wEnemyPartyCount": {
+      "hex": "0xD89C",
+      "size_bytes": 1,
+      "purpose": "Number of Pokémon on the opponent trainer's team. Wild battles typically expose one opponent."
+    },
+    "wEnemyMons": {
+      "hex": "0xD8A4",
+      "size_bytes": 44,
+      "purpose": "Base address of the first enemy party Pokémon struct. Additional slots are 0x2C bytes apart."
     }
   }
 }

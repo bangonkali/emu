@@ -124,6 +124,14 @@ p {
     backdrop-filter: blur(12px);
 }
 
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -436,13 +444,23 @@ h1 {
 }
 
 .party-card,
-.dex-card {
+.dex-card,
+.combat-card {
     display: grid;
     gap: 12px;
     padding: 18px;
     border-radius: 18px;
     background: var(--surface-strong);
     border: 1px solid var(--border);
+}
+
+.combat-card.active {
+    border-color: rgba(242, 200, 95, 0.5);
+    box-shadow: inset 0 0 0 1px rgba(242, 200, 95, 0.18);
+}
+
+.combat-card.enemy-focus {
+    background: linear-gradient(180deg, rgba(217, 77, 70, 0.16), rgba(20, 27, 47, 0.9));
 }
 
 .card-header,
@@ -499,12 +517,41 @@ h1 {
 }
 
 .party-stats,
-.dex-stats {
+.dex-stats,
+.combat-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     font-family: var(--mono);
     font-size: 0.84rem;
+}
+
+.combat-panel,
+.combat-tab-panel {
+    padding: 18px;
+}
+
+.combat-content,
+.combat-stack {
+    display: grid;
+    gap: 16px;
+}
+
+.combat-focus-grid,
+.combat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.combat-section {
+    display: grid;
+    gap: 10px;
+}
+
+.combat-section-heading {
+    display: grid;
+    gap: 4px;
 }
 
 .stat-row {
@@ -580,6 +627,18 @@ h1 {
     gap: 12px;
 }
 
+:root[data-layout="mobile"] .desktop-only {
+    display: none !important;
+}
+
+:root[data-layout="mobile"] .mobile-only {
+    display: block !important;
+}
+
+:root[data-layout="mobile"] button.mobile-only {
+    display: inline-flex !important;
+}
+
 :root[data-layout="mobile"] .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -622,6 +681,12 @@ h1 {
 :root[data-layout="mobile"] .pokedex-toolbar,
 :root[data-layout="mobile"] .party-grid,
 :root[data-layout="mobile"] .pokedex-grid {
+    grid-template-columns: 1fr;
+}
+
+:root[data-layout="mobile"] .combat-focus-grid,
+:root[data-layout="mobile"] .combat-grid,
+:root[data-layout="mobile"] .combat-stats {
     grid-template-columns: 1fr;
 }
 
@@ -735,7 +800,10 @@ h1 {
 
     .summary-grid,
     .party-stats,
-    .dex-stats {
+    .dex-stats,
+    .combat-stats,
+    .combat-focus-grid,
+    .combat-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
@@ -747,7 +815,10 @@ h1 {
 
     :root[data-layout="mobile"] .summary-grid,
     :root[data-layout="mobile"] .party-stats,
-    :root[data-layout="mobile"] .dex-stats {
+    :root[data-layout="mobile"] .dex-stats,
+    :root[data-layout="mobile"] .combat-stats,
+    :root[data-layout="mobile"] .combat-focus-grid,
+    :root[data-layout="mobile"] .combat-grid {
         grid-template-columns: 1fr;
     }
 

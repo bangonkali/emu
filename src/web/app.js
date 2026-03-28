@@ -42,6 +42,10 @@ const themeToggleEl = document.getElementById("theme-toggle");
 const layoutIndicatorEl = document.getElementById("layout-indicator");
 const layoutButtons = [...document.querySelectorAll("[data-layout-mode]")];
 const orientationWarningEl = document.getElementById("mobile-orientation-warning");
+const desktopCombatSummaryEl = document.getElementById("desktop-combat-summary");
+const desktopCombatContentEl = document.getElementById("desktop-combat-content");
+const mobileCombatSummaryEl = document.getElementById("mobile-combat-summary");
+const mobileCombatContentEl = document.getElementById("mobile-combat-content");
 
 const appState = {
     socket: null,
@@ -371,6 +375,160 @@ function renderPokedex(pokedex) {
     });
 }
 
+function buildCombatMonCard(member, options = {}) {
+    if (!member) {
+        return createEmptyState("No live combat data is available for this slot.");
+    }
+
+    const { label = "", active = false, currentEnemy = false } = options;
+    const catalogEntry = getCatalogEntryBySpeciesId(member.species_id);
+    const title = catalogEntry ? catalogEntry.name : `Species ${member.species_id}`;
+    const dexLabel = catalogEntry ? `Dex ${String(catalogEntry.dex_no).padStart(3, "0")}` : `Species ${member.species_id}`;
+    const hpPercent = formatPercent(member.hp, member.max_hp || member.hp || 1);
+    const card = document.createElement("article");
+    card.className = "combat-card";
+    if (active) {
+        card.classList.add("active");
+    }
+    if (currentEnemy) {
+        card.classList.add("enemy-focus");
+    }
+
+    const header = document.createElement("div");
+    header.className = "card-header";
+    header.innerHTML = `
+        <div>
+            <div class="badge-row">
+                ${label ? `<span class="slot-chip mono">${label}</span>` : ""}
+                ${active ? `<span class="status-chip healthy">Active</span>` : ""}
+                ${currentEnemy ? `<span class="status-chip warning">Current Enemy</span>` : `<span class="status-chip ${member.status === "Healthy" ? "healthy" : "warning"}">${member.status}</span>`}
+            </div>
+            <h3>${title}</h3>
+            <p class="panel-subtitle mono">${dexLabel} · Lv ${member.level}</p>
+        </div>
+        <span class="mono">${member.hp} / ${member.max_hp}</span>
+    `;
+
+    const hpBar = document.createElement("div");
+    hpBar.className = "hp-bar";
+    hpBar.innerHTML = `<div class="hp-fill" style="width:${hpPercent}%"></div>`;
+
+    const stats = document.createElement("div");
+    stats.className = "combat-stats";
+    stats.append(
+        createStatRow("HP", `${member.hp} / ${member.max_hp}`),
+        createStatRow("Attack", member.attack),
+        createStatRow("Defense", member.defense),
+        createStatRow("Speed", member.speed),
+        createStatRow("Special", member.special),
+        createStatRow("Status", member.status)
+    );
+
+    card.append(header);
+    if (catalogEntry) {
+        card.append(createTypeRow(catalogEntry.types));
+    }
+    card.append(hpBar, stats);
+    return card;
+}
+
+function buildCombatSection(title, subtitle, gridClassName, members, options = {}) {
+    const section = document.createElement("section");
+    section.className = "combat-section";
+
+    const heading = document.createElement("div");
+    heading.className = "combat-section-heading";
+    heading.innerHTML = `<h3>${title}</h3><p class="panel-subtitle">${subtitle}</p>`;
+
+    const grid = document.createElement("div");
+    grid.className = gridClassName;
+
+    if (!members.length) {
+        grid.appendChild(createEmptyState("No live combat data is available."));
+    } else {
+        members.forEach((member) => {
+            grid.appendChild(buildCombatMonCard(member, options(member)));
+        });
+    }
+
+    section.append(heading, grid);
+    return section;
+}
+
+function buildCombatContent(combat) {
+    if (!combat || !combat.active) {
+        return createEmptyState("No active battle. Combat telemetry appears automatically during wild, trainer, and safari encounters.");
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "combat-stack";
+
+    const focusGrid = document.createElement("div");
+    focusGrid.className = "combat-focus-grid";
+    focusGrid.append(
+        buildCombatMonCard(combat.player_active, {
+            label: combat.player_active_slot ? `Party ${combat.player_active_slot}` : "Active",
+            active: true,
+        }),
+        buildCombatMonCard(combat.enemy_active, {
+            label: combat.kind === "trainer" ? "Enemy" : "Wild",
+            active: true,
+            currentEnemy: true,
+        })
+    );
+
+    wrapper.append(focusGrid);
+    wrapper.append(
+        buildCombatSection(
+            "Your Party",
+            "Entire team with the current battler highlighted.",
+            "combat-grid party-combat-grid",
+            combat.player_party || [],
+            (member) => ({
+                label: `Party ${member.slot}`,
+                active: member.slot === combat.player_active_slot,
+            })
+        )
+    );
+    wrapper.append(
+        buildCombatSection(
+            combat.kind === "trainer" ? "Enemy Party" : "Opponent",
+            combat.kind === "trainer"
+                ? "Opposing trainer roster with the current battler highlighted."
+                : "Wild encounter details for the current opponent.",
+            "combat-grid enemy-combat-grid",
+            combat.enemy_party || [],
+            (member) => ({
+                label: member.slot ? `Enemy ${member.slot}` : "Enemy",
+                active: member.slot === combat.enemy_active_slot,
+                currentEnemy: member.slot === combat.enemy_active_slot,
+            })
+        )
+    );
+
+    return wrapper;
+}
+
+function renderCombat(combat) {
+    const summary = combat && combat.active
+        ? `${capitalize(combat.kind)} battle · ${combat.enemy_party_count || (combat.enemy_party || []).length} foe${(combat.enemy_party_count || (combat.enemy_party || []).length) === 1 ? "" : "s"}`
+        : "No battle";
+
+    [desktopCombatSummaryEl, mobileCombatSummaryEl].forEach((element) => {
+        if (element) {
+            element.textContent = summary;
+        }
+    });
+
+    const contentElements = [desktopCombatContentEl, mobileCombatContentEl];
+    contentElements.forEach((element) => {
+        if (!element) {
+            return;
+        }
+        element.replaceChildren(buildCombatContent(combat));
+    });
+}
+
 function renderInputHighlights(localButtons) {
     const combined = new Set([...(localButtons || []), ...appState.remoteActiveInputs]);
     const buttons = document.querySelectorAll("[data-btn]");
@@ -401,6 +559,7 @@ function handleState(data) {
 
     const pokedex = data.pokedex || { seen: [], owned: [], seen_count: 0, owned_count: 0 };
     pokedexProgressEl.textContent = `${pokedex.seen_count ?? 0} seen / ${pokedex.owned_count ?? 0} owned`;
+    renderCombat(data.combat || null);
     renderParty(data.party || []);
     renderPokedex(pokedex);
 }
@@ -564,6 +723,11 @@ function applyLayoutPreference(preference) {
 
     if (resolved === "mobile") {
         setActiveTab("play");
+    } else {
+        const activeMobilePanel = document.querySelector(".tab-panel.active.mobile-only");
+        if (activeMobilePanel) {
+            setActiveTab("play");
+        }
     }
 }
 
@@ -670,6 +834,7 @@ bindPokedexFilters();
 initializeTheme();
 initializeLayoutMode();
 renderInputHighlights([]);
+renderCombat(null);
 renderParty([]);
 renderPokedex(null);
 

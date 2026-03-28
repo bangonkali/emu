@@ -20,6 +20,21 @@
 - Complete: restricted automatic mobile mode to portrait orientation and added a warning for unsupported mobile landscape.
 - Complete: updated README and Docker usage docs for the new mobile behavior.
 
+## Maintenance: Battle Telemetry Module
+
+### Goal
+
+1. Expose live combat telemetry when the game is in an active battle.
+2. Show the player's full party, the enemy roster, and the clearly marked current enemy Pokémon in the dashboard.
+3. Keep the module visible in desktop play view and move it to a dedicated tab on mobile.
+
+### Progress
+
+- Complete: added battle-memory reads for the active player battler, active enemy battler, opposing trainer roster, and sent-out party index.
+- Complete: extended the state payload with a `combat` object containing party highlights, enemy highlights, and battle kind.
+- Complete: added a live desktop combat panel in the Play view plus a dedicated mobile `Battle` tab.
+- Complete: added test coverage for the combat payload and updated docs for the new module.
+
 ## Maintenance: Screen Aspect Ratio Fix
 
 ### Goal

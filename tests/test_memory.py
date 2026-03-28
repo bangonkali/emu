@@ -92,6 +92,8 @@ def test_memory_map_decodes_full_state():
     ]
     assert state["lead_hp"] == 500
     assert state["lead_max_hp"] == 600
+    assert state["combat"]["active"] is False
+    assert state["combat"]["kind"] == "overworld"
     assert state["pokedex"]["owned"] == [1, 3]
     assert state["pokedex"]["seen"] == [1, 2, 3]
     assert state["pokedex_owned_count"] == 2
@@ -115,3 +117,92 @@ def test_is_in_overworld_validates_party_and_battle_state():
     set_byte(pyboy, 0xD163, 3)
     set_byte(pyboy, 0xD057, 1)
     assert memory.is_in_overworld() is False
+
+
+def test_memory_map_exposes_active_combat_state():
+    pyboy = FakePyBoy()
+    map_file = Path(__file__).resolve().parents[1] / "state" / "memory_map.json"
+    memory = MemoryMap(pyboy, str(map_file))
+
+    set_byte(pyboy, 0xD057, 2)
+    set_byte(pyboy, 0xD163, 2)
+    set_byte(pyboy, 0xCC2F, 0)
+
+    set_byte(pyboy, 0xD16B, 25)
+    set_byte(pyboy, 0xD18C, 36)
+    set_byte(pyboy, 0xD16C, 0x00)
+    set_byte(pyboy, 0xD16D, 0x96)
+    set_byte(pyboy, 0xD18D, 0x00)
+    set_byte(pyboy, 0xD18E, 0xC8)
+
+    set_byte(pyboy, 0xD197, 4)
+    set_byte(pyboy, 0xD1B8, 20)
+
+    set_byte(pyboy, 0xD014, 25)
+    set_byte(pyboy, 0xD015, 0x00)
+    set_byte(pyboy, 0xD016, 0x96)
+    set_byte(pyboy, 0xD018, 0x00)
+    set_byte(pyboy, 0xD022, 36)
+    set_byte(pyboy, 0xD023, 0x00)
+    set_byte(pyboy, 0xD024, 0xC8)
+    set_byte(pyboy, 0xD025, 0x00)
+    set_byte(pyboy, 0xD026, 0x78)
+    set_byte(pyboy, 0xD027, 0x00)
+    set_byte(pyboy, 0xD028, 0x64)
+    set_byte(pyboy, 0xD029, 0x00)
+    set_byte(pyboy, 0xD02A, 0x82)
+    set_byte(pyboy, 0xD02B, 0x00)
+    set_byte(pyboy, 0xD02C, 0x73)
+
+    set_byte(pyboy, 0xCFE5, 133)
+    set_byte(pyboy, 0xCFE6, 0x00)
+    set_byte(pyboy, 0xCFE7, 0x48)
+    set_byte(pyboy, 0xCFE9, 0x00)
+    set_byte(pyboy, 0xCFF3, 18)
+    set_byte(pyboy, 0xCFF4, 0x00)
+    set_byte(pyboy, 0xCFF5, 0x5A)
+    set_byte(pyboy, 0xCFF6, 0x00)
+    set_byte(pyboy, 0xCFF7, 0x37)
+    set_byte(pyboy, 0xCFF8, 0x00)
+    set_byte(pyboy, 0xCFF9, 0x31)
+    set_byte(pyboy, 0xCFFA, 0x00)
+    set_byte(pyboy, 0xCFFB, 0x3C)
+    set_byte(pyboy, 0xCFFC, 0x00)
+    set_byte(pyboy, 0xCFFD, 0x41)
+
+    set_byte(pyboy, 0xD89C, 2)
+    set_byte(pyboy, 0xD8A4, 133)
+    set_byte(pyboy, 0xD8A5, 0x00)
+    set_byte(pyboy, 0xD8A6, 0x48)
+    set_byte(pyboy, 0xD8A8, 0x00)
+    set_byte(pyboy, 0xD8C5, 18)
+    set_byte(pyboy, 0xD8C6, 0x00)
+    set_byte(pyboy, 0xD8C7, 0x5A)
+    set_byte(pyboy, 0xD8C8, 0x00)
+    set_byte(pyboy, 0xD8C9, 0x37)
+    set_byte(pyboy, 0xD8CA, 0x00)
+    set_byte(pyboy, 0xD8CB, 0x31)
+    set_byte(pyboy, 0xD8CC, 0x00)
+    set_byte(pyboy, 0xD8CD, 0x3C)
+    set_byte(pyboy, 0xD8CE, 0x00)
+    set_byte(pyboy, 0xD8CF, 0x41)
+
+    set_byte(pyboy, 0xD8D0, 19)
+    set_byte(pyboy, 0xD8D1, 0x00)
+    set_byte(pyboy, 0xD8D2, 0x1E)
+    set_byte(pyboy, 0xD8D4, 0x00)
+    set_byte(pyboy, 0xD8F1, 12)
+    set_byte(pyboy, 0xD8F2, 0x00)
+    set_byte(pyboy, 0xD8F3, 0x30)
+
+    state = memory.get_full_state()
+    combat = state["combat"]
+
+    assert combat["active"] is True
+    assert combat["kind"] == "trainer"
+    assert combat["player_active_slot"] == 1
+    assert combat["player_active"]["species_id"] == 25
+    assert combat["enemy_active"]["species_id"] == 133
+    assert combat["enemy_active_slot"] == 1
+    assert combat["enemy_party_count"] == 2
+    assert [member["species_id"] for member in combat["enemy_party"]] == [133, 19]

@@ -70,6 +70,7 @@ The browser dashboard provides:
 - Continuous on-screen and keyboard controls for Game Boy inputs
 - Auto-detected mobile layout with a manual Auto/Desktop/Mobile switch in the header
 - Portrait-first mobile play mode where the main play tab only shows the game screen and controls
+- Live combat telemetry for active battles, including your full party, the enemy roster, and the clearly marked current enemy Pokémon
 - Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
 - A Kanto map with the current player position highlighted
 - Light and dark dashboard themes
@@ -139,7 +140,7 @@ Each state transition logs a descriptive message and captures a synchronized scr
 - `Shift`: `Select`
 
 The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`. Use the theme toggle in the header to switch between light and dark mode.
-On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode.
+On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab.
 
 ## Validation
 
@@ -165,6 +166,7 @@ The current dashboard now includes the original live debug view plus:
 - Dashboard static assets are served with no-cache headers so CSS and JS fixes take effect immediately after a restart
 - Auto-detected mobile responsiveness with a manual layout override for phones, tablets, and desktop browsers
 - Portrait-first mobile tab flow that keeps only the live screen and controls in the main play surface
+- Live combat telemetry module with current enemy focus, party highlights, and enemy roster tracking during battle
 - An authoritative held-input pipeline for smoother movement controls
 - Theme switching between light and dark modes
 - Party inspection with current stats and battle-state details

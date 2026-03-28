@@ -45,6 +45,7 @@
 
         <nav class="tabbar" aria-label="Dashboard Sections">
             <button type="button" class="tab-button active" data-tab="play">Play</button>
+            <button type="button" class="tab-button mobile-only" data-tab="battle">Battle</button>
             <button type="button" class="tab-button" data-tab="map">Map</button>
             <button type="button" class="tab-button" data-tab="party">Party</button>
             <button type="button" class="tab-button" data-tab="pokedex">Pokedex</button>
@@ -79,6 +80,29 @@
                         <span>Keyboard: Arrows, Z, X, Enter, Shift</span>
                         <span id="active-inputs">Held inputs: none</span>
                     </div>
+                    <section class="panel combat-panel desktop-only">
+                        <div class="panel-heading combat-heading">
+                            <div>
+                                <h2>Active Combat</h2>
+                                <p class="panel-subtitle">Live enemy and party battle stats while a fight is active.</p>
+                            </div>
+                            <span id="desktop-combat-summary" class="mono">No battle</span>
+                        </div>
+                        <div id="desktop-combat-content" class="combat-content"></div>
+                    </section>
+                </section>
+            </section>
+
+            <section class="tab-panel mobile-only" data-panel="battle">
+                <section class="panel data-panel-shell combat-tab-panel">
+                    <div class="panel-heading combat-heading">
+                        <div>
+                            <h2>Battle Telemetry</h2>
+                            <p class="panel-subtitle">Current enemy plus live party and opponent team data during combat.</p>
+                        </div>
+                        <span id="mobile-combat-summary" class="mono">No battle</span>
+                    </div>
+                    <div id="mobile-combat-content" class="combat-content"></div>
                 </section>
             </section>
 
