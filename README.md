@@ -2,57 +2,73 @@
 
 A Python state machine that runs Pokémon Blue autonomously in a headless environment. It leverages [PyBoy](https://github.com/Baekalfen/PyBoy) to read the Game Boy's WRAM directly, enabling precise game state detection rather than relying on frame-counting macros or OCR.
 
-Can be run natively with Python or inside a Docker container.
+Can be run natively with Python or inside a Docker container (optional but preferred).
 
 ## Quickstart
 
-### Prerequisites
+### 1. Clone the Repository
 
-Place your ROM and save file in the `state/` directory:
-- `state/Pokémon - Blue.gb`
-- `state/Pokémon - Blue.sav`
+```bash
+git clone --recursive https://github.com/<your-username>/poke.git
+cd poke
+```
 
-### Option A: Run Natively
+If you already cloned without `--recursive`, initialize the submodules manually:
+
+```bash
+git submodule update --init --recursive
+```
+
+### 2. Supply the ROM and Save File
+
+Place your own legally obtained files into the `state/` directory:
+
+| File | Expected Path | Notes |
+|------|---------------|-------|
+| Pokémon Blue ROM | `state/Pokémon - Blue.gb` | Required. Not included in the repo (Nintendo-licensed). |
+| Battery save | `state/Pokémon - Blue.sav` | Optional but recommended. Without it, the main menu shows NEW GAME instead of CONTINUE. Any standard emulator save (mGBA, VBA-M, etc.) works. |
+
+### 3. Run the Bot
+
+#### Option A: Docker (Preferred)
+
+Docker provides a fully isolated environment with no local dependency management:
+
+```bash
+docker compose up -d --build
+```
+
+View the logs:
+
+```bash
+docker logs poke-pokemon-headless-1
+```
+
+#### Option B: Run Natively
 
 ```bash
 pip install pyboy Pillow
 python src/main.py
 ```
 
-By default the script looks for `state/` relative to the working directory. Set the `STATE_DIR` environment variable to override:
+By default the script resolves `state/` relative to the project root. Override with the `STATE_DIR` environment variable:
 
 ```bash
 STATE_DIR=/path/to/state python src/main.py
 ```
 
-### Option B: Run with Docker
-
-```bash
-docker compose up -d --build
-```
-
-### Outputs
+### 4. Check Outputs
 
 Regardless of how you run it, outputs appear in:
 - `state/logs/` — Timestamped English log of every state transition
 - `state/snapshots/` — A PNG screenshot captured at each state transition
-
-## Required Files (Not in Repository)
-
-The following files are **required at runtime** but are excluded from version control because they contain Nintendo-licensed content:
-
-| File | Location | Description |
-|------|----------|-------------|
-| Pokémon Blue ROM | `state/Pokémon - Blue.gb` | The Game Boy ROM image. You must supply your own legally obtained copy. |
-| Battery save | `state/Pokémon - Blue.sav` | A save file from any standard emulator (mGBA, VBA-M, etc.). Without this, the main menu will show NEW GAME instead of CONTINUE. |
-
-The `state/memory_map.json` file **is** committed — it contains the WRAM address definitions the bot needs and has no licensed content.
 
 ## Project Structure
 
 ```
 poke/
 ├── .gitignore                  # Python, IDE, OS ignores
+├── .gitmodules                 # Submodule definitions
 ├── README.md                   # This file
 ├── Dockerfile                  # Container image definition
 ├── docker-compose.yml          # Service orchestration
@@ -60,6 +76,9 @@ poke/
 │   ├── memory_map.md           # WRAM addresses and caveats
 │   ├── state_machine.md        # State flow, timing, and extension guide
 │   └── docker_setup.md         # Container architecture and save translation
+├── ref/
+│   ├── pokered/                # 📦 Submodule: pret/pokered (disassembly)
+│   └── PokemonRedExperiments/  # 📦 Submodule: PWhiddy/PokemonRedExperiments (RL)
 ├── src/
 │   ├── main.py                 # Entrypoint — ROM loading, PyBoy init, bot launch
 │   ├── bot.py                  # GameState Enum and state machine loop
@@ -95,9 +114,18 @@ The bot progresses through six deterministic states:
 
 Each state transition logs a descriptive message and captures a synchronized screenshot.
 
-## References
+## Reference Submodules
 
-- [pret/pokered](https://github.com/pret/pokered) — Pokémon Red/Blue disassembly (source of WRAM variable names)
+The `ref/` directory contains git submodules pinned to third-party repositories used as research references for WRAM addresses and RL patterns:
+
+| Submodule | Source | Purpose |
+|-----------|--------|---------|
+| `ref/pokered` | [pret/pokered](https://github.com/pret/pokered) | The authoritative Pokémon Red/Blue disassembly. Variable names in `memory_map.json` (e.g. `wPartyCount`) come from `ram/wram.asm` in this repo. |
+| `ref/PokemonRedExperiments` | [PWhiddy/PokemonRedExperiments](https://github.com/PWhiddy/PokemonRedExperiments) | Peter Whidden's RL project. Validated practical usage of memory addresses with PyBoy. |
+
+These are **not** runtime dependencies — the bot never imports from them. They exist so anyone working on the project can grep the disassembly source locally to research new memory addresses.
+
+## Additional References
+
 - [Data Crystal RAM Map](https://datacrystal.tcrf.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map) — Community hex address reference
 - [PyBoy](https://github.com/Baekalfen/PyBoy) — Game Boy emulator with Python API
-- [PokemonRedExperiments](https://github.com/PWhiddy/PokemonRedExperiments) — RL project validating memory addresses

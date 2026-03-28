@@ -42,6 +42,8 @@ return battle_state == 0 and party_count > 0 and party_count <= 6
 
 ## Sources
 
-- **[pret/pokered](https://github.com/pret/pokered)** — The authoritative disassembly. Variable names (e.g. `wPartyCount`) come directly from `ram/wram.asm`.
-- **[Data Crystal RAM Map](https://datacrystal.tcrf.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map)** — Community-maintained hex address reference.
-- **[PokemonRedExperiments](https://github.com/PWhiddy/PokemonRedExperiments)** — Peter Whidden's RL project, which validated several of these addresses in practice.
+All reference repositories are available locally as git submodules under `ref/`:
+
+- **[pret/pokered](https://github.com/pret/pokered)** (`ref/pokered`) — The authoritative disassembly. Variable names (e.g. `wPartyCount`) come directly from `ref/pokered/ram/wram.asm`.
+- **[PokemonRedExperiments](https://github.com/PWhiddy/PokemonRedExperiments)** (`ref/PokemonRedExperiments`) — Peter Whidden's RL project, which validated several of these addresses in practice with PyBoy.
+- **[Data Crystal RAM Map](https://datacrystal.tcrf.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map)** — Community-maintained hex address reference (external).
