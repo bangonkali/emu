@@ -1,0 +1,11 @@
+# ROM and save files (licensed by Nintendo — do NOT commit)
+*.gb
+*.gbc
+*.sav
+
+# PyBoy-generated SRAM copies
+*.ram
+
+# Runtime outputs
+logs/
+snapshots/

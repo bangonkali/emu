@@ -1,0 +1,40 @@
+{
+  "description": "Pokémon Blue Memory Identifiers (from pret/pokered and Data Crystal)",
+  "addresses": {
+    "wMapLevel": {
+      "hex": "0xD35E",
+      "size_bytes": 1,
+      "purpose": "Current internal map ID (e.g. Pallet Town = 0x00)."
+    },
+    "wCurrentMenuItem": {
+      "hex": "0xCC26",
+      "size_bytes": 1,
+      "purpose": "Currently selected main menu item (topmost is 0). 0x00 means cursor is on 'CONTINUE' (if save exists) or 'NEW GAME'."
+    },
+    "wJoyIgnore": {
+      "hex": "0xCC29",
+      "size_bytes": 1,
+      "purpose": "A bitmask applied to the key port for the current menu/state. When zero, the engine accepts all joypad input. During movies or cutscenes, it disables input."
+    },
+    "wBattleState": {
+      "hex": "0xD057",
+      "size_bytes": 1,
+      "purpose": "Type of battle. 0 = Overworld, 1 = Wild Pokémon, 2 = Trainer, 3 = Safari Zone."
+    },
+    "wPartyCount": {
+      "hex": "0xD163",
+      "size_bytes": 1,
+      "purpose": "Number of Pokémon in the player's party. Accurate reading implies the save file has successfully populated WRAM."
+    },
+    "wYCoord": {
+      "hex": "0xD361",
+      "size_bytes": 1,
+      "purpose": "Player's Y screen location coordinate on the current map."
+    },
+    "wXCoord": {
+      "hex": "0xD362",
+      "size_bytes": 1,
+      "purpose": "Player's X screen location coordinate on the current map."
+    }
+  }
+}
