@@ -375,6 +375,16 @@ h1 {
     justify-content: center;
 }
 
+.quick-save-button {
+    min-width: 152px;
+    background: linear-gradient(180deg, rgba(99, 197, 140, 0.22), rgba(38, 51, 81, 0.92));
+    border-color: rgba(99, 197, 140, 0.34);
+}
+
+.quick-save-button:hover {
+    background: linear-gradient(180deg, rgba(99, 197, 140, 0.32), rgba(51, 67, 109, 0.96));
+}
+
 .control-active,
 .dpad-button.held,
 .menu-button.held,

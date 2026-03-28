@@ -37,6 +37,7 @@ const itemsGridEl = document.getElementById("items-grid");
 const saveSummaryEl = document.getElementById("save-summary");
 const saveNameInputEl = document.getElementById("save-name-input");
 const saveStateButtonEl = document.getElementById("save-state-button");
+const quickSaveButtonEl = document.getElementById("quick-save-button");
 const refreshSavesButtonEl = document.getElementById("refresh-saves-button");
 const saveStatusEl = document.getElementById("save-status");
 const saveGridEl = document.getElementById("save-grid");
@@ -68,6 +69,7 @@ const appState = {
     latestState: null,
     saveStates: [],
     remoteActiveInputs: [],
+    pendingSaveListReason: null,
     layoutPreference: "auto",
     resolvedLayout: "desktop",
 };
@@ -526,14 +528,32 @@ function setSaveStatus(message, tone = "neutral") {
     saveStatusEl.dataset.tone = tone;
 }
 
-function requestSaveStateList() {
+function requestSaveStateList(reason = null) {
+    appState.pendingSaveListReason = reason;
     sendJson({ type: "save_state_list" });
+}
+
+function createSaveState(name = null, source = "manual") {
+    if (source === "quick") {
+        setSaveStatus("Saving quick snapshot...", "neutral");
+    } else {
+        setSaveStatus("Saving named snapshot...", "neutral");
+    }
+    sendJson({ type: "save_state_create", name });
 }
 
 function renderSaveStates(saves) {
     appState.saveStates = saves || [];
     saveSummaryEl.textContent = `${appState.saveStates.length} snapshot${appState.saveStates.length === 1 ? "" : "s"}`;
     saveGridEl.replaceChildren();
+
+    if (appState.pendingSaveListReason === "refresh") {
+        setSaveStatus(`Loaded ${appState.saveStates.length} snapshot${appState.saveStates.length === 1 ? "" : "s"}.`, "success");
+        appState.pendingSaveListReason = null;
+    } else if (appState.pendingSaveListReason === "connect") {
+        setSaveStatus(`Connected to save explorer. ${appState.saveStates.length} snapshot${appState.saveStates.length === 1 ? "" : "s"} available.`, "neutral");
+        appState.pendingSaveListReason = null;
+    }
 
     if (!appState.saveStates.length) {
         saveGridEl.appendChild(createEmptyState("No native emulator snapshots have been created yet."));
@@ -880,7 +900,7 @@ function connect() {
     appState.socket.addEventListener("open", () => {
         setConnectionStatus(true);
         inputController.sync();
-        requestSaveStateList();
+        requestSaveStateList("connect");
     });
 
     appState.socket.addEventListener("close", () => {
@@ -1117,15 +1137,28 @@ function bindPokedexFilters() {
 }
 
 function bindSaveControls() {
+    quickSaveButtonEl.addEventListener("click", () => {
+        createSaveState(null, "quick");
+    });
+
     saveStateButtonEl.addEventListener("click", () => {
-        const name = saveNameInputEl.value.trim();
-        setSaveStatus("Saving emulator snapshot...", "neutral");
-        sendJson({ type: "save_state_create", name });
+        const suggestedName = saveNameInputEl.value.trim();
+        const response = window.prompt(
+            "Name this save. Leave it blank to use the timestamp-only filename.",
+            suggestedName
+        );
+        if (response === null) {
+            setSaveStatus("Named save canceled.", "neutral");
+            return;
+        }
+        const name = response.trim();
+        saveNameInputEl.value = name;
+        createSaveState(name || null, "manual");
     });
 
     refreshSavesButtonEl.addEventListener("click", () => {
         setSaveStatus("Refreshing save explorer...", "neutral");
-        requestSaveStateList();
+        requestSaveStateList("refresh");
     });
 }
 

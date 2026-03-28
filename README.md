@@ -150,8 +150,11 @@ On phones and narrow touch devices, the dashboard can switch into a compressed m
 The dashboard now supports emulator-native save states that are separate from the game's own save menu.
 
 - Click `Saves` in the dashboard and use `Save Snapshot` to write a `.state` file under `state/saves/`.
+- Use `Quick Save` beside the game controls when you want an immediate timestamp-only snapshot without any naming prompt.
+- Use the `Saves` tab when you want the dashboard to ask for an optional label before saving.
 - Files use a flat naming convention based on the active ROM name and timestamp, with an optional user label appended.
 - Loading a snapshot restores the emulator memory state and the bot runtime state together, so returning to a prior point does not depend on the game's battery save.
+- Save creation, refresh, and load actions all run over the existing WebSocket channel; only the dashboard document and static assets use HTTP.
 
 ## Validation
 

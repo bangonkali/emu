@@ -65,6 +65,7 @@
 - Complete: bundled bot runtime metadata into each snapshot so load restores the emulator and controller state coherently.
 - Complete: added a `Saves` tab with save-now, refresh, explorer listing, and load actions.
 - Complete: added tests and docs for the native save-state workflow.
+- Complete: added a quick-save control beside the game controls and tightened the save explorer status flow so refresh completion clears the pending message.
 
 ## Maintenance: Screen Aspect Ratio Fix
 
