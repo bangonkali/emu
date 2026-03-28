@@ -13,10 +13,15 @@
 
 ### Remaining on this branch
 
-- Finish and verify the browser dashboard under `src/web/`.
-- Update Docker image / compose for the server dependencies and port mapping.
 - Add container-run tests for the bot, memory helpers, and server helpers.
 - Run end-to-end verification inside Docker and document the final workflow.
+
+### Completed in current branch after backend commit
+
+- `src/web/index.html`, `src/web/style.css`, and `src/web/app.js` now provide the browser dashboard.
+- `src/web/map_data.json` has been copied from `ref/PokemonRedExperiments/baselines/map_data.json`.
+- `Dockerfile` installs `websockets`, exposes port `8765`, and launches the server runtime.
+- `docker-compose.yml` publishes `8765:8765` and starts the app with explicit server arguments.
 
 ## Background Context
 

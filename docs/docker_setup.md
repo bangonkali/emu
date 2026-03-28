@@ -59,7 +59,16 @@ The container now launches an async server/runtime pair:
 2. A WebSocket endpoint accepts button inputs and speed changes.
 3. Static dashboard assets are served over the same port.
 
-The browser dashboard and final compose port publishing are tracked as the next implementation step, but the container runtime itself is already async-native.
+The browser dashboard is served from the same process on port `8765`, with the WebSocket endpoint mounted at `/ws`.
+
+## Port Publishing
+
+```yaml
+ports:
+  - "8765:8765"
+```
+
+This exposes the combined HTTP/WebSocket server so the dashboard is reachable at `http://localhost:8765`.
 
 ## Running
 
@@ -73,3 +82,10 @@ docker compose up -d --build
 # View logs of the last run
 docker logs poke-pokemon-headless-1
 ```
+
+## Browser Workflow
+
+1. Start the container with `docker compose up --build`.
+2. Open `http://localhost:8765` in a browser.
+3. Wait for the bot to reach `OVERWORLD`.
+4. Use the dashboard controls to inspect state, change emulation speed, and send Game Boy inputs.

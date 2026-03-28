@@ -3,5 +3,8 @@ version: '3.8'
 services:
   pokemon-headless:
     build: .
+    ports:
+      - "8765:8765"
     volumes:
       - ./state:/app/state
+    command: ["python", "src/main.py", "--speed", "1x", "--port", "8765"]

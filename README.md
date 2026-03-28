@@ -42,7 +42,13 @@ View the logs:
 docker logs poke-pokemon-headless-1
 ```
 
-The async backend now accepts two runtime flags:
+Open the debug dashboard in a browser:
+
+```text
+http://localhost:8765
+```
+
+The runtime accepts two useful flags:
 
 ```bash
 docker compose run --rm pokemon-headless python src/main.py --speed 1x --port 8765
@@ -57,7 +63,13 @@ Regardless of how you run it, outputs appear in:
 - `state/logs/` — Timestamped English log of every state transition
 - `state/snapshots/` — A PNG screenshot captured at each state transition
 
-The browser dashboard assets and final port exposure are being finished as the next implementation step. The backend pieces are already refactored around a persistent async server/runtime loop.
+The browser dashboard provides:
+
+- A live Game Boy screen updated from the WebSocket state stream
+- On-screen and keyboard controls for Game Boy inputs
+- Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
+- A Kanto map with the current player position highlighted
+- A capped live log stream sourced from the bot logger ring buffer
 
 ## Project Structure
 
@@ -81,7 +93,7 @@ poke/
 │   ├── memory.py               # JSON-driven memory reader (label → hex → byte)
 │   ├── logger.py               # Timestamped logging with synchronized screenshots
 │   ├── server.py               # Async emulation loop + HTTP/WebSocket server
-│   └── web/                    # Static debug dashboard assets (in progress)
+│   └── web/                    # Static debug dashboard assets
 └── state/
     ├── .gitignore              # Excludes ROMs, saves, logs, snapshots
     ├── memory_map.json         # Address definitions loaded by memory.py (committed)
@@ -111,6 +123,16 @@ The boot state machine still progresses through six deterministic states:
 6. **OVERWORLD** — Stops scripted navigation and keeps the emulator running for external control.
 
 Each state transition logs a descriptive message and captures a synchronized screenshot. Once `OVERWORLD` is reached, the new runtime keeps ticking so the server can stream state and accept user input.
+
+## Browser Controls
+
+- Arrow keys or on-screen d-pad: movement
+- `Z`: `A`
+- `X`: `B`
+- `Enter`: `Start`
+- `Shift`: `Select`
+
+The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`.
 
 ## Reference Submodules
 
