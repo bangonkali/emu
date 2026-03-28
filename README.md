@@ -120,6 +120,8 @@ poke/
 | [Memory Mapping](docs/memory_map.md) | WRAM addresses used, their purposes, the overworld detection logic, and the `wPartyCount` false-positive caveat. |
 | [State Machine](docs/state_machine.md) | The `GameState` Enum flow from BOOTING → OVERWORLD, deterministic frame delays, and how to add new states. |
 | [Docker Setup](docs/docker_setup.md) | Container architecture, volume bindings, `.sav` → `.gb.ram` translation, and run commands. |
+| [Dashboard Baseline](docs/dashboard_baseline.md) | Completed dashboard milestones and the current shipped browser-debugging feature set. |
+| [Frontend Replatform Plan](docs/frontend_replatform_plan.md) | Planned Bun + Vite + Svelte + TypeScript migration and dense desktop workbench roadmap. |
 
 ## How It Works
 
