@@ -75,6 +75,7 @@ The browser dashboard provides:
 - A Kanto map with the current player position highlighted
 - Light and dark dashboard themes
 - Party detail cards with HP, status, types, and stats
+- An Items tab that shows the live bag inventory, slot order, and TM/HM identifiers
 - A searchable, filterable Pokédex view with seen and owned progress
 - A capped live log stream sourced from the bot logger ring buffer
 
@@ -140,7 +141,7 @@ Each state transition logs a descriptive message and captures a synchronized scr
 - `Shift`: `Select`
 
 The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`. Use the theme toggle in the header to switch between light and dark mode.
-On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab.
+On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab. The Items tab remains available in both layouts for quick bag checks.
 
 ## Validation
 
@@ -170,6 +171,7 @@ The current dashboard now includes the original live debug view plus:
 - An authoritative held-input pipeline for smoother movement controls
 - Theme switching between light and dark modes
 - Party inspection with current stats and battle-state details
+- Live bag inventory with slot order, quantities, and TM/HM labeling
 - A searchable Pokédex tab with type and ownership filters
 
 ## Reference Submodules

@@ -434,6 +434,7 @@ h1 {
 }
 
 .party-grid,
+.inventory-grid,
 .pokedex-grid {
     display: grid;
     gap: 14px;
@@ -444,6 +445,7 @@ h1 {
 }
 
 .party-card,
+.inventory-card,
 .dex-card,
 .combat-card {
     display: grid;
@@ -517,6 +519,7 @@ h1 {
 }
 
 .party-stats,
+.inventory-stats,
 .dex-stats,
 .combat-stats {
     display: grid;
@@ -680,6 +683,7 @@ h1 {
 :root[data-layout="mobile"] .overview-grid,
 :root[data-layout="mobile"] .pokedex-toolbar,
 :root[data-layout="mobile"] .party-grid,
+:root[data-layout="mobile"] .inventory-grid,
 :root[data-layout="mobile"] .pokedex-grid {
     grid-template-columns: 1fr;
 }
@@ -762,6 +766,7 @@ h1 {
 }
 
 :root[data-layout="mobile"] .party-stats,
+:root[data-layout="mobile"] .inventory-stats,
 :root[data-layout="mobile"] .dex-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -800,6 +805,7 @@ h1 {
 
     .summary-grid,
     .party-stats,
+    .inventory-stats,
     .dex-stats,
     .combat-stats,
     .combat-focus-grid,
@@ -815,6 +821,7 @@ h1 {
 
     :root[data-layout="mobile"] .summary-grid,
     :root[data-layout="mobile"] .party-stats,
+    :root[data-layout="mobile"] .inventory-stats,
     :root[data-layout="mobile"] .dex-stats,
     :root[data-layout="mobile"] .combat-stats,
     :root[data-layout="mobile"] .combat-focus-grid,

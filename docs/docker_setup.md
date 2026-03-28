@@ -88,7 +88,7 @@ docker logs poke-pokemon-headless-1
 1. Start the container with `docker compose up --build`.
 2. Open `http://localhost:8765` in a browser.
 3. Wait a few seconds for the emulator runtime to initialize and reach `OVERWORLD`.
-4. Use the dashboard tabs to inspect the live overview, party details, Pokédex progress, and logs.
+4. Use the dashboard tabs to inspect the live overview, party details, bag items, Pokédex progress, and logs.
 5. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
 6. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
 7. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.

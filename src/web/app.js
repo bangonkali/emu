@@ -29,6 +29,11 @@ const activeInputsEl = document.getElementById("active-inputs");
 const pokedexProgressEl = document.getElementById("pokedex-progress");
 const partySummaryEl = document.getElementById("party-summary");
 const partyGridEl = document.getElementById("party-grid");
+const itemsSummaryEl = document.getElementById("items-summary");
+const itemsUsedSlotsEl = document.getElementById("items-used-slots");
+const itemsFreeSlotsEl = document.getElementById("items-free-slots");
+const itemsTotalQuantityEl = document.getElementById("items-total-quantity");
+const itemsGridEl = document.getElementById("items-grid");
 const pokedexSummaryEl = document.getElementById("pokedex-summary");
 const pokedexGridEl = document.getElementById("pokedex-grid");
 const pokedexSearchEl = document.getElementById("pokedex-search");
@@ -58,6 +63,106 @@ const appState = {
     remoteActiveInputs: [],
     layoutPreference: "auto",
     resolvedLayout: "desktop",
+};
+
+const ITEM_NAME_LOOKUP = {
+    0x01: "Master Ball",
+    0x02: "Ultra Ball",
+    0x03: "Great Ball",
+    0x04: "Poke Ball",
+    0x05: "Town Map",
+    0x06: "Bicycle",
+    0x07: "Surfboard",
+    0x08: "Safari Ball",
+    0x09: "Pokedex",
+    0x0A: "Moon Stone",
+    0x0B: "Antidote",
+    0x0C: "Burn Heal",
+    0x0D: "Ice Heal",
+    0x0E: "Awakening",
+    0x0F: "Parlyz Heal",
+    0x10: "Full Restore",
+    0x11: "Max Potion",
+    0x12: "Hyper Potion",
+    0x13: "Super Potion",
+    0x14: "Potion",
+    0x15: "BoulderBadge",
+    0x16: "CascadeBadge",
+    0x17: "ThunderBadge",
+    0x18: "RainbowBadge",
+    0x19: "SoulBadge",
+    0x1A: "MarshBadge",
+    0x1B: "VolcanoBadge",
+    0x1C: "EarthBadge",
+    0x1D: "Escape Rope",
+    0x1E: "Repel",
+    0x1F: "Old Amber",
+    0x20: "Fire Stone",
+    0x21: "Thunderstone",
+    0x22: "Water Stone",
+    0x23: "HP Up",
+    0x24: "Protein",
+    0x25: "Iron",
+    0x26: "Carbos",
+    0x27: "Calcium",
+    0x28: "Rare Candy",
+    0x29: "Dome Fossil",
+    0x2A: "Helix Fossil",
+    0x2B: "Secret Key",
+    0x2C: "Unused Item 2C",
+    0x2D: "Bike Voucher",
+    0x2E: "X Accuracy",
+    0x2F: "Leaf Stone",
+    0x30: "Card Key",
+    0x31: "Nugget",
+    0x32: "Unused Item 32",
+    0x33: "Poke Doll",
+    0x34: "Full Heal",
+    0x35: "Revive",
+    0x36: "Max Revive",
+    0x37: "Guard Spec.",
+    0x38: "Super Repel",
+    0x39: "Max Repel",
+    0x3A: "Dire Hit",
+    0x3B: "Coin",
+    0x3C: "Fresh Water",
+    0x3D: "Soda Pop",
+    0x3E: "Lemonade",
+    0x3F: "S.S.Ticket",
+    0x40: "Gold Teeth",
+    0x41: "X Attack",
+    0x42: "X Defend",
+    0x43: "X Speed",
+    0x44: "X Special",
+    0x45: "Coin Case",
+    0x46: "Oak's Parcel",
+    0x47: "Itemfinder",
+    0x48: "Silph Scope",
+    0x49: "Poke Flute",
+    0x4A: "Lift Key",
+    0x4B: "Exp.All",
+    0x4C: "Old Rod",
+    0x4D: "Good Rod",
+    0x4E: "Super Rod",
+    0x4F: "PP Up",
+    0x50: "Ether",
+    0x51: "Max Ether",
+    0x52: "Elixer",
+    0x53: "Max Elixer",
+    0x54: "B2F",
+    0x55: "B1F",
+    0x56: "1F",
+    0x57: "2F",
+    0x58: "3F",
+    0x59: "4F",
+    0x5A: "5F",
+    0x5B: "6F",
+    0x5C: "7F",
+    0x5D: "8F",
+    0x5E: "9F",
+    0x5F: "10F",
+    0x60: "11F",
+    0x61: "B4F",
 };
 
 class InputController {
@@ -242,6 +347,43 @@ function createStatRow(label, value) {
     return row;
 }
 
+function getItemName(itemId) {
+    const normalizedId = Number(itemId);
+    if (normalizedId >= 0xC4 && normalizedId <= 0xC8) {
+        return `HM${String(normalizedId - 0xC3).padStart(2, "0")}`;
+    }
+    if (normalizedId >= 0xC9 && normalizedId <= 0xFA) {
+        return `TM${String(normalizedId - 0xC8).padStart(2, "0")}`;
+    }
+    return ITEM_NAME_LOOKUP[normalizedId] || `Item ${normalizedId}`;
+}
+
+function getItemCategory(itemId) {
+    const normalizedId = Number(itemId);
+    if (normalizedId >= 0xC4 && normalizedId <= 0xC8) {
+        return "Hidden Machine";
+    }
+    if (normalizedId >= 0xC9 && normalizedId <= 0xFA) {
+        return "Technical Machine";
+    }
+    if (normalizedId <= 0x08) {
+        return "Ball / Tool";
+    }
+    if (normalizedId >= 0x0A && normalizedId <= 0x14) {
+        return "Medicine";
+    }
+    if (normalizedId >= 0x1F && normalizedId <= 0x2F) {
+        return "Evolution / Rare Item";
+    }
+    if (normalizedId >= 0x3C && normalizedId <= 0x3E) {
+        return "Drink";
+    }
+    if (normalizedId >= 0x45 && normalizedId <= 0x4E) {
+        return "Key Item";
+    }
+    return "Inventory Item";
+}
+
 function renderParty(party) {
     partyGridEl.replaceChildren();
     partySummaryEl.textContent = `${party.length} active slot${party.length === 1 ? "" : "s"}`;
@@ -296,6 +438,55 @@ function renderParty(party) {
         card.append(hpBar, stats);
 
         partyGridEl.appendChild(card);
+    });
+}
+
+function renderInventory(inventory) {
+    const payload = inventory || { count: 0, capacity: 20, total_quantity: 0, items: [] };
+    const items = payload.items || [];
+    const usedSlots = payload.count ?? items.length;
+    const capacity = payload.capacity ?? 20;
+    const freeSlots = Math.max(capacity - usedSlots, 0);
+
+    itemsSummaryEl.textContent = `${usedSlots} / ${capacity} slots`;
+    itemsUsedSlotsEl.textContent = `${usedSlots}`;
+    itemsFreeSlotsEl.textContent = `${freeSlots}`;
+    itemsTotalQuantityEl.textContent = `${payload.total_quantity ?? 0}`;
+    itemsGridEl.replaceChildren();
+
+    if (!items.length) {
+        itemsGridEl.appendChild(createEmptyState("No bag items are available yet."));
+        return;
+    }
+
+    items.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "inventory-card";
+
+        const header = document.createElement("div");
+        header.className = "card-header";
+        header.innerHTML = `
+            <div>
+                <div class="badge-row">
+                    <span class="slot-chip mono">Bag ${item.slot}</span>
+                    <span class="status-chip healthy">x${item.quantity}</span>
+                </div>
+                <h3>${getItemName(item.item_id)}</h3>
+                <p class="panel-subtitle mono">${getItemCategory(item.item_id)}</p>
+            </div>
+            <span class="mono">0x${Number(item.item_id).toString(16).toUpperCase().padStart(2, "0")}</span>
+        `;
+
+        const stats = document.createElement("div");
+        stats.className = "inventory-stats";
+        stats.append(
+            createStatRow("Quantity", item.quantity),
+            createStatRow("Slot", item.slot),
+            createStatRow("Item ID", `0x${Number(item.item_id).toString(16).toUpperCase().padStart(2, "0")}`)
+        );
+
+        card.append(header, stats);
+        itemsGridEl.appendChild(card);
     });
 }
 
@@ -561,6 +752,7 @@ function handleState(data) {
     pokedexProgressEl.textContent = `${pokedex.seen_count ?? 0} seen / ${pokedex.owned_count ?? 0} owned`;
     renderCombat(data.combat || null);
     renderParty(data.party || []);
+    renderInventory(data.inventory || null);
     renderPokedex(pokedex);
 }
 
@@ -836,6 +1028,7 @@ initializeLayoutMode();
 renderInputHighlights([]);
 renderCombat(null);
 renderParty([]);
+renderInventory(null);
 renderPokedex(null);
 
 Promise.all([loadMapData(), loadPokemonCatalog()]).catch((error) => {

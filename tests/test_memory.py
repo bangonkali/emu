@@ -50,6 +50,14 @@ def test_memory_map_decodes_full_state():
     set_byte(pyboy, 0xCC29, 0)
     set_byte(pyboy, 0xD2F7, 0b00000101)
     set_byte(pyboy, 0xD30A, 0b00000111)
+    set_byte(pyboy, 0xD31D, 3)
+    set_byte(pyboy, 0xD31E, 0x04)
+    set_byte(pyboy, 0xD31F, 10)
+    set_byte(pyboy, 0xD320, 0x14)
+    set_byte(pyboy, 0xD321, 2)
+    set_byte(pyboy, 0xD322, 0xC9)
+    set_byte(pyboy, 0xD323, 1)
+    set_byte(pyboy, 0xD324, 0xFF)
 
     state = memory.get_full_state()
 
@@ -94,12 +102,43 @@ def test_memory_map_decodes_full_state():
     assert state["lead_max_hp"] == 600
     assert state["combat"]["active"] is False
     assert state["combat"]["kind"] == "overworld"
+    assert state["inventory"] == {
+        "count": 3,
+        "capacity": 20,
+        "total_quantity": 13,
+        "items": [
+            {"slot": 1, "item_id": 0x04, "quantity": 10},
+            {"slot": 2, "item_id": 0x14, "quantity": 2},
+            {"slot": 3, "item_id": 0xC9, "quantity": 1},
+        ],
+    }
     assert state["pokedex"]["owned"] == [1, 3]
     assert state["pokedex"]["seen"] == [1, 2, 3]
     assert state["pokedex_owned_count"] == 2
     assert state["pokedex_seen_count"] == 3
     assert state["menu_item"] == 1
     assert state["joy_ignore"] == 0
+
+
+def test_memory_map_stops_bag_read_at_terminator():
+    pyboy = FakePyBoy()
+    map_file = Path(__file__).resolve().parents[1] / "state" / "memory_map.json"
+    memory = MemoryMap(pyboy, str(map_file))
+
+    set_byte(pyboy, 0xD31D, 4)
+    set_byte(pyboy, 0xD31E, 0x01)
+    set_byte(pyboy, 0xD31F, 3)
+    set_byte(pyboy, 0xD320, 0xFF)
+    set_byte(pyboy, 0xD321, 99)
+
+    assert memory.get_bag_items() == {
+        "count": 1,
+        "capacity": 20,
+        "total_quantity": 3,
+        "items": [
+            {"slot": 1, "item_id": 0x01, "quantity": 3},
+        ],
+    }
 
 
 def test_is_in_overworld_validates_party_and_battle_state():

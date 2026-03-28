@@ -28,6 +28,8 @@ All addresses below are single-byte reads from WRAM.
 | `wPartyMons` | `0xD16B` | Base address of the first full in-party Pokémon struct. Additional slots are spaced by `0x2C` bytes. |
 | `wPokedexOwned` | `0xD2F7` | 19-byte flag array of owned Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
 | `wPokedexSeen` | `0xD30A` | 19-byte flag array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur. |
+| `wNumBagItems` | `0xD31D` | Number of used bag slots in the player's inventory. |
+| `wBagItems` | `0xD31E` | Bag inventory stored as `item_id, quantity` pairs and terminated by `0xFF`. |
 | `wSentOutPartyIndex` | `0xCC2F` | 0-based index of the player's currently sent-out Pokémon during battle. |
 | `wEnemyMon` | `0xCFE5` | Current enemy battle struct used for the active opposing Pokémon. |
 | `wBattleMon` | `0xD014` | Current player battle struct used for the active sent-out Pokémon. |
@@ -64,6 +66,16 @@ The runtime now derives Pokédex progress from the two 19-byte flag arrays in WR
 - `wPokedexSeen`
 
 Counts are derived from the bit arrays directly, and the state stream exposes both the totals and the exact owned/seen Dex numbers for the dashboard.
+
+## Bag Inventory Reads
+
+The dashboard inventory tab now reads the player's bag directly from WRAM:
+
+- `wNumBagItems` provides the current number of used bag slots.
+- `wBagItems` stores `item_id, quantity` pairs for up to 20 bag entries.
+- The runtime stops early if the `0xFF` bag terminator appears before the reported count.
+
+The state payload exposes this as `inventory`, including slot order, raw item IDs, and total item quantity across the bag.
 
 ## Battle Telemetry Reads
 

@@ -35,6 +35,21 @@
 - Complete: added a live desktop combat panel in the Play view plus a dedicated mobile `Battle` tab.
 - Complete: added test coverage for the combat payload and updated docs for the new module.
 
+## Maintenance: Inventory Items Tab
+
+### Goal
+
+1. Expose the player's live bag inventory in the dashboard.
+2. Show slot order, quantities, and useful labels for standard items plus TM/HM entries.
+3. Keep the inventory visible in both desktop and mobile layouts as a normal dashboard tab.
+
+### Progress
+
+- Complete: added bag memory reads for `wNumBagItems` and `wBagItems` in the backend state payload.
+- Complete: added inventory decoding tests, including early termination at the `0xFF` bag sentinel.
+- Complete: added an `Items` tab to the dashboard with slot usage, free-space summary, and per-item cards.
+- Complete: updated docs for the new inventory module.
+
 ## Maintenance: Screen Aspect Ratio Fix
 
 ### Goal

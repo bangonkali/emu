@@ -146,6 +146,16 @@
       "size_bytes": 19,
       "purpose": "Bit array of seen Pokédex entries. Bit 0 of the first byte is Bulbasaur."
     },
+    "wNumBagItems": {
+      "hex": "0xD31D",
+      "size_bytes": 1,
+      "purpose": "Number of occupied bag slots in the player's inventory."
+    },
+    "wBagItems": {
+      "hex": "0xD31E",
+      "size_bytes": 41,
+      "purpose": "Bag inventory stored as item-id and quantity pairs, terminated by 0xFF."
+    },
     "wEnemyMon": {
       "hex": "0xCFE5",
       "size_bytes": 29,

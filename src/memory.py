@@ -6,6 +6,7 @@ PARTY_MON_STRUCT_LENGTH = 0x2C
 BATTLE_MON_STRUCT_LENGTH = 0x1D
 POKEDEX_FLAG_BYTES = 19
 POKEDEX_TOTAL = 151
+BAG_ITEM_CAPACITY = 20
 
 PARTY_OFFSETS = {
     "species": 0x00,
@@ -167,6 +168,32 @@ class MemoryMap:
             "seen_count": len(seen),
         }
 
+    def get_bag_items(self):
+        count = min(self.read("wNumBagItems"), BAG_ITEM_CAPACITY)
+        bag_base = self.get_address("wBagItems")
+        items = []
+
+        for slot in range(1, count + 1):
+            base = bag_base + (slot - 1) * 2
+            item_id = self.read_address(base)
+            quantity = self.read_address(base + 1)
+            if item_id in (0, 0xFF):
+                break
+            items.append(
+                {
+                    "slot": slot,
+                    "item_id": item_id,
+                    "quantity": quantity,
+                }
+            )
+
+        return {
+            "count": len(items),
+            "capacity": BAG_ITEM_CAPACITY,
+            "total_quantity": sum(item["quantity"] for item in items),
+            "items": items,
+        }
+
     def get_party_info(self):
         """Returns a list of detailed dicts for each party member."""
         count = self.read("wPartyCount")
@@ -305,6 +332,7 @@ class MemoryMap:
             party = self.get_party_info()
             combat = self.get_combat_state(party)
             pokedex = self.get_pokedex_progress()
+            inventory = self.get_bag_items()
             hp = 0
             max_hp = 0
             if party:
@@ -323,6 +351,7 @@ class MemoryMap:
                 "combat": combat,
                 "lead_hp": hp,
                 "lead_max_hp": max_hp,
+                "inventory": inventory,
                 "pokedex": pokedex,
                 "pokedex_owned_count": pokedex["owned_count"],
                 "pokedex_seen_count": pokedex["seen_count"],
