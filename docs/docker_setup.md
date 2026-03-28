@@ -91,6 +91,8 @@ docker logs poke-pokemon-headless-1
 4. Use the dashboard tabs to inspect the live overview, party details, Pokédex progress, and logs.
 5. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
 
+The live screen panel now renders inside a dedicated 160:144 viewport so the Game Boy image keeps its native aspect ratio while scaling responsively.
+
 ## Test Workflow
 
 ```bash

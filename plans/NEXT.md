@@ -4,6 +4,17 @@
 
 ## Follow-Up: Continuous Input, Themes, Party Details, Pokédex
 
+## Maintenance: Screen Aspect Ratio Fix
+
+### Goal
+
+1. Preserve the native 160:144 Game Boy aspect ratio in the dashboard screen panel.
+
+### Progress
+
+- Complete: wrapped the live screen image in a dedicated viewport and switched the image to fill that viewport without vertical compression.
+- Complete: updated user-facing docs to record the dashboard sizing fix.
+
 ### Previous milestone
 
 - The original web debug tool milestone is complete and remains the baseline.
