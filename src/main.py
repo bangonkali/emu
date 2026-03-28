@@ -1,13 +1,38 @@
+import argparse
+import asyncio
+import glob
 import os
 import shutil
-import glob
+import sys
+
 from pyboy import PyBoy
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from memory import MemoryMap
 from logger import GameLogger
 from bot import PokemonBot
+from server import start_server
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Pokémon Blue Headless Automaton")
+    parser.add_argument(
+        "--speed",
+        default="1x",
+        choices=["max", "1x", "2x", "4x", "8x", "10x"],
+        help="Initial emulation speed.",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="Port for the combined HTTP and WebSocket server.",
+    )
+    return parser.parse_args()
 
 def main():
+    args = parse_args()
     state_dir = os.environ.get("STATE_DIR", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "state"))
     
     if not os.path.exists(state_dir):
@@ -51,7 +76,7 @@ def main():
     bot = PokemonBot(pyboy, memory, logger)
     
     try:
-        bot.run()
+        asyncio.run(start_server(bot, logger, args.speed, args.port))
     except Exception as e:
         logger.log_state(f"Bot encountered error during runtime execution: {e}")
     finally:

@@ -2,7 +2,7 @@
 
 A Python state machine that runs Pokémon Blue autonomously in a headless environment. It leverages [PyBoy](https://github.com/Baekalfen/PyBoy) to read the Game Boy's WRAM directly, enabling precise game state detection rather than relying on frame-counting macros or OCR.
 
-Can be run natively with Python or inside a Docker container (optional but preferred).
+The runtime is now driven by an async single-frame loop so the emulator can stay alive after boot, stream state over WebSocket, and accept browser input. The container workflow remains the supported way to run it on this machine.
 
 ## Quickstart
 
@@ -30,12 +30,10 @@ Place your own legally obtained files into the `state/` directory:
 
 ### 3. Run the Bot
 
-#### Option A: Docker (Preferred)
-
 Docker provides a fully isolated environment with no local dependency management:
 
 ```bash
-docker compose up -d --build
+docker compose up --build
 ```
 
 View the logs:
@@ -44,24 +42,22 @@ View the logs:
 docker logs poke-pokemon-headless-1
 ```
 
-#### Option B: Run Natively
+The async backend now accepts two runtime flags:
 
 ```bash
-pip install pyboy Pillow
-python src/main.py
+docker compose run --rm pokemon-headless python src/main.py --speed 1x --port 8765
 ```
 
-By default the script resolves `state/` relative to the project root. Override with the `STATE_DIR` environment variable:
-
-```bash
-STATE_DIR=/path/to/state python src/main.py
-```
+- `--speed`: one of `1x`, `2x`, `4x`, `8x`, `10x`, `max`
+- `--port`: combined HTTP/WebSocket port for the debug server
 
 ### 4. Check Outputs
 
 Regardless of how you run it, outputs appear in:
 - `state/logs/` — Timestamped English log of every state transition
 - `state/snapshots/` — A PNG screenshot captured at each state transition
+
+The browser dashboard assets and final port exposure are being finished as the next implementation step. The backend pieces are already refactored around a persistent async server/runtime loop.
 
 ## Project Structure
 
@@ -80,10 +76,12 @@ poke/
 │   ├── pokered/                # 📦 Submodule: pret/pokered (disassembly)
 │   └── PokemonRedExperiments/  # 📦 Submodule: PWhiddy/PokemonRedExperiments (RL)
 ├── src/
-│   ├── main.py                 # Entrypoint — ROM loading, PyBoy init, bot launch
-│   ├── bot.py                  # GameState Enum and state machine loop
+│   ├── main.py                 # Entrypoint — ROM loading, PyBoy init, async server launch
+│   ├── bot.py                  # GameState Enum and single-frame runtime loop
 │   ├── memory.py               # JSON-driven memory reader (label → hex → byte)
-│   └── logger.py               # Timestamped logging with synchronized screenshots
+│   ├── logger.py               # Timestamped logging with synchronized screenshots
+│   ├── server.py               # Async emulation loop + HTTP/WebSocket server
+│   └── web/                    # Static debug dashboard assets (in progress)
 └── state/
     ├── .gitignore              # Excludes ROMs, saves, logs, snapshots
     ├── memory_map.json         # Address definitions loaded by memory.py (committed)
@@ -103,16 +101,16 @@ poke/
 
 ## How It Works
 
-The bot progresses through six deterministic states:
+The boot state machine still progresses through six deterministic states:
 
 1. **BOOTING** — Waits 240 frames for the intro animation to play.
 2. **TITLE_SCREEN** — Presses START to reach the main menu.
 3. **MAIN_MENU** — Reads `wCurrentMenuItem` to confirm CONTINUE is selected, presses A.
 4. **SAVE_FILE_STATS** — Waits for the stats screen to render, presses A.
 5. **TRANSITION_TO_OVERWORLD** — Waits 350 frames for the visual fade to complete, then confirms via `is_in_overworld()`.
-6. **OVERWORLD** — Takes the final screenshot and exits.
+6. **OVERWORLD** — Stops scripted navigation and keeps the emulator running for external control.
 
-Each state transition logs a descriptive message and captures a synchronized screenshot.
+Each state transition logs a descriptive message and captures a synchronized screenshot. Once `OVERWORLD` is reached, the new runtime keeps ticking so the server can stream state and accept user input.
 
 ## Reference Submodules
 

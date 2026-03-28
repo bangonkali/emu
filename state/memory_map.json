@@ -35,6 +35,96 @@
       "hex": "0xD362",
       "size_bytes": 1,
       "purpose": "Player's X screen location coordinate on the current map."
+    },
+    "wBadgeFlags": {
+      "hex": "0xD356",
+      "size_bytes": 1,
+      "purpose": "Bitmask of earned badges. Bit count = total badges (0-8)."
+    },
+    "wPartyMon1Species": {
+      "hex": "0xD164",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 1."
+    },
+    "wPartyMon2Species": {
+      "hex": "0xD165",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 2."
+    },
+    "wPartyMon3Species": {
+      "hex": "0xD166",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 3."
+    },
+    "wPartyMon4Species": {
+      "hex": "0xD167",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 4."
+    },
+    "wPartyMon5Species": {
+      "hex": "0xD168",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 5."
+    },
+    "wPartyMon6Species": {
+      "hex": "0xD169",
+      "size_bytes": 1,
+      "purpose": "Species ID of party slot 6."
+    },
+    "wPartyMon1Level": {
+      "hex": "0xD18C",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 1."
+    },
+    "wPartyMon2Level": {
+      "hex": "0xD1B8",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 2."
+    },
+    "wPartyMon3Level": {
+      "hex": "0xD1E4",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 3."
+    },
+    "wPartyMon4Level": {
+      "hex": "0xD210",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 4."
+    },
+    "wPartyMon5Level": {
+      "hex": "0xD23C",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 5."
+    },
+    "wPartyMon6Level": {
+      "hex": "0xD268",
+      "size_bytes": 1,
+      "purpose": "Level of party Pokémon slot 6."
+    },
+    "wPartyMon1HP": {
+      "hex": "0xD16C",
+      "size_bytes": 2,
+      "purpose": "Current HP of party Pokémon slot 1 (2-byte big-endian)."
+    },
+    "wPartyMon1MaxHP": {
+      "hex": "0xD18D",
+      "size_bytes": 2,
+      "purpose": "Max HP of party Pokémon slot 1 (2-byte big-endian)."
+    },
+    "wMoney1": {
+      "hex": "0xD347",
+      "size_bytes": 1,
+      "purpose": "Money byte 1 (BCD, most significant)."
+    },
+    "wMoney2": {
+      "hex": "0xD348",
+      "size_bytes": 1,
+      "purpose": "Money byte 2 (BCD, middle)."
+    },
+    "wMoney3": {
+      "hex": "0xD349",
+      "size_bytes": 1,
+      "purpose": "Money byte 3 (BCD, least significant)."
     }
   }
 }

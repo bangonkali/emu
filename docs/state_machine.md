@@ -1,6 +1,6 @@
 # State Machine Architecture
 
-The bot is driven by a `GameState` Enum defined in `src/bot.py`. Each tick of the emulator advances one frame (`pyboy.tick()`), after which the current state handler evaluates whether to transition.
+The bot is driven by a `GameState` Enum defined in `src/bot.py`. The runtime now uses a true single-frame `step()` method: each call processes scheduled input events, advances PyBoy by one frame, and then evaluates state transitions.
 
 ## State Flow
 
@@ -24,7 +24,8 @@ BOOTING ──(240 frames)──► TITLE_SCREEN ──(press START)──► MA
                                                               │
                                                               ▼
                                                           OVERWORLD
-                                                       (bot halts)
+                                                     (scripted boot halts,
+                                                      emulator keeps ticking)
 ```
 
 ## State Descriptions
@@ -36,17 +37,17 @@ BOOTING ──(240 frames)──► TITLE_SCREEN ──(press START)──► MA
 
 ### `TITLE_SCREEN`
 **Duration:** ~60 frames  
-**Action:** Sends `START` button input immediately upon entry.  
+**Action:** Queues a `START` button input immediately upon entry. The input scheduler holds the button for 8 frames, releases it, then waits 1 cooldown frame before any other queued input can begin.  
 **Exit condition:** Frame counter reaches 60 (enough time for the menu to begin drawing).
 
 ### `MAIN_MENU`
 **Duration:** 180 frames (~3 seconds)  
-**Action:** Waits for the menu text to fully render in VRAM, then reads `wCurrentMenuItem` to confirm the cursor is on CONTINUE, and presses `A`.  
+**Action:** Waits for the menu text to fully render in VRAM, then reads `wCurrentMenuItem` to confirm the cursor is on CONTINUE, and queues `A`.  
 **Exit condition:** Frame counter reaches 180.
 
 ### `SAVE_FILE_STATS`
 **Duration:** 180 frames (~3 seconds)  
-**Action:** The engine displays the player's name, badges, and Pokédex count. Waits for the stats box to render, then presses `A` to begin loading the save.  
+**Action:** The engine displays the player's name, badges, and Pokédex count. Waits for the stats box to render, then queues `A` to begin loading the save.  
 **Exit condition:** Frame counter reaches 180.
 
 > [!WARNING]
@@ -56,11 +57,22 @@ BOOTING ──(240 frames)──► TITLE_SCREEN ──(press START)──► MA
 **Duration:** 350+ frames (~6 seconds)  
 **Action:** The screen fades to black while the engine loads the map, tile data, and sprite objects. The bot waits deterministically, then polls `is_in_overworld()`.  
 **Exit condition:** Frame counter ≥ 350 AND `is_in_overworld()` returns `True`.  
-**Fallback:** If memory check fails, presses `A` every 60 frames to dismiss residual dialog. Times out at 6000 frames with an error log.
+**Fallback:** If memory check fails, queues `A` every 60 frames to dismiss residual dialog. A timeout warning is logged once after 6000 frames.
 
 ### `OVERWORLD`
-**Action:** The `while` loop breaks. The bot's final screenshot is captured by the `transition_to()` call that enters this state.  
-**Termination:** `bot.run()` returns, and `main.py` calls `pyboy.stop()`.
+**Action:** The scripted boot flow stops. Browser-originated inputs are accepted only in this state, and they use the same 8-frame press / 1-frame cooldown scheduler as the scripted inputs.  
+**Termination:** The emulator no longer stops on entry to `OVERWORLD`. It continues ticking under the async server runtime until the process exits.
+
+## Input Scheduling
+
+The old blocking `press_button()` helper advanced multiple frames internally. That made it awkward to coordinate WebSocket polling, speed throttling, and interactive controls. The runtime now keeps a queue of pending inputs and an active press slot:
+
+1. A button press is sent before a frame tick.
+2. The press stays active for 8 ticks.
+3. The matching release event is sent.
+4. The runtime waits 1 extra cooldown frame before starting another input.
+
+This mirrors the release timing used in `ref/PokemonRedExperiments/baselines/red_gym_env.py` while preserving a strict one-frame `step()` contract.
 
 ## The WRAM vs Visual Rendering Desync Problem
 
@@ -86,5 +98,6 @@ The 350-frame delay guarantees the LCD fade subroutines have finished rastering 
 To extend the state machine (e.g. for battle handling or menu navigation):
 
 1. Add a new member to the `GameState` Enum.
-2. Add an `elif self.state == GameState.YOUR_STATE:` block in `run()`.
-3. Use `self.transition_to(next_state, "log message")` to move forward — this automatically logs + screenshots.
+2. Add an `elif self.state == GameState.YOUR_STATE:` branch in `step()`.
+3. Queue scripted button input through the bot's scheduler rather than ticking inside helper methods.
+4. Use `self.transition_to(next_state, "log message")` to move forward — this automatically logs + screenshots.

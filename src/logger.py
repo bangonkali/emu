@@ -1,11 +1,16 @@
 import os
+from collections import deque
 from datetime import datetime
 
 class GameLogger:
-    def __init__(self, pyboy, state_dir="/app/state"):
+    def __init__(self, pyboy, state_dir="/app/state", on_log=None):
         self.pyboy = pyboy
         self.logs_dir = os.path.join(state_dir, "logs")
         self.snapshots_dir = os.path.join(state_dir, "snapshots")
+        self.on_log = on_log  # callback: fn(timestamp, message)
+        
+        # In-memory ring buffer for WebSocket streaming (last 400 entries)
+        self.ring = deque(maxlen=400)
         
         os.makedirs(self.logs_dir, exist_ok=True)
         os.makedirs(self.snapshots_dir, exist_ok=True)
@@ -35,5 +40,20 @@ class GameLogger:
         log_entry = f"[{timestamp}] {message} - {screenshot_status}\n"
         self._write_to_log(log_entry)
         
+        # Add to ring buffer
+        entry = {"timestamp": timestamp, "message": message}
+        self.ring.append(entry)
+        
+        # Fire callback for real-time WebSocket push
+        if self.on_log:
+            try:
+                self.on_log(entry)
+            except Exception:
+                pass
+        
         # Output to stdout to follow via `docker logs`
         print(log_entry.strip())
+
+    def get_recent_logs(self):
+        """Returns the ring buffer contents as a list (for initial WebSocket sync)."""
+        return list(self.ring)
