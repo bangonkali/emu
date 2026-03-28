@@ -12,7 +12,7 @@
             <div class="brand-block">
                 <p class="eyebrow">Headless Runtime</p>
                 <h1>Pokemon Blue Debug Console</h1>
-                <p class="subcopy">Authoritative held input, live party telemetry, and a searchable Kanto Pokedex.</p>
+                <p class="subcopy">Authoritative held input, live party telemetry, emulator save states, and a searchable Kanto Pokedex.</p>
             </div>
             <div class="topbar-meta">
                 <div class="status-row">
@@ -49,6 +49,7 @@
             <button type="button" class="tab-button" data-tab="map">Map</button>
             <button type="button" class="tab-button" data-tab="party">Party</button>
             <button type="button" class="tab-button" data-tab="items">Items</button>
+            <button type="button" class="tab-button" data-tab="saves">Saves</button>
             <button type="button" class="tab-button" data-tab="pokedex">Pokedex</button>
             <button type="button" class="tab-button" data-tab="logs">Logs</button>
         </nav>
@@ -183,6 +184,30 @@
                         </div>
                     </div>
                     <div id="items-grid" class="inventory-grid"></div>
+                </section>
+            </section>
+
+            <section class="tab-panel" data-panel="saves">
+                <section class="panel data-panel-shell">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Save Explorer</h2>
+                            <p class="panel-subtitle">Native emulator snapshots stored in state/saves, independent of the in-game save menu.</p>
+                        </div>
+                        <span id="save-summary" class="mono">0 snapshots</span>
+                    </div>
+                    <div class="save-toolbar">
+                        <label class="field">
+                            <span>Optional Save Name</span>
+                            <input id="save-name-input" type="text" maxlength="80" placeholder="Viridian Forest entrance">
+                        </label>
+                        <div class="save-toolbar-actions">
+                            <button type="button" id="save-state-button" class="layout-button">Save Snapshot</button>
+                            <button type="button" id="refresh-saves-button" class="theme-button">Refresh List</button>
+                        </div>
+                    </div>
+                    <div id="save-status" class="save-status mono">Ready. Saving uses PyBoy native state snapshots with .state files.</div>
+                    <div id="save-grid" class="save-grid"></div>
                 </section>
             </section>
 

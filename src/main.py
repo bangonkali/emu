@@ -73,7 +73,10 @@ def main():
 
     memory = MemoryMap(pyboy, map_file)
     logger = GameLogger(pyboy, state_dir)
-    bot = PokemonBot(pyboy, memory, logger)
+    saves_dir = os.path.join(state_dir, "saves")
+    os.makedirs(saves_dir, exist_ok=True)
+    game_name = os.path.splitext(os.path.basename(rom_path))[0]
+    bot = PokemonBot(pyboy, memory, logger, saves_dir=saves_dir, game_name=game_name)
     
     try:
         asyncio.run(start_server(bot, logger, args.speed, args.port))

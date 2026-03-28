@@ -50,6 +50,22 @@
 - Complete: added an `Items` tab to the dashboard with slot usage, free-space summary, and per-item cards.
 - Complete: updated docs for the new inventory module.
 
+## Maintenance: Native Save-State Explorer
+
+### Goal
+
+1. Support emulator-native save states independent of the in-game save menu.
+2. Expose a flat save explorer in the dashboard that writes snapshots under `state/saves/`.
+3. Allow optional user naming while keeping timestamped game-based filenames and load-on-demand behavior.
+
+### Progress
+
+- Complete: verified PyBoy native `save_state()` and `load_state()` support in the Docker runtime.
+- Complete: added backend snapshot save/load support with flat `.state` files under `state/saves/`.
+- Complete: bundled bot runtime metadata into each snapshot so load restores the emulator and controller state coherently.
+- Complete: added a `Saves` tab with save-now, refresh, explorer listing, and load actions.
+- Complete: added tests and docs for the native save-state workflow.
+
 ## Maintenance: Screen Aspect Ratio Fix
 
 ### Goal

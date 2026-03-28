@@ -1,6 +1,6 @@
 from PIL import Image
 
-from bot import BUTTON_MAP, GameState, PokemonBot
+from bot import BUTTON_MAP, GameState, PokemonBot, slugify_name
 
 
 class FakeScreen:
@@ -13,12 +13,20 @@ class FakePyBoy:
         self.tick_count = 0
         self.inputs = []
         self.screen = FakeScreen()
+        self.saved_state_payload = b"FAKE_PYBOY_STATE"
+        self.loaded_state_payload = None
 
     def tick(self):
         self.tick_count += 1
 
     def send_input(self, event):
         self.inputs.append(event)
+
+    def save_state(self, file_like_object):
+        file_like_object.write(self.saved_state_payload)
+
+    def load_state(self, file_like_object):
+        self.loaded_state_payload = file_like_object.read()
 
 
 class FakeMemory:
@@ -116,3 +124,49 @@ def test_screen_snapshot_is_png_data_uri():
     bot = PokemonBot(FakePyBoy(), FakeMemory(), FakeLogger())
     payload = bot.get_screen_base64()
     assert payload.startswith("data:image/png;base64,")
+
+
+def test_slugify_name_normalizes_game_and_label_names():
+    assert slugify_name("Pokémon - Blue") == "pokemon-blue"
+    assert slugify_name("  Elite Four Prep!  ") == "elite-four-prep"
+
+
+def test_bot_can_save_and_list_native_snapshots(tmp_path):
+    pyboy = FakePyBoy()
+    bot = PokemonBot(pyboy, FakeMemory(), FakeLogger(), saves_dir=tmp_path, game_name="Pokémon - Blue")
+
+    record = bot.save_emulator_state("Route 2 Start")
+    saves = bot.list_save_states()
+
+    assert record["filename"].startswith("pokemon-blue-")
+    assert record["filename"].endswith(".state")
+    assert record["label"] == "Route 2 Start"
+    assert record["active"] is True
+    assert len(saves) == 1
+    assert saves[0]["filename"] == record["filename"]
+    assert saves[0]["display_name"] == "Route 2 Start"
+
+
+def test_bot_loads_snapshot_and_restores_runtime_metadata(tmp_path):
+    pyboy = FakePyBoy()
+    bot = PokemonBot(pyboy, FakeMemory(), FakeLogger(), saves_dir=tmp_path, game_name="Pokemon Blue")
+    bot.state = GameState.OVERWORLD
+    bot.frames_in_state = 123
+    bot._started = True
+    bot._manual_desired_buttons = {"left"}
+    bot._manual_active_buttons = {"left"}
+
+    record = bot.save_emulator_state("Checkpoint")
+
+    bot.state = GameState.BOOTING
+    bot.frames_in_state = 0
+    bot._manual_desired_buttons = set()
+    bot._manual_active_buttons = set()
+
+    loaded = bot.load_emulator_state(record["filename"])
+
+    assert loaded["filename"] == record["filename"]
+    assert bot.state == GameState.OVERWORLD
+    assert bot.frames_in_state == 123
+    assert bot.active_save_filename == record["filename"]
+    assert pyboy.loaded_state_payload == pyboy.saved_state_payload

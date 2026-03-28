@@ -34,6 +34,12 @@ const itemsUsedSlotsEl = document.getElementById("items-used-slots");
 const itemsFreeSlotsEl = document.getElementById("items-free-slots");
 const itemsTotalQuantityEl = document.getElementById("items-total-quantity");
 const itemsGridEl = document.getElementById("items-grid");
+const saveSummaryEl = document.getElementById("save-summary");
+const saveNameInputEl = document.getElementById("save-name-input");
+const saveStateButtonEl = document.getElementById("save-state-button");
+const refreshSavesButtonEl = document.getElementById("refresh-saves-button");
+const saveStatusEl = document.getElementById("save-status");
+const saveGridEl = document.getElementById("save-grid");
 const pokedexSummaryEl = document.getElementById("pokedex-summary");
 const pokedexGridEl = document.getElementById("pokedex-grid");
 const pokedexSearchEl = document.getElementById("pokedex-search");
@@ -60,6 +66,7 @@ const appState = {
     catalogByDex: new Map(),
     catalogByInternalId: new Map(),
     latestState: null,
+    saveStates: [],
     remoteActiveInputs: [],
     layoutPreference: "auto",
     resolvedLayout: "desktop",
@@ -211,6 +218,11 @@ class InputController {
     snapshot() {
         return Array.from(this.activeButtons).sort();
     }
+
+    resetLocalState() {
+        this.activeButtons.clear();
+        this.onChange(this.snapshot());
+    }
 }
 
 function sendJson(payload) {
@@ -345,6 +357,25 @@ function createStatRow(label, value) {
     row.className = "stat-row";
     row.innerHTML = `<span>${label}</span><span>${value}</span>`;
     return row;
+}
+
+function formatTimestamp(value) {
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) {
+        return value || "Unknown time";
+    }
+    return parsed.toLocaleString();
+}
+
+function formatBytes(value) {
+    const bytes = Number(value || 0);
+    if (bytes < 1024) {
+        return `${bytes} B`;
+    }
+    if (bytes < 1024 * 1024) {
+        return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function getItemName(itemId) {
@@ -487,6 +518,72 @@ function renderInventory(inventory) {
 
         card.append(header, stats);
         itemsGridEl.appendChild(card);
+    });
+}
+
+function setSaveStatus(message, tone = "neutral") {
+    saveStatusEl.textContent = message;
+    saveStatusEl.dataset.tone = tone;
+}
+
+function requestSaveStateList() {
+    sendJson({ type: "save_state_list" });
+}
+
+function renderSaveStates(saves) {
+    appState.saveStates = saves || [];
+    saveSummaryEl.textContent = `${appState.saveStates.length} snapshot${appState.saveStates.length === 1 ? "" : "s"}`;
+    saveGridEl.replaceChildren();
+
+    if (!appState.saveStates.length) {
+        saveGridEl.appendChild(createEmptyState("No native emulator snapshots have been created yet."));
+        return;
+    }
+
+    appState.saveStates.forEach((save) => {
+        const card = document.createElement("article");
+        card.className = "save-card";
+        if (save.active) {
+            card.classList.add("active");
+        }
+
+        const header = document.createElement("div");
+        header.className = "card-header";
+        header.innerHTML = `
+            <div>
+                <div class="badge-row">
+                    <span class="slot-chip mono">${save.active ? "Current" : "Snapshot"}</span>
+                    ${save.label ? `<span class="status-chip healthy">Named</span>` : `<span class="status-chip">Auto</span>`}
+                </div>
+                <h3>${save.display_name || save.filename}</h3>
+                <p class="panel-subtitle mono">${save.filename}</p>
+            </div>
+            <span class="mono">${formatBytes(save.size_bytes)}</span>
+        `;
+
+        const stats = document.createElement("div");
+        stats.className = "save-meta";
+        stats.append(
+            createStatRow("Created", formatTimestamp(save.created_at)),
+            createStatRow("Extension", ".state"),
+            createStatRow("Game", save.game_name || "unknown"),
+            createStatRow("Status", save.active ? "Loaded" : "Available")
+        );
+
+        const actions = document.createElement("div");
+        actions.className = "save-actions";
+        const loadButton = document.createElement("button");
+        loadButton.type = "button";
+        loadButton.className = "menu-button";
+        loadButton.textContent = save.active ? "Reload Snapshot" : "Load Snapshot";
+        loadButton.addEventListener("click", () => {
+            setSaveStatus(`Loading ${save.filename}...`, "neutral");
+            sendJson({ type: "save_state_load", filename: save.filename });
+        });
+        actions.appendChild(loadButton);
+
+        card.append(header, stats, actions);
+        saveGridEl.appendChild(card);
     });
 }
 
@@ -760,6 +857,22 @@ function handleLog(data) {
     appendLogLine(data.timestamp, data.message);
 }
 
+function handleSaveStateSaved(data) {
+    const saved = data.save || {};
+    saveNameInputEl.value = "";
+    setSaveStatus(`Saved ${saved.filename || "snapshot"}.`, "success");
+}
+
+function handleSaveStateLoaded(data) {
+    const loaded = data.save || {};
+    setSaveStatus(`Loaded ${loaded.filename || "snapshot"}.`, "success");
+}
+
+function handleSaveStateError(data) {
+    setSaveStatus(data.message || "Save-state operation failed.", "error");
+    appendLogLine("client", data.message || "Save-state operation failed.");
+}
+
 function connect() {
     setConnectionStatus(false);
     appState.socket = new WebSocket(WS_URL);
@@ -767,6 +880,7 @@ function connect() {
     appState.socket.addEventListener("open", () => {
         setConnectionStatus(true);
         inputController.sync();
+        requestSaveStateList();
     });
 
     appState.socket.addEventListener("close", () => {
@@ -781,6 +895,16 @@ function connect() {
             handleState(data);
         } else if (data.type === "log") {
             handleLog(data);
+        } else if (data.type === "save_state_list") {
+            renderSaveStates(data.saves || []);
+        } else if (data.type === "save_state_saved") {
+            handleSaveStateSaved(data);
+        } else if (data.type === "save_state_loaded") {
+            handleSaveStateLoaded(data);
+        } else if (data.type === "save_state_error") {
+            handleSaveStateError(data);
+        } else if (data.type === "input_reset") {
+            inputController.resetLocalState();
         } else if (data.type === "error") {
             appendLogLine("client", data.message);
         }
@@ -992,6 +1116,19 @@ function bindPokedexFilters() {
     });
 }
 
+function bindSaveControls() {
+    saveStateButtonEl.addEventListener("click", () => {
+        const name = saveNameInputEl.value.trim();
+        setSaveStatus("Saving emulator snapshot...", "neutral");
+        sendJson({ type: "save_state_create", name });
+    });
+
+    refreshSavesButtonEl.addEventListener("click", () => {
+        setSaveStatus("Refreshing save explorer...", "neutral");
+        requestSaveStateList();
+    });
+}
+
 async function loadMapData() {
     const response = await fetch("/map_data.json");
     const payload = await response.json();
@@ -1023,12 +1160,15 @@ setActiveSpeed("1x");
 bindTabs();
 bindKeyboardControls();
 bindPokedexFilters();
+bindSaveControls();
 initializeTheme();
 initializeLayoutMode();
 renderInputHighlights([]);
 renderCombat(null);
 renderParty([]);
 renderInventory(null);
+renderSaveStates([]);
+setSaveStatus("Ready. Saving uses PyBoy native state snapshots with .state files.", "neutral");
 renderPokedex(null);
 
 Promise.all([loadMapData(), loadPokemonCatalog()]).catch((error) => {

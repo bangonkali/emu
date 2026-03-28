@@ -92,6 +92,11 @@ class InputAuthority:
         for key in stale_keys:
             self._direction_press_order.pop(key, None)
 
+    def clear(self):
+        self._clients.clear()
+        self._direction_press_order.clear()
+        self._direction_counter = 0
+
     def resolve_buttons(self):
         active_buttons = set()
         active_direction = None
@@ -157,6 +162,15 @@ async def broadcast_json(clients, payload):
     websockets.broadcast(clients, json.dumps(payload))
 
 
+def build_state_payload(bot, speed_ref, map_names, frame_count):
+    state = bot.get_state_snapshot()
+    state["map_name"] = resolve_map_name(map_names, state.get("map_id"))
+    state["speed"] = speed_ref[0]
+    state["frame"] = frame_count
+    state["screen"] = bot.get_screen_base64()
+    return {"type": "state", **state}
+
+
 async def emulation_loop(bot, speed_ref, clients, input_authority, map_names):
     frame_count = 0
     last_sample_time = time.monotonic()
@@ -173,12 +187,7 @@ async def emulation_loop(bot, speed_ref, clients, input_authority, map_names):
         now = time.monotonic()
         if clients and now - last_sample_time >= sample_interval:
             last_sample_time = now
-            state = bot.get_state_snapshot()
-            state["map_name"] = resolve_map_name(map_names, state.get("map_id"))
-            state["speed"] = speed_ref[0]
-            state["frame"] = frame_count
-            state["screen"] = bot.get_screen_base64()
-            await broadcast_json(clients, {"type": "state", **state})
+            await broadcast_json(clients, build_state_payload(bot, speed_ref, map_names, frame_count))
 
         speed = speed_ref[0]
         if speed == "max":
@@ -205,6 +214,7 @@ async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_na
         initial_state["frame"] = 0
         initial_state["screen"] = bot.get_screen_base64()
         await websocket.send(json.dumps({"type": "state", **initial_state}))
+        await websocket.send(json.dumps({"type": "save_state_list", "saves": bot.list_save_states()}))
 
         async for raw_message in websocket:
             try:
@@ -234,6 +244,37 @@ async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_na
                 speed = message.get("speed")
                 if speed in VALID_SPEEDS:
                     speed_ref[0] = speed
+            elif message_type == "save_state_list":
+                await websocket.send(json.dumps({"type": "save_state_list", "saves": bot.list_save_states()}))
+            elif message_type == "save_state_create":
+                label = message.get("name")
+                if label is None or isinstance(label, str):
+                    try:
+                        record = bot.save_emulator_state(label)
+                    except Exception as exc:
+                        await websocket.send(json.dumps({"type": "save_state_error", "message": str(exc)}))
+                    else:
+                        saves = bot.list_save_states()
+                        await broadcast_json(clients, {"type": "save_state_saved", "save": record})
+                        await broadcast_json(clients, {"type": "save_state_list", "saves": saves})
+                else:
+                    await websocket.send(json.dumps({"type": "save_state_error", "message": "Save label must be a string."}))
+            elif message_type == "save_state_load":
+                filename = message.get("filename")
+                if isinstance(filename, str):
+                    try:
+                        input_authority.clear()
+                        record = bot.load_emulator_state(filename)
+                    except Exception as exc:
+                        await websocket.send(json.dumps({"type": "save_state_error", "message": str(exc)}))
+                    else:
+                        saves = bot.list_save_states()
+                        await broadcast_json(clients, {"type": "input_reset"})
+                        await broadcast_json(clients, {"type": "save_state_loaded", "save": record})
+                        await broadcast_json(clients, {"type": "save_state_list", "saves": saves})
+                        await broadcast_json(clients, build_state_payload(bot, speed_ref, map_names, 0))
+                else:
+                    await websocket.send(json.dumps({"type": "save_state_error", "message": "Save filename must be provided."}))
             else:
                 await websocket.send(json.dumps({"type": "error", "message": "Unsupported message type."}))
     finally:

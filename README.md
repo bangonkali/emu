@@ -62,6 +62,7 @@ docker compose run --rm pokemon-headless python src/main.py --speed 1x --port 87
 Regardless of how you run it, outputs appear in:
 - `state/logs/` — Timestamped English log of every state transition
 - `state/snapshots/` — A PNG screenshot captured at each state transition
+- `state/saves/` — Native emulator save states created from the dashboard save explorer
 
 The browser dashboard provides:
 
@@ -76,6 +77,7 @@ The browser dashboard provides:
 - Light and dark dashboard themes
 - Party detail cards with HP, status, types, and stats
 - An Items tab that shows the live bag inventory, slot order, and TM/HM identifiers
+- A Saves tab that creates and loads native emulator `.state` snapshots independent of the in-game save menu
 - A searchable, filterable Pokédex view with seen and owned progress
 - A capped live log stream sourced from the bot logger ring buffer
 
@@ -141,7 +143,15 @@ Each state transition logs a descriptive message and captures a synchronized scr
 - `Shift`: `Select`
 
 The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`. Use the theme toggle in the header to switch between light and dark mode.
-On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab. The Items tab remains available in both layouts for quick bag checks.
+On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab. The Items tab and the save explorer remain available in both layouts for quick bag checks and snapshot management.
+
+## Native Save States
+
+The dashboard now supports emulator-native save states that are separate from the game's own save menu.
+
+- Click `Saves` in the dashboard and use `Save Snapshot` to write a `.state` file under `state/saves/`.
+- Files use a flat naming convention based on the active ROM name and timestamp, with an optional user label appended.
+- Loading a snapshot restores the emulator memory state and the bot runtime state together, so returning to a prior point does not depend on the game's battery save.
 
 ## Validation
 
@@ -172,6 +182,7 @@ The current dashboard now includes the original live debug view plus:
 - Theme switching between light and dark modes
 - Party inspection with current stats and battle-state details
 - Live bag inventory with slot order, quantities, and TM/HM labeling
+- Native `.state` snapshot save/load support in a flat save explorer under `state/saves/`
 - A searchable Pokédex tab with type and ownership filters
 
 ## Reference Submodules

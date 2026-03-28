@@ -3,7 +3,7 @@ import asyncio
 from websockets.datastructures import Headers
 from websockets.http11 import Request
 
-from server import InputAuthority, _resolve_web_path, load_map_names, process_request, resolve_map_name
+from server import InputAuthority, _resolve_web_path, build_state_payload, load_map_names, process_request, resolve_map_name
 
 
 def test_map_names_load_from_web_asset():
@@ -54,3 +54,31 @@ def test_input_authority_ignores_stale_sequences_and_clears_disconnected_clients
 
     authority.remove_client("client-a")
     assert authority.resolve_buttons() == set()
+
+
+def test_input_authority_clear_removes_all_active_buttons():
+    authority = InputAuthority()
+    authority.apply_snapshot("client-a", ["left", "a"], 1)
+    authority.apply_snapshot("client-b", ["right"], 1)
+
+    authority.clear()
+
+    assert authority.resolve_buttons() == set()
+
+
+class FakeBot:
+    def get_state_snapshot(self):
+        return {"map_id": 0, "x": 4, "y": 9}
+
+    def get_screen_base64(self):
+        return "data:image/png;base64,AAAA"
+
+
+def test_build_state_payload_includes_map_name_speed_and_frame():
+    payload = build_state_payload(FakeBot(), ["2x"], {0: "Pallet Town"}, 88)
+
+    assert payload["type"] == "state"
+    assert payload["map_name"] == "Pallet Town"
+    assert payload["speed"] == "2x"
+    assert payload["frame"] == 88
+    assert payload["screen"].startswith("data:image/png;base64,")
