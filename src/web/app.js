@@ -10,6 +10,7 @@ const MOBILE_LAYOUT_BREAKPOINT = 900;
 const MOBILE_USER_AGENT_PATTERN = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i;
 const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 const mobileWidthQuery = window.matchMedia(`(max-width: ${MOBILE_LAYOUT_BREAKPOINT}px)`);
+const portraitQuery = window.matchMedia("(orientation: portrait)");
 
 const screenEl = document.getElementById("screen");
 const mapNameEl = document.getElementById("map-name");
@@ -40,6 +41,7 @@ const pokedexFilteredCountEl = document.getElementById("pokedex-filtered-count")
 const themeToggleEl = document.getElementById("theme-toggle");
 const layoutIndicatorEl = document.getElementById("layout-indicator");
 const layoutButtons = [...document.querySelectorAll("[data-layout-mode]")];
+const orientationWarningEl = document.getElementById("mobile-orientation-warning");
 
 const appState = {
     socket: null,
@@ -496,14 +498,17 @@ function bindKeyboardControls() {
 function bindTabs() {
     document.querySelectorAll("[data-tab]").forEach((button) => {
         button.addEventListener("click", () => {
-            const target = button.dataset.tab;
-            document.querySelectorAll("[data-tab]").forEach((tabButton) => {
-                tabButton.classList.toggle("active", tabButton.dataset.tab === target);
-            });
-            document.querySelectorAll("[data-panel]").forEach((panel) => {
-                panel.classList.toggle("active", panel.dataset.panel === target);
-            });
+            setActiveTab(button.dataset.tab);
         });
+    });
+}
+
+function setActiveTab(target) {
+    document.querySelectorAll("[data-tab]").forEach((tabButton) => {
+        tabButton.classList.toggle("active", tabButton.dataset.tab === target);
+    });
+    document.querySelectorAll("[data-panel]").forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.panel === target);
     });
 }
 
@@ -518,11 +523,18 @@ function isLikelyMobileDevice() {
     return MOBILE_USER_AGENT_PATTERN.test(userAgent) || (hasTouch && coarsePointerQuery.matches && narrowViewport);
 }
 
+function isPortraitOrientation() {
+    return portraitQuery.matches || window.innerHeight >= window.innerWidth;
+}
+
 function resolveLayout(preference) {
     if (preference === "desktop" || preference === "mobile") {
+        if (preference === "mobile" && !isPortraitOrientation()) {
+            return "desktop";
+        }
         return preference;
     }
-    return isLikelyMobileDevice() ? "mobile" : "desktop";
+    return isLikelyMobileDevice() && isPortraitOrientation() ? "mobile" : "desktop";
 }
 
 function updateLayoutControls(preference, resolved) {
@@ -534,6 +546,13 @@ function updateLayoutControls(preference, resolved) {
         : `Layout: ${capitalize(resolved)}`;
 }
 
+function updateOrientationWarning(preference, resolved) {
+    const shouldShow = (preference === "mobile" || (preference === "auto" && isLikelyMobileDevice()))
+        && !isPortraitOrientation()
+        && resolved !== "mobile";
+    orientationWarningEl.hidden = !shouldShow;
+}
+
 function applyLayoutPreference(preference) {
     const resolved = resolveLayout(preference);
     appState.layoutPreference = preference;
@@ -541,6 +560,11 @@ function applyLayoutPreference(preference) {
     document.documentElement.dataset.layout = resolved;
     window.localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, preference);
     updateLayoutControls(preference, resolved);
+    updateOrientationWarning(preference, resolved);
+
+    if (resolved === "mobile") {
+        setActiveTab("play");
+    }
 }
 
 function initializeLayoutMode() {
@@ -560,9 +584,11 @@ function initializeLayoutMode() {
     if (typeof coarsePointerQuery.addEventListener === "function") {
         coarsePointerQuery.addEventListener("change", refreshAutoLayout);
         mobileWidthQuery.addEventListener("change", refreshAutoLayout);
+        portraitQuery.addEventListener("change", refreshAutoLayout);
     } else {
         coarsePointerQuery.addListener(refreshAutoLayout);
         mobileWidthQuery.addListener(refreshAutoLayout);
+        portraitQuery.addListener(refreshAutoLayout);
     }
 
     window.addEventListener("resize", refreshAutoLayout);

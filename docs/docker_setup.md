@@ -91,6 +91,7 @@ docker logs poke-pokemon-headless-1
 4. Use the dashboard tabs to inspect the live overview, party details, Pokédex progress, and logs.
 5. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
 6. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
+7. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.
 
 The live screen panel now renders inside a dedicated 160:144 viewport so the Game Boy image keeps its native aspect ratio while scaling responsively.
 

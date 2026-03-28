@@ -16,6 +16,8 @@
 - Complete: added header controls to switch between Auto, Desktop, and Mobile layout modes.
 - Complete: added client-side mobile detection using viewport width, coarse pointer, touch support, and user agent hints.
 - Complete: added mobile-specific responsive behavior for overview panels, controls, stats, logs, and tabs.
+- Complete: split the old overview into `Play` and `Map` tabs so mobile portrait keeps only the game surface and controls in the primary tab.
+- Complete: restricted automatic mobile mode to portrait orientation and added a warning for unsupported mobile landscape.
 - Complete: updated README and Docker usage docs for the new mobile behavior.
 
 ## Maintenance: Screen Aspect Ratio Fix

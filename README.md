@@ -69,6 +69,7 @@ The browser dashboard provides:
 - A native-aspect-ratio Game Boy viewport that scales from the image's real 160:144 frame without CSS height clipping
 - Continuous on-screen and keyboard controls for Game Boy inputs
 - Auto-detected mobile layout with a manual Auto/Desktop/Mobile switch in the header
+- Portrait-first mobile play mode where the main play tab only shows the game screen and controls
 - Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
 - A Kanto map with the current player position highlighted
 - Light and dark dashboard themes
@@ -138,7 +139,7 @@ Each state transition logs a descriptive message and captures a synchronized scr
 - `Shift`: `Select`
 
 The dashboard only applies interactive inputs after the scripted boot flow reaches `OVERWORLD`. Use the theme toggle in the header to switch between light and dark mode.
-On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection.
+On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode.
 
 ## Validation
 
@@ -163,6 +164,7 @@ The current dashboard now includes the original live debug view plus:
 - A dedicated screen viewport that now sizes from the image width with `height: auto`, avoiding half-height clipping in the live render
 - Dashboard static assets are served with no-cache headers so CSS and JS fixes take effect immediately after a restart
 - Auto-detected mobile responsiveness with a manual layout override for phones, tablets, and desktop browsers
+- Portrait-first mobile tab flow that keeps only the live screen and controls in the main play surface
 - An authoritative held-input pipeline for smoother movement controls
 - Theme switching between light and dark modes
 - Party inspection with current stats and battle-state details
