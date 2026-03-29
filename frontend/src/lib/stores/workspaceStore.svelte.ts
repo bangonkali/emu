@@ -30,7 +30,7 @@ export interface WorkspaceTab {
   layout: PaneNode;
 }
 
-const STORAGE_KEY = 'poke-workspace-v1';
+const STORAGE_KEY = 'poke-workspace-v2';
 
 function makeId(): string {
   return Math.random().toString(36).slice(2, 9);
@@ -49,15 +49,16 @@ function defaultTabs(): WorkspaceTab[] {
         type: 'split',
         id: makeId(),
         direction: 'horizontal',
-        sizes: [38, 62],
+        sizes: [30, 40, 30],
         children: [
           makeLeaf('play'),
+          makeLeaf('map'),
           {
             type: 'split',
             id: makeId(),
             direction: 'vertical',
-            sizes: [55, 45],
-            children: [makeLeaf('map'), makeLeaf('logs')],
+            sizes: [50, 50],
+            children: [makeLeaf('party'), makeLeaf('logs')],
           },
         ],
       },

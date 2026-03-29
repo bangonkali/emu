@@ -3,7 +3,6 @@
   import ScreenImage from './ScreenImage.svelte';
   import ControlPad from './ControlPad.svelte';
   import QuickSaveButton from './QuickSaveButton.svelte';
-  import WorldMapCanvas from './WorldMapCanvas.svelte';
 
   let state = $derived(runtimeStore.latestState);
   let combat = $derived(state?.combat ?? null);
@@ -15,60 +14,42 @@
 </script>
 
 <div class="play-viewport">
-  <div class="play-left">
-    <ScreenImage />
+  <ScreenImage />
 
-    <div class="status-row mono text-muted">
-      <span>{mapName}</span>
-      <span>{coords}</span>
-      <span>HP:{leadHp}</span>
-      <span>Party:{party}</span>
-      <span>Dex:{pokedex}</span>
-    </div>
-
-    {#if combat?.active}
-      <div class="combat-summary">
-        <span class="chip chip-warning">⚔ Battle · {combat.kind}</span>
-        {#if combat.player_active}
-          <span class="mono">vs {combat.enemy_active ? `Lv${combat.enemy_active.level}` : '?'}</span>
-        {/if}
-      </div>
-    {/if}
-
-    <ControlPad />
-
-    <div class="quick-save-row">
-      <QuickSaveButton />
-    </div>
+  <div class="status-row mono text-muted">
+    <span>{mapName}</span>
+    <span>{coords}</span>
+    <span>HP:{leadHp}</span>
+    <span>Party:{party}</span>
+    <span>Dex:{pokedex}</span>
   </div>
 
-  <div class="play-right">
-    <div class="map-label panel-head">
-      <span class="panel-title">Kanto Map</span>
-      <span class="mono text-muted" style="font-size:var(--font-xs)">{mapName}</span>
+  {#if combat?.active}
+    <div class="combat-summary">
+      <span class="chip chip-warning">⚔ Battle · {combat.kind}</span>
+      {#if combat.player_active}
+        <span class="mono">vs {combat.enemy_active ? `Lv${combat.enemy_active.level}` : '?'}</span>
+      {/if}
     </div>
-    <div class="map-canvas-wrap">
-      <WorldMapCanvas />
-    </div>
+  {/if}
+
+  <ControlPad />
+
+  <div class="quick-save-row">
+    <QuickSaveButton />
   </div>
 </div>
 
 <style>
   .play-viewport {
-    display: grid;
-    grid-template-columns: minmax(280px, 380px) 1fr;
-    height: 100%;
-    overflow: hidden;
-    gap: 0;
-  }
-  .play-left {
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
     padding: var(--sp-4);
+    height: 100%;
     overflow-y: auto;
-    border-right: 1px solid var(--border);
     background: var(--bg-panel);
+    box-sizing: border-box;
   }
   .status-row {
     display: flex;
@@ -78,6 +59,7 @@
     padding: var(--sp-1) 0;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
   .combat-summary {
     display: flex;
@@ -88,22 +70,12 @@
     border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent);
     border-radius: var(--radius);
     font-size: var(--font-sm);
+    flex-shrink: 0;
   }
   .quick-save-row {
     display: flex;
     justify-content: flex-end;
     padding-top: var(--sp-2);
-  }
-  .play-right {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: var(--bg-main);
-  }
-  .map-canvas-wrap {
-    flex: 1;
-    min-height: 0;
-    padding: var(--sp-4);
-    display: flex;
+    flex-shrink: 0;
   }
 </style>
