@@ -23,3 +23,7 @@ env/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Frontend build artifacts
+frontend/dist/
+frontend/node_modules/

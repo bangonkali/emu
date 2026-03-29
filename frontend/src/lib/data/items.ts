@@ -1,0 +1,120 @@
+const ITEM_NAME_LOOKUP: Record<number, string> = {
+  0x01: 'Master Ball',
+  0x02: 'Ultra Ball',
+  0x03: 'Great Ball',
+  0x04: 'Poke Ball',
+  0x05: 'Town Map',
+  0x06: 'Bicycle',
+  0x07: 'Surfboard',
+  0x08: 'Safari Ball',
+  0x09: 'Pokedex',
+  0x0a: 'Moon Stone',
+  0x0b: 'Antidote',
+  0x0c: 'Burn Heal',
+  0x0d: 'Ice Heal',
+  0x0e: 'Awakening',
+  0x0f: 'Parlyz Heal',
+  0x10: 'Full Restore',
+  0x11: 'Max Potion',
+  0x12: 'Hyper Potion',
+  0x13: 'Super Potion',
+  0x14: 'Potion',
+  0x15: 'BoulderBadge',
+  0x16: 'CascadeBadge',
+  0x17: 'ThunderBadge',
+  0x18: 'RainbowBadge',
+  0x19: 'SoulBadge',
+  0x1a: 'MarshBadge',
+  0x1b: 'VolcanoBadge',
+  0x1c: 'EarthBadge',
+  0x1d: 'Escape Rope',
+  0x1e: 'Repel',
+  0x1f: 'Old Amber',
+  0x20: 'Fire Stone',
+  0x21: 'Thunderstone',
+  0x22: 'Water Stone',
+  0x23: 'HP Up',
+  0x24: 'Protein',
+  0x25: 'Iron',
+  0x26: 'Carbos',
+  0x27: 'Calcium',
+  0x28: 'Rare Candy',
+  0x29: 'Dome Fossil',
+  0x2a: 'Helix Fossil',
+  0x2b: 'Secret Key',
+  0x2c: 'Unused Item 2C',
+  0x2d: 'Bike Voucher',
+  0x2e: 'X Accuracy',
+  0x2f: 'Leaf Stone',
+  0x30: 'Card Key',
+  0x31: 'Nugget',
+  0x32: 'Unused Item 32',
+  0x33: 'Poke Doll',
+  0x34: 'Full Heal',
+  0x35: 'Revive',
+  0x36: 'Max Revive',
+  0x37: 'Guard Spec.',
+  0x38: 'Super Repel',
+  0x39: 'Max Repel',
+  0x3a: 'Dire Hit',
+  0x3b: 'Coin',
+  0x3c: 'Fresh Water',
+  0x3d: 'Soda Pop',
+  0x3e: 'Lemonade',
+  0x3f: 'S.S.Ticket',
+  0x40: 'Gold Teeth',
+  0x41: 'X Attack',
+  0x42: 'X Defend',
+  0x43: 'X Speed',
+  0x44: 'X Special',
+  0x45: 'Coin Case',
+  0x46: "Oak's Parcel",
+  0x47: 'Itemfinder',
+  0x48: 'Silph Scope',
+  0x49: 'Poke Flute',
+  0x4a: 'Lift Key',
+  0x4b: 'Exp.All',
+  0x4c: 'Old Rod',
+  0x4d: 'Good Rod',
+  0x4e: 'Super Rod',
+  0x4f: 'PP Up',
+  0x50: 'Ether',
+  0x51: 'Max Ether',
+  0x52: 'Elixer',
+  0x53: 'Max Elixer',
+  0x54: 'B2F',
+  0x55: 'B1F',
+  0x56: '1F',
+  0x57: '2F',
+  0x58: '3F',
+  0x59: '4F',
+  0x5a: '5F',
+  0x5b: '6F',
+  0x5c: '7F',
+  0x5d: '8F',
+  0x5e: '9F',
+  0x5f: '10F',
+  0x60: '11F',
+  0x61: 'B4F',
+};
+
+export function getItemName(itemId: number): string {
+  if (itemId >= 0xc4 && itemId <= 0xc8) {
+    return `HM${String(itemId - 0xc3).padStart(2, '0')}`;
+  }
+  if (itemId >= 0xc9 && itemId <= 0xfa) {
+    return `TM${String(itemId - 0xc8).padStart(2, '0')}`;
+  }
+  return ITEM_NAME_LOOKUP[itemId] ?? `Item ${itemId}`;
+}
+
+export function getItemCategory(itemId: number): string {
+  if (itemId >= 0xc4 && itemId <= 0xc8) return 'Hidden Machine';
+  if (itemId >= 0xc9 && itemId <= 0xfa) return 'Technical Machine';
+  if (itemId <= 0x08) return 'Ball / Tool';
+  if (itemId >= 0x0a && itemId <= 0x14) return 'Medicine';
+  if (itemId >= 0x1f && itemId <= 0x2f) return 'Evolution / Rare Item';
+  if (itemId >= 0x3c && itemId <= 0x3e) return 'Drink';
+  if (itemId >= 0x45 && itemId <= 0x4e) return 'Key Item';
+  return 'Inventory Item';
+}
