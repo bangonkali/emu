@@ -1,29 +1,16 @@
 <script lang="ts">
-  import { layoutStore } from '../stores/layoutStore.svelte';
+  import { workspaceStore } from '../stores/workspaceStore.svelte';
   import TopBar from './TopBar.svelte';
-  import PlayViewport from './PlayViewport.svelte';
-  import PartyPanel from './PartyPanel.svelte';
-  import ItemsPanel from './ItemsPanel.svelte';
-  import SavesPanel from './SavesPanel.svelte';
-  import PokedexPanel from './PokedexPanel.svelte';
-  import LogsPanel from './LogsPanel.svelte';
+  import WorkspaceTabBar from './layout/WorkspaceTabBar.svelte';
+  import PaneTree from './layout/PaneTree.svelte';
 </script>
 
 <div class="app-shell">
   <TopBar />
+  <WorkspaceTabBar />
   <main class="panel-area">
-    {#if layoutStore.activeTab === 'play'}
-      <PlayViewport />
-    {:else if layoutStore.activeTab === 'party'}
-      <PartyPanel />
-    {:else if layoutStore.activeTab === 'items'}
-      <ItemsPanel />
-    {:else if layoutStore.activeTab === 'saves'}
-      <SavesPanel />
-    {:else if layoutStore.activeTab === 'pokedex'}
-      <PokedexPanel />
-    {:else if layoutStore.activeTab === 'logs'}
-      <LogsPanel />
+    {#if workspaceStore.activeTab}
+      <PaneTree node={workspaceStore.activeTab.layout} />
     {/if}
   </main>
 </div>
@@ -36,6 +23,7 @@
     overflow: hidden;
     background: var(--bg-main);
   }
+
   .panel-area {
     flex: 1;
     min-height: 0;

@@ -1,16 +1,27 @@
 export type ThemeKind = 'dark' | 'light';
-export type TabId = 'play' | 'party' | 'items' | 'saves' | 'pokedex' | 'logs';
+
+const THEME_KEY = 'poke-theme';
+
+function loadTheme(): ThemeKind {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch {
+    // ignore
+  }
+  return 'dark';
+}
 
 class LayoutStore {
-  activeTab = $state<TabId>('play');
-  theme = $state<ThemeKind>('dark');
-
-  setTab(tab: TabId): void {
-    this.activeTab = tab;
-  }
+  theme = $state<ThemeKind>(loadTheme());
 
   toggleTheme(): void {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    try {
+      localStorage.setItem(THEME_KEY, this.theme);
+    } catch {
+      // ignore
+    }
   }
 }
 
