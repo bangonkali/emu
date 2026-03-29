@@ -3,7 +3,7 @@
 
   const KEY_MAP: Record<string, string> = {
     ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
-    z: 'a', Z: 'a', x: 'b', X: 'b', Enter: 'start', Shift: 'select',
+    x: 'a', X: 'a', y: 'b', Y: 'b', Enter: 'start', Shift: 'select',
   };
 
   function onKeyDown(e: KeyboardEvent) {
@@ -100,7 +100,12 @@
     transition: background 0.05s;
   }
   .dpad-center { width: 36px; height: 36px; }
-  .dpad-btn.held { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .dpad-btn.held {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
   .action-group { display: flex; flex-direction: column; gap: var(--sp-3); }
   .ab-row { display: flex; gap: var(--sp-3); align-items: center; }
   .action-btn {
@@ -111,9 +116,14 @@
     color: var(--text);
     font-size: var(--font-sm);
     font-weight: 600;
-    transition: background 0.05s;
+    transition: background 0.05s, box-shadow 0.05s;
   }
-  .action-btn.held { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .action-btn.held {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
   .sys-row { display: flex; gap: var(--sp-2); justify-content: center; }
   .sys-btn {
     padding: var(--sp-1) var(--sp-4);
@@ -122,9 +132,14 @@
     border-radius: 10px;
     color: var(--text-muted);
     font-size: var(--font-xs);
-    transition: background 0.05s;
+    transition: background 0.05s, box-shadow 0.05s;
   }
-  .sys-btn.held { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .sys-btn.held {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
   .inputs-display {
     font-size: var(--font-xs);
     margin-top: var(--sp-2);

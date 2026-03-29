@@ -9,9 +9,11 @@
   <TopBar />
   <WorkspaceTabBar />
   <main class="panel-area">
-    {#if workspaceStore.activeTab}
-      <PaneTree node={workspaceStore.activeTab.layout} />
-    {/if}
+    {#key workspaceStore.activeTabId}
+      {#if workspaceStore.activeTab}
+        <PaneTree node={workspaceStore.activeTab.layout} />
+      {/if}
+    {/key}
   </main>
 </div>
 

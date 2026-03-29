@@ -1,9 +1,11 @@
+import { SvelteSet } from 'svelte/reactivity';
 import type { ClientMessage } from '../types/protocol';
 
 const VALID_BUTTONS = new Set(['a', 'b', 'start', 'select', 'up', 'down', 'left', 'right']);
 
 export class InputController {
-  private _buttons = $state(new Set<string>());
+  // SvelteSet properly signals reactivity for .add() / .delete() / .clear()
+  private _buttons = new SvelteSet<string>();
   private _sequence = 0;
   private sendFn: (msg: ClientMessage) => void;
 
