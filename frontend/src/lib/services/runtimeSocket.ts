@@ -1,17 +1,23 @@
 import type { ClientMessage, ServerMessage } from '../types/protocol';
 
 type MessageHandler = (msg: ServerMessage) => void;
+type BinaryMessageHandler = (payload: ArrayBuffer) => void;
 type ConnectionHandler = () => void;
 
 class RuntimeSocket {
   private ws: WebSocket | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: MessageHandler[] = [];
+  private binaryMessageHandlers: BinaryMessageHandler[] = [];
   private connectHandlers: ConnectionHandler[] = [];
   private disconnectHandlers: ConnectionHandler[] = [];
 
   onMessage(handler: MessageHandler): void {
     this.messageHandlers.push(handler);
+  }
+
+  onBinaryMessage(handler: BinaryMessageHandler): void {
+    this.binaryMessageHandlers.push(handler);
   }
 
   onConnect(handler: ConnectionHandler): void {
@@ -26,6 +32,7 @@ class RuntimeSocket {
     const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
     const url = `${protocol}://${location.host}/ws`;
     this.ws = new WebSocket(url);
+    this.ws.binaryType = 'arraybuffer';
 
     this.ws.addEventListener('open', () => {
       this.connectHandlers.forEach((h) => h());
@@ -37,13 +44,25 @@ class RuntimeSocket {
       this.reconnectTimer = setTimeout(() => this.connect(), 2000);
     });
 
-    this.ws.addEventListener('message', (event: MessageEvent<string>) => {
-      try {
-        const msg = JSON.parse(event.data) as ServerMessage;
-        this.messageHandlers.forEach((h) => h(msg));
-      } catch {
-        // ignore malformed messages
+    this.ws.addEventListener('message', (event: MessageEvent<string | ArrayBuffer | Blob>) => {
+      if (typeof event.data === 'string') {
+        try {
+          const msg = JSON.parse(event.data) as ServerMessage;
+          this.messageHandlers.forEach((h) => h(msg));
+        } catch {
+          // ignore malformed messages
+        }
+        return;
       }
+
+      if (event.data instanceof ArrayBuffer) {
+        this.binaryMessageHandlers.forEach((h) => h(event.data));
+        return;
+      }
+
+      void event.data.arrayBuffer().then((payload) => {
+        this.binaryMessageHandlers.forEach((h) => h(payload));
+      });
     });
   }
 

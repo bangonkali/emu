@@ -82,10 +82,21 @@ body {
   color: var(--text);
   background: var(--bg-main);
   line-height: 1.4;
+  caret-color: transparent;
 }
 
 #app {
   display: contents;
+}
+
+body :where(:not(input):not(textarea):not(select):not([contenteditable='true'])) {
+  -webkit-user-select: none;
+  user-select: none;
+  caret-color: transparent;
+}
+
+body :where(:not(input):not(textarea):not(select):not([contenteditable='true']))::selection {
+  background: transparent;
 }
 
 button {
@@ -98,7 +109,11 @@ button {
 }
 
 input,
+textarea,
 select {
+  -webkit-user-select: text;
+  user-select: text;
+  caret-color: auto;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
@@ -110,8 +125,15 @@ select {
 }
 
 input:focus,
+textarea:focus,
 select:focus {
   border-color: var(--border-focus);
+}
+
+[contenteditable='true'] {
+  -webkit-user-select: text;
+  user-select: text;
+  caret-color: auto;
 }
 
 /* --- Shared utility classes --- */

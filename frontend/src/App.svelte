@@ -1,5 +1,6 @@
 <script lang="ts">
   import { runtimeSocket } from './lib/services/runtimeSocket';
+  import { audioService } from './lib/services/audioService';
   import { runtimeStore } from './lib/stores/runtimeStore.svelte';
   import { layoutStore } from './lib/stores/layoutStore.svelte';
   import './lib/services/init';
@@ -13,6 +14,7 @@
   $effect(() => {
     void runtimeStore.loadMapData();
     void runtimeStore.loadPokemonCatalog();
+    audioService.attach();
     runtimeSocket.connect();
   });
 </script>

@@ -2,6 +2,8 @@
 
 The project runs entirely inside a Docker container, eliminating the need for a display server (X11, Wayland) or platform-specific emulator builds.
 
+Audio is also generated inside the container and streamed to the browser over the existing WebSocket connection. No host audio device passthrough, PulseAudio setup, or macOS loopback software is required for the dashboard audio feature.
+
 ## Base Image
 
 ```dockerfile
@@ -61,6 +63,12 @@ The container now launches an async server/runtime pair:
 
 The browser dashboard is served from the same process on port `8765`, with the WebSocket endpoint mounted at `/ws`.
 
+That same WebSocket now carries three classes of runtime data:
+
+1. JSON state snapshots and control/status messages.
+2. Log and save-state messages.
+3. Binary PCM audio frames copied directly from PyBoy's sound buffer.
+
 ## Port Publishing
 
 ```yaml
@@ -88,12 +96,14 @@ docker logs poke-pokemon-headless-1
 1. Start the container with `docker compose up --build`.
 2. Open `http://localhost:8765` in a browser.
 3. Wait a few seconds for the emulator runtime to initialize and reach `OVERWORLD`.
-4. Use the dashboard tabs to inspect the live overview, party details, bag items, Pokédex progress, and logs.
-5. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
-6. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
-7. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.
-8. During active battles, desktop `Play` also shows a live combat telemetry panel. On mobile, the same combat information moves to the dedicated `Battle` tab.
-9. Use `Quick Save` near the game controls for an immediate timestamp-only snapshot, or use the `Saves` tab to create/load native emulator `.state` snapshots under `state/saves/` without relying on the in-game save menu.
+4. Click `Enable Audio` in the `Play` panel if you want live sound in the browser. This requires a user gesture and currently targets desktop browsers.
+5. Use the dashboard tabs to inspect the live overview, party details, bag items, Pokédex progress, and logs.
+6. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
+7. Audio playback is limited to runtime speed `1x`. Switching to `2x`, `4x`, `8x`, `10x`, or `max` mutes and flushes the browser audio queue until you return to `1x`.
+8. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
+9. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.
+10. During active battles, desktop `Play` also shows a live combat telemetry panel. On mobile, the same combat information moves to the dedicated `Battle` tab.
+11. Use `Quick Save` near the game controls for an immediate timestamp-only snapshot, or use the `Saves` tab to create/load native emulator `.state` snapshots under `state/saves/` without relying on the in-game save menu.
 
 The live screen panel now renders inside a dedicated 160:144 viewport so the Game Boy image keeps its native aspect ratio while scaling responsively.
 

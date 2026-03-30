@@ -3,7 +3,15 @@ import asyncio
 from websockets.datastructures import Headers
 from websockets.http11 import Request
 
-from server import InputAuthority, _resolve_web_path, build_state_payload, load_map_names, process_request, resolve_map_name
+from server import (
+    InputAuthority,
+    _resolve_web_path,
+    build_audio_config_payload,
+    build_state_payload,
+    load_map_names,
+    process_request,
+    resolve_map_name,
+)
 
 
 def test_map_names_load_from_web_asset():
@@ -25,7 +33,7 @@ def test_process_request_serves_dashboard_index():
     response = asyncio.run(process_request(None, Request(path="/", headers=Headers())))
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "text/html"
-    assert b"Pokemon Blue Debug Console" in response.body
+    assert b"<div id=\"app\"></div>" in response.body
 
 
 def test_process_request_returns_404_for_missing_file():
@@ -73,6 +81,16 @@ class FakeBot:
     def get_screen_base64(self):
         return "data:image/png;base64,AAAA"
 
+    def get_audio_config(self):
+        return {
+            "enabled": True,
+            "sample_rate": 48000,
+            "channels": 2,
+            "format": "s8",
+            "interleaved": True,
+            "playback_speed": "1x",
+        }
+
 
 def test_build_state_payload_includes_map_name_speed_and_frame():
     payload = build_state_payload(FakeBot(), ["2x"], {0: "Pallet Town"}, 88)
@@ -82,3 +100,17 @@ def test_build_state_payload_includes_map_name_speed_and_frame():
     assert payload["speed"] == "2x"
     assert payload["frame"] == 88
     assert payload["screen"].startswith("data:image/png;base64,")
+
+
+def test_build_audio_config_payload_uses_bot_audio_config():
+    payload = build_audio_config_payload(FakeBot())
+
+    assert payload == {
+        "type": "audio_config",
+        "enabled": True,
+        "sample_rate": 48000,
+        "channels": 2,
+        "format": "s8",
+        "interleaved": True,
+        "playback_speed": "1x",
+    }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { inputController } from '../services/init';
 
   const KEY_MAP: Record<string, string> = {
@@ -6,17 +7,58 @@
     x: 'a', X: 'a', y: 'b', Y: 'b', Enter: 'start', Shift: 'select',
   };
 
+  function isEditableTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    if (target.isContentEditable) {
+      return true;
+    }
+
+    const editableParent = target.closest('input, textarea, select, [contenteditable="true"]');
+    return editableParent instanceof HTMLElement;
+  }
+
+  function resolveGameButton(e: KeyboardEvent): string | null {
+    if (e.metaKey || e.ctrlKey || e.altKey) {
+      return null;
+    }
+
+    if (isEditableTarget(e.target)) {
+      return null;
+    }
+
+    return KEY_MAP[e.key] ?? null;
+  }
+
+  function blurNonEditableActiveElement(): void {
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) {
+      return;
+    }
+
+    if (activeElement === document.body || isEditableTarget(activeElement)) {
+      return;
+    }
+
+    activeElement.blur();
+  }
+
   function onKeyDown(e: KeyboardEvent) {
-    const btn = KEY_MAP[e.key];
+    const btn = resolveGameButton(e);
     if (!btn || e.repeat) return;
     e.preventDefault();
+    e.stopPropagation();
+    blurNonEditableActiveElement();
     inputController.press(btn);
   }
 
   function onKeyUp(e: KeyboardEvent) {
-    const btn = KEY_MAP[e.key];
+    const btn = resolveGameButton(e);
     if (!btn) return;
     e.preventDefault();
+    e.stopPropagation();
     inputController.release(btn);
   }
 
@@ -37,9 +79,20 @@
   }
 
   function isHeld(btn: string) { return inputController.activeButtons.has(btn); }
+
+  onMount(() => {
+    const options: AddEventListenerOptions = { capture: true };
+    window.addEventListener('keydown', onKeyDown, options);
+    window.addEventListener('keyup', onKeyUp, options);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown, options);
+      window.removeEventListener('keyup', onKeyUp, options);
+    };
+  });
 </script>
 
-<svelte:window onkeydown={onKeyDown} onkeyup={onKeyUp} onblur={() => inputController.clear()} />
+<svelte:window onblur={() => inputController.clear()} />
 <svelte:document onvisibilitychange={() => { if (document.hidden) inputController.clear(); }} />
 
 <div class="control-pad">

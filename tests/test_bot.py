@@ -15,6 +15,7 @@ class FakePyBoy:
         self.screen = FakeScreen()
         self.saved_state_payload = b"FAKE_PYBOY_STATE"
         self.loaded_state_payload = None
+        self.sound = None
 
     def tick(self):
         self.tick_count += 1
@@ -124,6 +125,20 @@ def test_screen_snapshot_is_png_data_uri():
     bot = PokemonBot(FakePyBoy(), FakeMemory(), FakeLogger())
     payload = bot.get_screen_base64()
     assert payload.startswith("data:image/png;base64,")
+
+
+def test_audio_config_is_disabled_when_pyboy_has_no_sound_api():
+    bot = PokemonBot(FakePyBoy(), FakeMemory(), FakeLogger())
+
+    assert bot.get_audio_config() == {
+        "enabled": False,
+        "sample_rate": 0,
+        "channels": 2,
+        "format": "unknown",
+        "interleaved": True,
+        "playback_speed": "1x",
+    }
+    assert bot.get_latest_audio_frame() == b""
 
 
 def test_slugify_name_normalizes_game_and_label_names():

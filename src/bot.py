@@ -47,6 +47,7 @@ def slugify_name(value, fallback="snapshot"):
 class PokemonBot:
     def __init__(self, pyboy, memory, logger, saves_dir=None, game_name="pokemon-blue"):
         self.pyboy = pyboy
+        self.sound = getattr(pyboy, "sound", None)
         self.memory = memory
         self.logger = logger
         self.state = GameState.BOOTING
@@ -64,6 +65,11 @@ class PokemonBot:
             self.saves_dir.mkdir(parents=True, exist_ok=True)
         self.game_name = slugify_name(game_name, fallback="pokemon-blue")
         self.active_save_filename = None
+        self.audio_enabled = bool(
+            self.sound is not None
+            and getattr(self.sound, "raw_buffer_format", None) == "b"
+            and int(getattr(self.sound, "sample_rate", 0) or 0) > 0
+        )
 
     def _enqueue_input(self, button_name, manual=False):
         if button_name not in BUTTON_MAP:
@@ -246,6 +252,26 @@ class PokemonBot:
         self.pyboy.screen.image.save(image_buffer, format="PNG")
         payload = base64.b64encode(image_buffer.getvalue()).decode("ascii")
         return f"data:image/png;base64,{payload}"
+
+    def get_audio_config(self):
+        return {
+            "enabled": self.audio_enabled,
+            "sample_rate": int(getattr(self.sound, "sample_rate", 0) or 0),
+            "channels": 2,
+            "format": "s8" if self.audio_enabled else "unknown",
+            "interleaved": True,
+            "playback_speed": "1x",
+        }
+
+    def get_latest_audio_frame(self):
+        if not self.audio_enabled:
+            return b""
+
+        raw_buffer_head = int(getattr(self.sound, "raw_buffer_head", 0) or 0)
+        if raw_buffer_head <= 0:
+            return b""
+
+        return bytes(self.sound.raw_buffer[:raw_buffer_head])
 
     def _ensure_saves_dir(self):
         if self.saves_dir is None:

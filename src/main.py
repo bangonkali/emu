@@ -15,6 +15,9 @@ from bot import PokemonBot
 from server import start_server
 
 
+AUDIO_SAMPLE_RATE = 48000
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Pokémon Blue Headless Automaton")
     parser.add_argument(
@@ -65,7 +68,12 @@ def main():
         return
         
     try:
-        pyboy = PyBoy(rom_path, window="null")
+        pyboy = PyBoy(
+            rom_path,
+            window="null",
+            sound_emulated=True,
+            sound_sample_rate=AUDIO_SAMPLE_RATE,
+        )
         print("PyBoy emulator initialized headless successfully.")
     except Exception as e:
         print(f"Critical error initializing PyBoy: {e}")

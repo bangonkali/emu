@@ -12,6 +12,7 @@ from websockets.http11 import Response
 
 SAMPLE_FPS = 12
 DEFAULT_MAP_NAME = "Unknown"
+DEFAULT_AUDIO_PLAYBACK_SPEED = "1x"
 VALID_SPEEDS = {"max", "1x", "2x", "4x", "8x", "10x"}
 VALID_BUTTONS = {"a", "b", "start", "select", "up", "down", "left", "right"}
 DIRECTIONAL_BUTTONS = {"up", "down", "left", "right"}
@@ -162,6 +163,12 @@ async def broadcast_json(clients, payload):
     websockets.broadcast(clients, json.dumps(payload))
 
 
+async def broadcast_binary(clients, payload):
+    if not clients or not payload:
+        return
+    websockets.broadcast(clients, payload)
+
+
 def build_state_payload(bot, speed_ref, map_names, frame_count):
     state = bot.get_state_snapshot()
     state["map_name"] = resolve_map_name(map_names, state.get("map_id"))
@@ -169,6 +176,10 @@ def build_state_payload(bot, speed_ref, map_names, frame_count):
     state["frame"] = frame_count
     state["screen"] = bot.get_screen_base64()
     return {"type": "state", **state}
+
+
+def build_audio_config_payload(bot):
+    return {"type": "audio_config", **bot.get_audio_config()}
 
 
 async def emulation_loop(bot, speed_ref, clients, input_authority, map_names):
@@ -183,6 +194,9 @@ async def emulation_loop(bot, speed_ref, clients, input_authority, map_names):
 
         bot.step()
         frame_count += 1
+
+        if clients and speed_ref[0] == DEFAULT_AUDIO_PLAYBACK_SPEED:
+            await broadcast_binary(clients, bot.get_latest_audio_frame())
 
         now = time.monotonic()
         if clients and now - last_sample_time >= sample_interval:
@@ -203,10 +217,12 @@ async def emulation_loop(bot, speed_ref, clients, input_authority, map_names):
 
 
 async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_names):
-    clients.add(websocket)
     try:
         for entry in bot.logger.get_recent_logs():
             await websocket.send(json.dumps({"type": "log", **entry}))
+
+        await websocket.send(json.dumps(build_audio_config_payload(bot)))
+        await websocket.send(json.dumps({"type": "audio_reset", "reason": "connect"}))
 
         initial_state = bot.get_state_snapshot()
         initial_state["map_name"] = resolve_map_name(map_names, initial_state.get("map_id"))
@@ -215,8 +231,12 @@ async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_na
         initial_state["screen"] = bot.get_screen_base64()
         await websocket.send(json.dumps({"type": "state", **initial_state}))
         await websocket.send(json.dumps({"type": "save_state_list", "saves": bot.list_save_states()}))
+        clients.add(websocket)
 
         async for raw_message in websocket:
+            if isinstance(raw_message, bytes):
+                continue
+
             try:
                 message = json.loads(raw_message)
             except json.JSONDecodeError:
@@ -244,6 +264,7 @@ async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_na
                 speed = message.get("speed")
                 if speed in VALID_SPEEDS:
                     speed_ref[0] = speed
+                    await broadcast_json(clients, {"type": "audio_reset", "reason": "speed"})
             elif message_type == "save_state_list":
                 await websocket.send(json.dumps({"type": "save_state_list", "saves": bot.list_save_states()}))
             elif message_type == "save_state_create":
@@ -270,6 +291,7 @@ async def ws_handler(websocket, bot, clients, input_authority, speed_ref, map_na
                     else:
                         saves = bot.list_save_states()
                         await broadcast_json(clients, {"type": "input_reset"})
+                        await broadcast_json(clients, {"type": "audio_reset", "reason": "save_state_load"})
                         await broadcast_json(clients, {"type": "save_state_loaded", "save": record})
                         await broadcast_json(clients, {"type": "save_state_list", "saves": saves})
                         await broadcast_json(clients, build_state_payload(bot, speed_ref, map_names, 0))

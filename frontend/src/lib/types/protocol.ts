@@ -46,6 +46,21 @@ export interface Combat {
   enemy_party_count: number;
 }
 
+export interface AudioConfigMessage {
+  type: 'audio_config';
+  enabled: boolean;
+  sample_rate: number;
+  channels: number;
+  format: string;
+  interleaved: boolean;
+  playback_speed: string;
+}
+
+export interface AudioResetMessage {
+  type: 'audio_reset';
+  reason: string;
+}
+
 // --- Server → Client message types ---
 
 export interface StateMessage {
@@ -117,6 +132,8 @@ export interface ErrorMessage {
 
 export type ServerMessage =
   | StateMessage
+  | AudioConfigMessage
+  | AudioResetMessage
   | LogMessage
   | SaveStateListMessage
   | SaveStateSavedMessage
