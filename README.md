@@ -1,5 +1,11 @@
 # Pokémon Headless Automaton
 
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=rhAT28dWh54">
+        <img src="https://img.youtube.com/vi/rhAT28dWh54/hqdefault.jpg" alt="Watch the Pokémon Headless Automaton demo video on YouTube" width="720" />
+    </a>
+</p>
+
 A Python state machine that runs Pokémon Blue autonomously in a headless environment. It leverages [PyBoy](https://github.com/Baekalfen/PyBoy) to read the Game Boy's WRAM directly, enabling precise game state detection rather than relying on frame-counting macros or OCR.
 
 The runtime is now driven by an async single-frame loop so the emulator can stay alive after boot, stream state over WebSocket, and accept browser input. The container workflow remains the supported way to run it on this machine.
