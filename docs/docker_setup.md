@@ -99,11 +99,14 @@ docker logs poke-pokemon-headless-1
 4. Click `Enable Audio` in the `Play` panel if you want live sound in the browser. This requires a user gesture and currently targets desktop browsers.
 5. Use the dashboard tabs to inspect the live overview, party details, bag items, Pokédex progress, and logs.
 6. Use the held d-pad or keyboard controls to move continuously, and the header toggle to switch themes.
-7. Audio playback is limited to runtime speed `1x`. Switching to `2x`, `4x`, `8x`, `10x`, or `max` mutes and flushes the browser audio queue until you return to `1x`.
-8. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
-9. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.
-10. During active battles, desktop `Play` also shows a live combat telemetry panel. On mobile, the same combat information moves to the dedicated `Battle` tab.
-11. Use `Quick Save` near the game controls for an immediate timestamp-only snapshot, or use the `Saves` tab to create/load native emulator `.state` snapshots under `state/saves/` without relying on the in-game save menu.
+7. Browser gameplay keys now capture early enough that arrow-key movement does not walk focus across dashboard buttons or panes.
+8. Non-editable dashboard UI suppresses visible text-selection carets and selection highlights during play, while real inputs such as search boxes still behave normally.
+9. The Kanto map marker redraws from the live movement state while you walk.
+10. Audio playback is limited to runtime speed `1x`. Switching to `2x`, `4x`, `8x`, `10x`, or `max` mutes and flushes the browser audio queue until you return to `1x`.
+11. On phones or narrow touch devices, the dashboard now auto-selects a mobile layout and touch-sized controls; use the header's Auto/Desktop/Mobile switch to override the detected layout.
+12. In mobile portrait, use the `Play` tab for the game screen and controls only. Map, party, Pokédex, and logs are intentionally moved into separate tabs to keep the play surface compact. Mobile landscape is not supported yet.
+13. During active battles, desktop `Play` also shows a live combat telemetry panel. On mobile, the same combat information moves to the dedicated `Battle` tab.
+14. Use `Quick Save` near the game controls for an immediate timestamp-only snapshot, or use the `Saves` tab to create/load native emulator `.state` snapshots under `state/saves/` without relying on the in-game save menu.
 
 The live screen panel now renders inside a dedicated 160:144 viewport so the Game Boy image keeps its native aspect ratio while scaling responsively.
 

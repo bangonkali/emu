@@ -6,8 +6,12 @@ This document records the current shipped browser dashboard so completed milesto
 
 - Complete: the original web debug tool is implemented and validated in Docker.
 - Complete: the runtime serves the dashboard over HTTP and streams logs, state, and screen over WebSocket.
+- Complete: the shipped Docker image now serves the compiled Svelte frontend rather than the legacy plain-JS dashboard source.
 - Complete: browser inputs and runtime speed changes are accepted after the scripted boot flow reaches `OVERWORLD`.
 - Complete: held movement uses an authoritative client/server input-state model rather than tap injection.
+- Complete: desktop audio playback streams from PyBoy over the existing WebSocket transport with explicit browser enablement.
+- Complete: keyboard gameplay no longer walks browser focus across dashboard controls, and non-editable UI suppresses stray caret/selection indicators.
+- Complete: the Kanto map player marker redraws from live movement state while walking.
 - Complete: pytest coverage exists for memory helpers, bot scheduling, server helpers, and recent dashboard-state extensions.
 
 ## Backend Runtime Baseline
@@ -20,10 +24,10 @@ This document records the current shipped browser dashboard so completed milesto
 
 ## Frontend Baseline
 
-The current plain-JS dashboard provides these user-facing capabilities:
+The current shipped Svelte dashboard provides these user-facing capabilities:
 
 - Play surface with live Game Boy screen and authoritative held controls.
-- Kanto map view with player marker.
+- Kanto map view with live player marker updates while moving.
 - Party detail tab.
 - Items tab with live bag decoding.
 - Saves tab backed by native PyBoy `.state` snapshots.
@@ -33,6 +37,8 @@ The current plain-JS dashboard provides these user-facing capabilities:
 - Theme toggle.
 - Runtime speed controls.
 - Quick save action near the game controls.
+- Desktop audio enable, mute state, and local volume control.
+- Keyboard capture that suppresses browser focus traversal and non-editable text caret artifacts during play.
 
 ## Completed Milestones
 
@@ -42,7 +48,15 @@ The current plain-JS dashboard provides these user-facing capabilities:
 - Complete: held manual input sync in `src/bot.py`.
 - Complete: richer party and Pokédex progress payloads in `src/memory.py`.
 - Complete: generated static Pokémon catalog in `src/web/pokemon_catalog.json` from `ref/pokered`.
-- Complete: frontend tabs, theme toggle, continuous on-screen controls, and Pokédex/party views in `src/web/`.
+- Complete: frontend tabs, theme toggle, continuous on-screen controls, and Pokédex/party views in the compiled Svelte frontend.
+
+### Desktop Audio, Keyboard Focus, and Map Marker Reliability
+
+- Complete: PyBoy sound buffers stream over the existing WebSocket transport to the browser dashboard.
+- Complete: desktop audio playback requires explicit user enablement and automatically mutes outside `1x`.
+- Complete: keyboard gameplay capture prevents arrow-key focus traversal across dashboard controls.
+- Complete: non-editable dashboard UI suppresses visible caret and selection artifacts during play.
+- Complete: map rendering redraws from live movement state so the player marker follows the current position.
 
 ### Responsive Mobile Dashboard
 

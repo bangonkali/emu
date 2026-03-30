@@ -75,12 +75,12 @@ The browser dashboard provides:
 - A live Game Boy screen updated from the WebSocket state stream
 - Live emulator audio streamed directly from PyBoy to the browser dashboard on desktop browsers
 - A native-aspect-ratio Game Boy viewport that scales from the image's real 160:144 frame without CSS height clipping
-- Continuous on-screen and keyboard controls for Game Boy inputs
+- Continuous on-screen and keyboard controls for Game Boy inputs, with browser focus navigation suppressed while you play
 - Auto-detected mobile layout with a manual Auto/Desktop/Mobile switch in the header
 - Portrait-first mobile play mode where the main play tab only shows the game screen and controls
 - Live combat telemetry for active battles, including your full party, the enemy roster, and the clearly marked current enemy Pokémon
 - Runtime speed controls (`1x`, `2x`, `4x`, `8x`, `10x`, `MAX`)
-- A Kanto map with the current player position highlighted
+- A Kanto map with the current player position highlighted and updated live while you move
 - Light and dark dashboard themes
 - Party detail cards with HP, status, types, and stats
 - An Items tab that shows the live bag inventory, slot order, and TM/HM identifiers
@@ -155,6 +155,7 @@ The dashboard only applies interactive inputs after the scripted boot flow reach
 On phones and narrow touch devices, the dashboard can switch into a compressed mobile layout automatically. The header also exposes an explicit Auto/Desktop/Mobile layout toggle when you want to override device detection. In mobile portrait, the `Play` tab is intentionally reduced to just the live screen and controls, while map and telemetry move into separate tabs. Mobile landscape is not supported yet and falls back out of the compact mobile mode. During active battles, desktop Play now includes an inline combat telemetry module, and mobile exposes the same data in a dedicated `Battle` tab. The Items tab and the save explorer remain available in both layouts for quick bag checks and snapshot management.
 
 Audio playback requires an explicit click on `Enable Audio` in the `Play` panel because desktop browsers gate audio output behind a user gesture. The live audio stream is intended for desktop Chrome and Safari in the current Docker workflow and only plays at runtime speed `1x`. If you switch to `2x`, `4x`, `8x`, `10x`, or `max`, the browser audio path flushes and stays muted until you return to `1x`.
+The dashboard now captures the Game Boy control keys early enough that arrow-key play does not walk browser focus across buttons and panes. Non-editable dashboard UI also suppresses visible text-selection carets while you play, so the game controls do not leave stray browser selection indicators behind.
 
 ## Native Save States
 
@@ -189,9 +190,12 @@ The current dashboard now includes the original live debug view plus:
 
 - A dedicated screen viewport that now sizes from the image width with `height: auto`, avoiding half-height clipping in the live render
 - Live desktop audio playback with explicit enablement, local volume control, and automatic muting outside `1x`
+- Keyboard controls that no longer move browser focus across dashboard chrome while using the Game Boy d-pad
+- Suppressed non-editable text-selection carets and selection highlights during play
 - Dashboard static assets are served with no-cache headers so CSS and JS fixes take effect immediately after a restart
 - Auto-detected mobile responsiveness with a manual layout override for phones, tablets, and desktop browsers
 - Portrait-first mobile tab flow that keeps only the live screen and controls in the main play surface
+- A world-map marker that redraws from live movement state while the player walks
 - Live combat telemetry module with current enemy focus, party highlights, and enemy roster tracking during battle
 - An authoritative held-input pipeline for smoother movement controls
 - Theme switching between light and dark modes
