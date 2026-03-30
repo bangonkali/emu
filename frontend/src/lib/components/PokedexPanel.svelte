@@ -78,7 +78,7 @@
         </div>
         <div class="badge-row">
           <div class="type-row" style="margin:0">
-            {#each entry.types as type (type)}
+            {#each entry.types as type, i (`${entry.dex_no}-${type}-${i}`)}
               <span class="type-chip">{type}</span>
             {/each}
           </div>

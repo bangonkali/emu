@@ -3,9 +3,11 @@
   import PanelChrome from './PanelChrome.svelte';
   import WorldMapCanvas from './WorldMapCanvas.svelte';
 
+  let mapData = $derived(runtimeStore.mapData);
   let mapName = $derived(runtimeStore.latestState?.map_name ?? '—');
-  let x = $derived(runtimeStore.latestState?.x ?? 0);
-  let y = $derived(runtimeStore.latestState?.y ?? 0);
+  let mapId = $derived(runtimeStore.latestState?.map_id ?? null);
+  let x = $derived(runtimeStore.latestState?.x ?? null);
+  let y = $derived(runtimeStore.latestState?.y ?? null);
 </script>
 
 <PanelChrome title="World Map">
@@ -13,7 +15,7 @@
     {mapName} · X:{x} Y:{y}
   </div>
   <div class="map-wrap">
-    <WorldMapCanvas />
+    <WorldMapCanvas {mapData} activeMapId={mapId} playerX={x} playerY={y} />
   </div>
 </PanelChrome>
 

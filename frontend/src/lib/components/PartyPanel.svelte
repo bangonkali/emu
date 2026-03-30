@@ -41,7 +41,7 @@
         </div>
         {#if entry}
           <div class="type-row">
-            {#each entry.types as type (type)}
+            {#each entry.types as type, i (`${type}-${i}`)}
               <span class="type-chip">{type}</span>
             {/each}
           </div>
